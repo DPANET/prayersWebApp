@@ -283,8 +283,11 @@ label > .label-body {
   display: inline-block;
   margin-left: .5rem;
   font-weight: normal; }
+.legendSubtitle
+{
+  font-size: 0.6em;
 
-
+}
 /* Lists
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
 ul {
