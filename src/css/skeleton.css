@@ -25,20 +25,25 @@
 - Media Queries
 */
 
+/*Layout
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
 
 /* Grid
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
 .container {
+  display: flex;
+  flex-wrap: wrap;
   position: relative;
   width: 100%;
   max-width: 960px;
   margin: 0 auto;
   padding: 0 20px;
-  box-sizing: border-box; }
+  box-sizing: border-box;
+  justify-content: flex-start; }
 .column,
 .columns {
   width: 100%;
-  float: left;
+ ;
   box-sizing: border-box; }
 
 /* For devices larger than 400px */
@@ -225,6 +230,13 @@ input[type="button"].button-primary:focus {
 
 /* Forms
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
+
+.form-container
+{
+  display: flex;
+  justify-content:center;
+  flex-direction:column;
+}
 input[type="email"],
 input[type="number"],
 input[type="search"],
@@ -275,7 +287,8 @@ legend {
   font-weight: 600; }
 fieldset {
   padding: 0;
-  border-width: 0; }
+  border-width: 0;
+ }
 input[type="checkbox"],
 input[type="radio"] {
   display: inline; }
@@ -285,8 +298,15 @@ label > .label-body {
   font-weight: normal; }
 .legendSubtitle
 {
-  font-size: 0.6em;
+  font-size: 0.7em;
 
+}
+.checkbox-fieldset
+{
+  display: flex;
+  flex-direction: row;
+  align-items:flex-start;
+  justify-content:flex-start; 
 }
 /* Lists
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
