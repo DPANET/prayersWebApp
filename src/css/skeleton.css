@@ -25,99 +25,81 @@
 - Media Queries
 */
 
-/*Layout
-–––––––––––––––––––––––––––––––––––––––––––––––––– */
 
 /* Grid
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
 .container {
-  display: flex;
-  flex-wrap: wrap;
-  position: relative;
-  width: 100%;
+  
   max-width: 960px;
-  margin: 0 auto;
-  padding: 0 20px;
+  display:grid;
+  margin:0 auto;    
+  grid-template-columns: repeat(12,1fr);
+  grid-auto-rows: minmax(100px ,auto);
+  grid-gap: 10px;
   box-sizing: border-box;
-  justify-content: flex-start; }
+  
+}
+header
+{
+  grid-column: span 12;
+  grid: "Header";
+}
+section
+{
+  grid-column: span 12;
+  grid-area: "Section";
+  grid-row: 2/auto;
+}
+footer
+{
+  grid-column:span 12;
+  grid-area: "Footer";
+  grid-row: span 1;
+}
+
 .column,
 .columns {
   width: 100%;
- ;
+  float: left;
   box-sizing: border-box; }
 
 /* For devices larger than 400px */
 @media (min-width: 400px) {
-  .container {
-    width: 85%;
-    padding: 0; }
+  
 }
 
 /* For devices larger than 550px */
 @media (min-width: 550px) {
-  .container {
-    width: 80%; }
+
   .column,
   .columns {
     margin-left: 4%; }
   .column:first-child,
   .columns:first-child {
     margin-left: 0; }
-
-  .one.column,
-  .one.columns                    { width: 4.66666666667%; }
-  .two.columns                    { width: 13.3333333333%; }
-  .three.columns                  { width: 22%;            }
-  .four.columns                   { width: 30.6666666667%; }
-  .five.columns                   { width: 39.3333333333%; }
-  .six.columns                    { width: 48%;            }
-  .seven.columns                  { width: 56.6666666667%; }
-  .eight.columns                  { width: 65.3333333333%; }
-  .nine.columns                   { width: 74.0%;          }
-  .ten.columns                    { width: 82.6666666667%; }
-  .eleven.columns                 { width: 91.3333333333%; }
-  .twelve.columns                 { width: 100%; margin-left: 0; }
-
-  .one-third.column               { width: 30.6666666667%; }
-  .two-thirds.column              { width: 65.3333333333%; }
-
-  .one-half.column                { width: 48%; }
-
-  /* Offsets */
-  .offset-by-one.column,
-  .offset-by-one.columns          { margin-left: 8.66666666667%; }
-  .offset-by-two.column,
-  .offset-by-two.columns          { margin-left: 17.3333333333%; }
-  .offset-by-three.column,
-  .offset-by-three.columns        { margin-left: 26%;            }
-  .offset-by-four.column,
-  .offset-by-four.columns         { margin-left: 34.6666666667%; }
-  .offset-by-five.column,
-  .offset-by-five.columns         { margin-left: 43.3333333333%; }
-  .offset-by-six.column,
-  .offset-by-six.columns          { margin-left: 52%;            }
-  .offset-by-seven.column,
-  .offset-by-seven.columns        { margin-left: 60.6666666667%; }
-  .offset-by-eight.column,
-  .offset-by-eight.columns        { margin-left: 69.3333333333%; }
-  .offset-by-nine.column,
-  .offset-by-nine.columns         { margin-left: 78.0%;          }
-  .offset-by-ten.column,
-  .offset-by-ten.columns          { margin-left: 86.6666666667%; }
-  .offset-by-eleven.column,
-  .offset-by-eleven.columns       { margin-left: 95.3333333333%; }
-
-  .offset-by-one-third.column,
-  .offset-by-one-third.columns    { margin-left: 34.6666666667%; }
-  .offset-by-two-thirds.column,
-  .offset-by-two-thirds.columns   { margin-left: 69.3333333333%; }
-
-  .offset-by-one-half.column,
-  .offset-by-one-half.columns     { margin-left: 52%; }
-
+  }
+/* Nav */
+nav
+{
+  display: flex;
+  justify-content: space-between;
+  box-shadow: 0px 3px 5px rgba(100, 100, 100, 0.49);;
+  align-items: center; 
+  flex-grow: 1;
+  height: 70%;
+  padding: 0 10px;
 }
+.nav-menu
+{
+  width: 50px; 
+  height: 50px;
+}
+.nav-title
+{
 
 
+  
+}
 /* Base Styles
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
 /* NOTE
@@ -125,7 +107,7 @@ html is set to 62.5% so that all the REM measurements throughout Skeleton
 are based on 10px sizing. So basically 1.5rem = 15px :) */
 html {
   font-size: 62.5%; }
-body {
+body, .nav-title{
   font-size: 1.5em; /* currently ems cause chrome bug misinterpreting rems on body element */
   line-height: 1.6;
   font-weight: 400;
@@ -230,13 +212,6 @@ input[type="button"].button-primary:focus {
 
 /* Forms
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
-
-.form-container
-{
-  display: flex;
-  justify-content:center;
-  flex-direction:column;
-}
 input[type="email"],
 input[type="number"],
 input[type="search"],
@@ -287,8 +262,7 @@ legend {
   font-weight: 600; }
 fieldset {
   padding: 0;
-  border-width: 0;
- }
+  border-width: 0; }
 input[type="checkbox"],
 input[type="radio"] {
   display: inline; }
@@ -296,18 +270,8 @@ label > .label-body {
   display: inline-block;
   margin-left: .5rem;
   font-weight: normal; }
-.legendSubtitle
-{
-  font-size: 0.7em;
 
-}
-.checkbox-fieldset
-{
-  display: flex;
-  flex-direction: row;
-  align-items:flex-start;
-  justify-content:flex-start; 
-}
+
 /* Lists
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
 ul {
