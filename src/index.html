@@ -33,26 +33,75 @@
 
   <!-- Primary Page Layout
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+
   <div class="container">
     <header>
       <nav>
+
         <div class="nav-title">
           Prayers Settings
         </div>
         <div class="nav-menu">
-            <img src='images/menu.svg'/>
+          <img src='images/menu.svg' />
         </div>
+
       </nav>
 
     </header>
     <section>
-      section
+      <h5> Calculations:</h5>
+      <form>
+        <fieldset>
+          <dev>
+            <label for="method">Prayer Method:</label>
+            <select class="u-full-width" id="method" name="prayer_method">
+              <option value="4">Mecca</option>
+              <option value="3">Muslim League</option>
+              <option value="8">Gulf</option>
+              <option value="5">Egypt</option>
+              <option value="9">Kuwait</option>
+              <option value="10">Qatar</option>
+              <option value="11">Singapore</option>
+              <option value="12">France</option>
+              <option value="13">Turkey</option>
+              <option value="99">Custom</option>
+            </select>
+          </dev>
+
+          <dev>
+            <label for="school">School:</label>
+            <select class="u-full-width id" id="school" name="school_method">
+              <option value="0">Shafi</option>
+              <option value="1">Hanafi</option>
+            </select>
+          </dev>
+          <dev>
+            <label for="latitude">Latitude:</label>
+            <select class="u-full-width id" id="latitude" name="latitude_method">
+              <option value="1">Midnight</option>
+              <option value="2">Seventh</option>
+              <option value="2">Angle</option>
+            </select>
+          </dev>
+
+          <dev>
+            <label for="latitude">Midnight Mode:</label>
+            <select class="u-full-width id" id="midnight" name="midnight_method">
+              <option value="0">Standard</option>
+              <option value="1">Jafari</option>
+            </select>
+          </dev>
+          <dev class="button-layout">
+            <input class="button-primary" type="submit" value="Submit">
+          </dev>
+        </fieldset>
+      </form>
     </section>
     <footer>
-      footer
-    </footer>
 
+    </footer>
   </div>
+
   <!-- End Document
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
 </body>
