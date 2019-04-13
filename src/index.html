@@ -49,58 +49,66 @@
 
     </header>
     <section>
-      <h5> Calculations:</h5>
+      <h5> Calculations: <img class="help-icon" src="images/help-icon.svg"> </h5>
+      
       <form>
         <fieldset>
-          <div class="form-container">
-            <label for="method">Prayer Method:</label>
-            <select class="u-full-width" id="method" name="prayer_method">
-              <option value="4">Mecca</option>
-              <option value="3">Muslim League</option>
-              <option value="8">Gulf</option>
-              <option value="5">Egypt</option>
-              <option value="9">Kuwait</option>
-              <option value="10">Qatar</option>
-              <option value="11">Singapore</option>
-              <option value="12">France</option>
-              <option value="13">Turkey</option>
-              <option value="99">Custom</option>
-            </select>
-
-            <label for="school">School:</label>
-            <select class="u-full-width id" id="school" name="school_method">
-              <option value="0">Shafi</option>
-              <option value="1">Hanafi</option>
-            </select>
-
-            <label for="latitude">Latitude:</label>
-            <select class="u-full-width id" id="latitude" name="latitude_method">
-              <option value="1">Midnight</option>
-              <option value="2">Seventh</option>
-              <option value="2">Angle</option>
-            </select>
-
-            <label for="midnight">Midnight Mode:</label>
-            <select class="u-full-width id" id="midnight" name="midnight_method">
-              <option value="0">Standard</option>
-              <option value="1">Jafari</option>
-            </select>
-
+          <div class="calcuation-form-container">
+            <div>
+               
+              <label for="method">Prayer Method:
+               
+              </label>
+            
+              <select class="u-full-width" id="method" name="prayer_method">
+                <option value="4">Mecca</option>
+                <option value="3">Muslim League</option>
+                <option value="8">Gulf</option>
+                <option value="5">Egypt</option>
+                <option value="9">Kuwait</option>
+                <option value="10">Qatar</option>
+                <option value="11">Singapore</option>
+                <option value="12">France</option>
+                <option value="13">Turkey</option>
+                <option value="99">Custom</option>
+              </select>
+            </div>
+            <div>
+              <label for="school">School:</label>
+              <select class="u-full-width id" id="school" name="school_method">
+                <option value="0">Shafi</option>
+                <option value="1">Hanafi</option>
+              </select>
+            </div>
+            <div>
+              <label for="latitude">Latitude:</label>
+              <select class="u-full-width id" id="latitude" name="latitude_method">
+                <option value="1">Midnight</option>
+                <option value="2">Seventh</option>
+                <option value="2">Angle</option>
+              </select>
+            </div>
+            <div>
+              <label for="midnight">Midnight Mode:</label>
+              <select class="u-full-width id" id="midnight" name="midnight_method">
+                <option value="0">Standard</option>
+                <option value="1">Jafari</option>
+              </select>
+            </div>
             <!-- <div class="button-layout">
               <input class="button-primary" type="submit" value="Submit">
             </div> -->
           </div>
         </fieldset>
       </form>
-    </section>
-
-    <section>
-      <h5> Adjust Prayers:</h5>
+      <h5> Adjust Prayers:   <img class="help-icon" src="images/help-icon.svg"></h5>
+    
       <form>
         <fieldset>
-          <div class="prayers-time-group">
+          <div class="prayers-time-form-container">
             <div>
               <label for="fajr-time">Fajr:</label>
+         
               <input class="short-input" id='fajr-time' name='fajr' type='number' value="0" />
             </div>
             <div>
@@ -120,6 +128,10 @@
               <input class="short-input" id='isha-time' name='isha' type='number' value="0" />
             </div>
           </div>
+          <div class="button-layout">
+            <input class="button-primary" type="submit" value="Save">
+          </div>
+
         </fieldset>
       </form>
     </section>
