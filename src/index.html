@@ -52,7 +52,7 @@
       <h5> Calculations:</h5>
       <form>
         <fieldset>
-          <dev>
+          <div class="form-container">
             <label for="method">Prayer Method:</label>
             <select class="u-full-width" id="method" name="prayer_method">
               <option value="4">Mecca</option>
@@ -66,34 +66,60 @@
               <option value="13">Turkey</option>
               <option value="99">Custom</option>
             </select>
-          </dev>
 
-          <dev>
             <label for="school">School:</label>
             <select class="u-full-width id" id="school" name="school_method">
               <option value="0">Shafi</option>
               <option value="1">Hanafi</option>
             </select>
-          </dev>
-          <dev>
+
             <label for="latitude">Latitude:</label>
             <select class="u-full-width id" id="latitude" name="latitude_method">
               <option value="1">Midnight</option>
               <option value="2">Seventh</option>
               <option value="2">Angle</option>
             </select>
-          </dev>
 
-          <dev>
-            <label for="latitude">Midnight Mode:</label>
+            <label for="midnight">Midnight Mode:</label>
             <select class="u-full-width id" id="midnight" name="midnight_method">
               <option value="0">Standard</option>
               <option value="1">Jafari</option>
             </select>
-          </dev>
-          <dev class="button-layout">
-            <input class="button-primary" type="submit" value="Submit">
-          </dev>
+
+            <!-- <div class="button-layout">
+              <input class="button-primary" type="submit" value="Submit">
+            </div> -->
+          </div>
+        </fieldset>
+      </form>
+    </section>
+
+    <section>
+      <h5> Adjust Prayers:</h5>
+      <form>
+        <fieldset>
+          <div class="prayers-time-group">
+            <div>
+              <label for="fajr-time">Fajr:</label>
+              <input class="short-input" id='fajr-time' name='fajr' type='number' value="0" />
+            </div>
+            <div>
+              <label for="dhur-time">Dhur:</label>
+              <input class="short-input" id='dhur-time' name='dhur' type='number' value="0" />
+            </div>
+            <div>
+              <label for="asr-time">Asr:</label>
+              <input class="short-input" id='asr-time' name='asr' type='number' value="0" />
+            </div>
+            <div>
+              <label for="maghrib-time">Maghrib:</label>
+              <input class="short-input" id='maghrib-time' name='maghrib' type='number' value="0" />
+            </div>
+            <div>
+              <label for="isha-time">Isha:</label>
+              <input class="short-input" id='isha-time' name='isha' type='number' value="0" />
+            </div>
+          </div>
         </fieldset>
       </form>
     </section>
