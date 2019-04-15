@@ -1,0 +1,2 @@
+
+$("#isha-time").hide();
