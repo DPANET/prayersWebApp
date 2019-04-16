@@ -1,2 +1,5 @@
 
-$("#isha-time").hide();
+$("#submit-button").click(()=> { 
+    alert('hi');
+
+});
