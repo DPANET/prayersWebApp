@@ -17,13 +17,22 @@
   "homepage": "https://github.com/DPANET/prayersWebApp#readme",
   "description": "",
   "dependencies": {
-    "jquery": "^3.4.0"
+    "@dpanet/prayers-lib": "^1.0.36",
+    "await-to-js": "^2.1.1",
+    "joi": "^14.3.1",
+    "jquery": "^3.4.0",
+    "ramda": "^0.26.1"
   },
   "devDependencies": {
+    "@types/joi": "^14.3.3",
     "@types/jquery": "^3.3.29",
+    "@types/ramda": "^0.26.7",
+    "@types/node": "^11.13.5",
+    "@types/typescript": "^2.0.0",
     "browser-sync": "^2.26.3",
     "gulp": "^4.0.0",
     "gulp-sass": "^4.0.2",
     "typescript": "^3.4.1"
+
   }
 }
