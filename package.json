@@ -16,8 +16,11 @@
   },
   "homepage": "https://github.com/DPANET/prayersWebApp#readme",
   "description": "",
-  "dependencies": {},
+  "dependencies": {
+    "jquery": "^3.4.0"
+  },
   "devDependencies": {
+    "@types/jquery": "^3.3.29",
     "browser-sync": "^2.26.3",
     "gulp": "^4.0.0",
     "gulp-sass": "^4.0.2",

@@ -11,7 +11,7 @@ async function sassCSS() {
 };
 async function css()
 {
-    return await gulp.src('src/css/*.css')
+    return await gulp.src('lib/css/*.css')
     .pipe( browserSync.stream());
 
 }
@@ -28,12 +28,12 @@ async function css()
  async function serve (cb) {
 
     await browserSync.init({
-        server: "./src"  
+        server: "./lib"  
     });
 
    // await gulp.watch(['node_modules/bootstrap/scss/bootstrap.scss', 'src/scss/*.scss'], sassCSS);
-    await gulp.watch(['src/css/*.css'], css);
-    await gulp.watch("src/*.html").on('change',(path,stats)=> browserSync.reload());
+    await gulp.watch(['lib/css/*.css'], css);
+    await gulp.watch("lib/*.html").on('change',(path,stats)=> browserSync.reload());
 };
 
 exports.default = gulp.series(serve);
