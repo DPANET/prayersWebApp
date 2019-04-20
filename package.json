@@ -1,7 +1,7 @@
 {
   "name": "prayerswebapp",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "lib/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -17,22 +17,23 @@
   "homepage": "https://github.com/DPANET/prayersWebApp#readme",
   "description": "",
   "dependencies": {
-    "@dpanet/prayers-lib": "^1.0.36",
+    "@dpanet/prayers-lib": "^1.0.39",
+    "@types/requirejs": "^2.1.31",
     "await-to-js": "^2.1.1",
     "joi": "^14.3.1",
     "jquery": "^3.4.0",
-    "ramda": "^0.26.1"
+    "ramda": "^0.26.1",
+    "requirejs": "^2.3.6"
   },
   "devDependencies": {
     "@types/joi": "^14.3.3",
     "@types/jquery": "^3.3.29",
+    "@types/node": "^11.13.6",
     "@types/ramda": "^0.26.7",
-    "@types/node": "^11.13.5",
     "@types/typescript": "^2.0.0",
     "browser-sync": "^2.26.3",
     "gulp": "^4.0.0",
     "gulp-sass": "^4.0.2",
     "typescript": "^3.4.1"
-
   }
 }

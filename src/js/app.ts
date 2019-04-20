@@ -1,35 +1,23 @@
 
-import $ from "jquery";
-import * as prayerlib from '@dpanet/prayers-lib';
-import { isNullOrUndefined } from 'util';
-import cg = require("./configurators/configuration");
+import prayerlib = require("@dpanet/prayers-lib");
+import * as joi from "joi";
+buildObject();
 
-$("#submit-button").click(()=> { 
-    alert('hi');
-
-});
-
-async function buildObject()
+export async function buildObject()
 {
     try{
 
 
-        let prayerConfig: prayerlib.IPrayersConfig;
-        let locationConfig: prayerlib.ILocationConfig;
-        
-
-        prayerConfig= await new prayerlib.Configurator().getPrayerConfig();
-        locationConfig = await new prayerlib.Configurator().getLocationConfig();
-        appmanager._prayerManager = await prayerlib.PrayerTimeBuilder
-            .createPrayerTimeBuilder(null, appmanager._prayerConfig)
-            .setPrayerMethod(prayerlib.Methods.Mecca)
-          //  .setPrayerPeriod(prayerlib.DateUtil.getNowDate(), prayerlib.DateUtil.addDay(1, prayerlib.DateUtil.getNowDate()))
-            .setLocationByCoordinates(Homey.ManagerGeolocation.getLatitude(), Homey.ManagerGeolocation.getLongitude())
+        let prayerConfig: prayerlib.IPrayersConfig = await new prayerlib.Configurator().getPrayerConfig();
+        let locationConfig: prayerlib.ILocationConfig = await new prayerlib.Configurator().getLocationConfig();
+        console.log(locationConfig);
+        let prayerManager: prayerlib.IPrayerManager = await prayerlib.PrayerTimeBuilder
+            .createPrayerTimeBuilder(locationConfig, prayerConfig)
             .createPrayerTimeManager();
-        appmanager.initPrayersSchedules();
-        appmanager.initEvents();
-        console.log(appmanager._prayerManager.getUpcomingPrayer());
-
+        
+        let config:prayerlib.IConfig   = new prayerlib.Configurator();
+        $("#fajr-time").val(3);
+$("#submit-button").on("click",()=>{alert('Hi');});
     }
     catch(err)
     {
@@ -37,3 +25,4 @@ async function buildObject()
     }
 
 }
+
