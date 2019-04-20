@@ -3,7 +3,12 @@
   "version": "1.0.0",
   "main": "lib/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "compile": "tsc",
+    "html:copy": "copyfiles -u 1 src/**.html lib",
+    "css:copy": "copyfiles -u 1 src/css/**.css lib/",
+    "images:copy":"copyfiles -u 1 src/images/**/* lib/",
+    "start": "concurrently \"npm run html:copy\" \"npm run css:copy\" \"npm run image:copy\" \"npm run compile\""
   },
   "repository": {
     "type": "git",
@@ -18,14 +23,13 @@
   "description": "",
   "dependencies": {
     "@dpanet/prayers-lib": "^1.0.39",
-    "@types/requirejs": "^2.1.31",
     "await-to-js": "^2.1.1",
     "joi": "^14.3.1",
     "jquery": "^3.4.0",
-    "ramda": "^0.26.1",
-    "requirejs": "^2.3.6"
+    "ramda": "^0.26.1"
   },
   "devDependencies": {
+    "@types/browserify": "^12.0.36",
     "@types/joi": "^14.3.3",
     "@types/jquery": "^3.3.29",
     "@types/node": "^11.13.6",
