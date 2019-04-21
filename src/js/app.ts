@@ -2,7 +2,7 @@
 import prayerlib = require("@dpanet/prayers-lib");
 import * as joi from "joi";
 
-
+buildObject();
 export async function buildObject()
 {
     try{
@@ -17,7 +17,7 @@ export async function buildObject()
         
         // let config:prayerlib.IConfig   = new prayerlib.Configurator();
         $("#fajr-time").val(3);
-$("#submit-button").on("click",()=>{alert('Hi');});
+        $("#submit-button").on("click",()=>{alert('Hi');});
     }
     catch(err)
     {

@@ -5,10 +5,11 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "compile": "tsc",
+    "bundlejs": "browserify lib/index.js -o lib/bundle.js",
     "html:copy": "copyfiles -u 1 src/**.html lib",
     "css:copy": "copyfiles -u 1 src/css/**.css lib/",
-    "images:copy":"copyfiles -u 1 src/images/**/* lib/",
-    "start": "concurrently \"npm run html:copy\" \"npm run css:copy\" \"npm run image:copy\" \"npm run compile\""
+    "images:copy": "copyfiles -u 1 src/images/**/* lib/",
+    "start": "npm run compile  && npm run bundlejs"
   },
   "repository": {
     "type": "git",
@@ -36,8 +37,8 @@
     "@types/ramda": "^0.26.7",
     "@types/typescript": "^2.0.0",
     "browser-sync": "^2.26.3",
-    "gulp": "^4.0.0",
+    "gulp": "^4.0.1",
     "gulp-sass": "^4.0.2",
-    "typescript": "^3.4.1"
+    "typescript": "^3.4.4"
   }
 }
