@@ -5,7 +5,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "compile": "tsc",
-    "bundlejs": "browserify lib/index.js > lib/bundle.js",
+    "bundlejs": "browserify lib/index.js -o lib/bundle.js --debug",
     "html:copy": "copyfiles -u 1 src/**.html lib",
     "css:copy": "copyfiles -u 1 src/css/**.css lib/",
     "images:copy": "copyfiles -u 1 src/images/**/* lib/",
