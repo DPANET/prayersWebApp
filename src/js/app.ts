@@ -1,7 +1,6 @@
 
 import prayerlib = require("@dpanet/prayers-lib");
-import * as joi from "joi";
-import { PrayersName } from "@dpanet/prayers-lib";
+
 
 buildObject();
 export async function buildObject()
@@ -11,14 +10,16 @@ export async function buildObject()
 
         let prayerConfig: prayerlib.IPrayersConfig = await new prayerlib.Configurator().getPrayerConfig();
         let locationConfig: prayerlib.ILocationConfig = await new prayerlib.Configurator().getLocationConfig();
-        console.log(locationConfig);
         let prayerManager: prayerlib.IPrayerManager = await prayerlib.PrayerTimeBuilder
             .createPrayerTimeBuilder(locationConfig, prayerConfig)
             .createPrayerTimeManager();
         
         let config:prayerlib.IConfig   = new prayerlib.Configurator();
+        let fajrAdjustment:number  = prayerManager.getPrayerAdjustmentsByPrayer(prayerlib.PrayersName.FAJR).adjustments;
         
-        $("#fajr-time").val(3);
+        //console.log(fajrAdjustment);
+        
+        $("#fajr-time").val(fajrAdjustment);
         $("#submit-button").on("click",()=>{alert('Hi');});
     }
     catch(err)
