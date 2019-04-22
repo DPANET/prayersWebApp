@@ -5,7 +5,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "compile": "tsc",
-    "bundlejs": "browserify lib/index.js -o lib/bundle.js",
+    "bundlejs": "browserify lib/index.js > lib/bundle.js",
     "html:copy": "copyfiles -u 1 src/**.html lib",
     "css:copy": "copyfiles -u 1 src/css/**.css lib/",
     "images:copy": "copyfiles -u 1 src/images/**/* lib/",
@@ -23,7 +23,7 @@
   "homepage": "https://github.com/DPANET/prayersWebApp#readme",
   "description": "",
   "dependencies": {
-    "@dpanet/prayers-lib": "^1.0.40",
+    "@dpanet/prayers-lib": "^1.0.41",
     "await-to-js": "^2.1.1",
     "joi": "^14.3.1",
     "jquery": "^3.4.0",

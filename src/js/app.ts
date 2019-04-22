@@ -1,5 +1,4 @@
-
-import prayerlib = require("@dpanet/prayers-lib");
+import * as prayerlib from "@dpanet/prayers-lib";
 
 
 buildObject();
@@ -17,9 +16,9 @@ export async function buildObject()
         let config:prayerlib.IConfig   = new prayerlib.Configurator();
         let fajrAdjustment:number  = prayerManager.getPrayerAdjustmentsByPrayer(prayerlib.PrayersName.FAJR).adjustments;
         
-        //console.log(fajrAdjustment);
+        console.log(fajrAdjustment);
         
-        $("#fajr-time").val(fajrAdjustment);
+        $("#fajr-time").val(2);
         $("#submit-button").on("click",()=>{alert('Hi');});
     }
     catch(err)
