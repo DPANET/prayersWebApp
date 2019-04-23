@@ -3,12 +3,11 @@ import lowdb from "lowdb";
 import lowdbfile from "lowdb/adapters/FileAsync";
 const to = require('await-to-js').default;
 import _ = require('lodash');
+
 buildObject();
 export async function buildObject()
 {
     try{
-
-
         // let prayerConfig: prayerlib.IPrayersConfig = await new prayerlib.Configurator().getPrayerConfig();
         // let locationConfig: prayerlib.ILocationConfig = await new prayerlib.Configurator().getLocationConfig();
         // console.log(locationConfig);
