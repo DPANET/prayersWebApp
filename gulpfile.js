@@ -1,6 +1,8 @@
 var gulp        = require('gulp');
 var browserSync = require('browser-sync').create();
 var sass        = require('gulp-sass');
+const config = require('config');
+var port  = config.get('PORT');
 
 // Compile sass into CSS & auto-inject into browsers
 async function sassCSS() {
@@ -28,12 +30,13 @@ async function css()
  async function serve (cb) {
 
     await browserSync.init({
-        server: "./lib"  
+        server: "./lib",
+        port: port
     });
 
    // await gulp.watch(['node_modules/bootstrap/scss/bootstrap.scss', 'src/scss/*.scss'], sassCSS);
     await gulp.watch(['lib/public/css/*.css'], css);
-    await gulp.watch(["lib/views/*.html","lib/public/js/*.js"]).on('change',(path,stats)=> browserSync.reload());
+    await gulp.watch(["lib/views/*.html","lib/public/js/*.js","lib/*.html"]).on('change',(path,stats)=> browserSync.reload());
 };
 
 exports.default = gulp.series(serve);
