@@ -11,7 +11,7 @@ async function sassCSS() {
 };
 async function css()
 {
-    return await gulp.src('lib/css/*.css')
+    return await gulp.src('lib/public/css/*.css')
     .pipe( browserSync.stream());
 
 }
@@ -32,8 +32,8 @@ async function css()
     });
 
    // await gulp.watch(['node_modules/bootstrap/scss/bootstrap.scss', 'src/scss/*.scss'], sassCSS);
-    await gulp.watch(['lib/css/*.css'], css);
-    await gulp.watch(["lib/*.html","lib/js/*.js","lib/*.js"]).on('change',(path,stats)=> browserSync.reload());
+    await gulp.watch(['lib/public/css/*.css'], css);
+    await gulp.watch(["lib/views/*.html","lib/public/js/*.js"]).on('change',(path,stats)=> browserSync.reload());
 };
 
 exports.default = gulp.series(serve);
