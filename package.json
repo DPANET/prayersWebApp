@@ -5,11 +5,13 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "compile": "tsc",
-    "bundlejs": "browserify lib/index.js -o lib/bundle.js --debug",
+    "bundlejs": "browserify lib/public/js/app.js -o lib/public/js/bundle.js --debug",
     "html:copy": "copyfiles -u 1 src/**.html lib",
     "css:copy": "copyfiles -u 1 src/css/**.css lib/",
     "images:copy": "copyfiles -u 1 src/images/**/* lib/",
-    "start": "npm run compile  && npm run bundlejs"
+    "start:server": "node lib/index.js",
+    "reload":"browser-sync reload --port 7000",
+    "start": "npm run compile  && npm run bundlejs &&  npm run reload && npm run start:server "
   },
   "repository": {
     "type": "git",

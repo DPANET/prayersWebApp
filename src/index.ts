@@ -2,16 +2,12 @@ import express from "express";
 import config from "config";
 import morgan from "morgan";
 import path from "path";
-import { runInNewContext } from "vm";
-const app = express();
+var app = express();
 const port = config.get('PORT');
-app.use(morgan('tiny'));
-
-app.use(express.static(path.join(__dirname,"./public" )));
-app.get('/',(req,res,next)=>
+app.use(express.static('lib/public'));
+app.get('/',(req,res)=>
 {   
-
-    res.sendFile(path.join(__dirname,"/index.html"));
-    next();
+    res.sendFile(__dirname+"/index.html");
+    
 });
 app.listen(port, ()=>console.log('Listening to port: '+ port ));
