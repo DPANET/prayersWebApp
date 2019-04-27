@@ -1,6 +1,6 @@
-import prayerslib from "@dpanet/prayers-lib";
+import {Prayers} from "@dpanet/prayers-lib";
 
 module.exports=
 {
-    Prayers: prayerslib.Prayers
+    Prayers: Prayers
 };

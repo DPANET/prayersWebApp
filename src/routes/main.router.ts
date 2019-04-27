@@ -26,8 +26,8 @@ class App {
  
   private initializeMiddlewares():void {
     this.app.use(bodyParser.json());
-    this.app.use()
-  }
+    this.app.use(express.static('lib/public'));
+}
  
   private initializeControllers(controllers: IController[]):void {
     controllers.forEach((controller) => {
@@ -36,12 +36,7 @@ class App {
   }
  
   private connectToTheDatabase() {
-    const {
-      MONGO_USER,
-      MONGO_PASSWORD,
-      MONGO_PATH,
-    } = process.env;
-    mongoose.connect(`mongodb://${MONGO_USER}:${MONGO_PASSWORD}${MONGO_PATH}`);
+
   }
 }
  
