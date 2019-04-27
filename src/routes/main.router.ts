@@ -3,31 +3,33 @@ import config from "config";
 import morgan from "morgan";
 import path from "path";
 import * as bodyParser from 'body-parser';
-
+import IController from "../controllers/controllers.interface";
 import * as prayerController from "../controllers/prayers.controller"
- 
+
 class App {
   public app: express.Application;
- 
-  constructor(controllers: Controller[]) {
+  private _port: number;
+  constructor(controllers: IController[]) {
     this.app = express();
  
     this.connectToTheDatabase();
     this.initializeMiddlewares();
     this.initializeControllers(controllers);
+    this._port = config.get("PORT");
   }
  
-  public listen() {
-    this.app.listen(process.env.PORT, () => {
-      console.log(`App listening on the port ${process.env.PORT}`);
+  public listen():void {
+    this.app.listen(this._port, () => {
+      console.log(`App listening on the port ${this._port}`);
     });
   }
  
-  private initializeMiddlewares() {
+  private initializeMiddlewares():void {
     this.app.use(bodyParser.json());
+    this.app.use()
   }
  
-  private initializeControllers(controllers: Controller[]) {
+  private initializeControllers(controllers: IController[]):void {
     controllers.forEach((controller) => {
       this.app.use('/', controller.router);
     });

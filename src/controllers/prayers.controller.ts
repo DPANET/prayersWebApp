@@ -1,9 +1,11 @@
 import * as prayerlib from "@dpanet/prayers-lib";
 import IController from "./controllers.interface";
+import { Router } from 'express';
+
 export class PrayersController implements IController
 {
     path: string;
-    router: import("express").Router;
+    router: Router;
     private _prayersController:PrayersController;
 
     constructor()
