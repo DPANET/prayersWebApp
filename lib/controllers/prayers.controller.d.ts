@@ -1,9 +1,13 @@
 import IController from "./controllers.interface";
-import { Router } from 'express';
+import express from 'express';
 export default class PrayersController implements IController {
     path: string;
-    router: Router;
+    router: express.Router;
     private _prayersController;
+    private _prayerManager;
     constructor();
+    private initializeRoutes;
+    private getPrayerAdjsutments;
+    private initializePrayerManger;
     static getPrayerController(): PrayersController;
 }

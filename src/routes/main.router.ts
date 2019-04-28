@@ -27,6 +27,7 @@ class App {
   private initializeMiddlewares():void {
     this.app.use(bodyParser.json());
     this.app.use(express.static('lib/public'));
+    this.app.use(morgan('tiny'));
 }
  
   private initializeControllers(controllers: IController[]):void {
