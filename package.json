@@ -5,7 +5,9 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "compile": "tsc",
-    "bundlejs": "browserify lib/public/js/app.js -o lib/public/js/bundle.js --debug",
+  
+   "bundlejs": "browserify lib/public/js/settings.js -o lib/public/js/bundle.js --debug", 
+    "roolupjs":"rollup lib/public/js/settings.js --format iife --name \"main\"  --file lib/public/js/bundle.js",
     "html:copy": "copyfiles -u 1 src/**.html lib",
     "css:copy": "copyfiles -u 1 src/css/**.css lib/",
     "images:copy": "copyfiles -u 1 src/images/**/* lib/",
@@ -25,7 +27,7 @@
   "homepage": "https://github.com/DPANET/prayersWebApp#readme",
   "description": "",
   "dependencies": {
-    "@dpanet/prayers-lib": "^1.0.43",
+    "@dpanet/prayers-lib": "^1.0.44",
     "@types/body-parser": "^1.17.0",
     "@types/config": "0.0.34",
     "await-to-js": "^2.1.1",
@@ -45,12 +47,12 @@
     "@types/lodash": "^4.14.123",
     "@types/lowdb": "^1.0.7",
     "@types/morgan": "^1.7.35",
-    "@types/node": "^11.13.7",
+    "@types/node": "^11.13.8",
     "@types/ramda": "^0.26.8",
     "@types/typescript": "^2.0.0",
-    "browser-sync": "^2.26.4",
+    "browser-sync": "^2.26.5",
     "gulp": "^4.0.1",
     "gulp-sass": "^4.0.2",
-    "typescript": "^3.4.4"
+    "typescript": "^3.4.5"
   }
 }

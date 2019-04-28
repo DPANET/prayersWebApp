@@ -1,6 +1,1 @@
-import {Prayers} from "@dpanet/prayers-lib";
-
-module.exports=
-{
-    Prayers: Prayers
-};
+export  {Prayers,PrayerAdjustment} from "@dpanet/prayers-lib";
