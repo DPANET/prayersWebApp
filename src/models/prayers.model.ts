@@ -1,1 +1,1 @@
-export  {Prayers,PrayerAdjustment} from "@dpanet/prayers-lib";
+export  {IPrayersSettings,IPrayerAdjustments} from "@dpanet/prayers-lib";

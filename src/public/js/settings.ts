@@ -5,38 +5,50 @@
 // import _ = require('lodash');
 import * as prayerlib from "../../models/prayers.model";
 
-export async function buildObject()
-{
-    try{
-   
-        $("#submit-button").on("click", () => { 
-            $.ajax({ url: "PrayerManager/PrayersAdjustments/", success: (result)=>
-            {
-                loadPrayerAdjustments(result);
-            }})}); 
+export async function buildObject() {
+    try {
+        setTimeout(() => {
+            loadPrayerAdjustments();
+            loadPrayerPrayerSettings();
+
+        }, 5000);
+
+
     }
-    catch(err)
-    {
-       alert(err);
+    catch (err) {
+        alert(err);
     }
 }
-function loadPrayerAdjustments(prayerAdjustment:prayerlib.PrayerAdjustment[])
-{
+function loadPrayerPrayerSettings() {
+    $.ajax({
+        url: "PrayerManager/PrayersSettings", success: (prayerSettings: prayerlib.IPrayersSettings) => {
+            $("#method").val(prayerSettings.method.id);
+            $("#school").val(prayerSettings.school.id);
+            $("#latitude").val(prayerSettings.latitudeAdjustment.id);
+            $("#midnight").val(prayerSettings.midnight.id);
+        }
+    });
+}
+function loadPrayerAdjustments() {
 
-    prayerAdjustment.forEach(element => {
-        switch(element.prayerName)
-        {
-            case "Fajr": $("#fajr-time").val(element.adjustments);
-            break;
-            case "Dhuhr":  $("#dhur-time").val(element.adjustments);
-            break;
-            case "Asr": $("#asr-time").val(element.adjustments);
-            break;
-            case "Maghrib": $("#maghrib-time").val(element.adjustments);
-            break;
-            case "Isha": $("#isha-time").val(element.adjustments);
-            break;
-        }                    
+    $.ajax({
+        url: "PrayerManager/PrayersAdjustments/", success: (prayerAdjustment: prayerlib.IPrayerAdjustments[]) => {
+
+            prayerAdjustment.forEach(element => {
+                switch (element.prayerName) {
+                    case "Fajr": $("#fajr-time").val(element.adjustments);
+                        break;
+                    case "Dhuhr": $("#dhur-time").val(element.adjustments);
+                        break;
+                    case "Asr": $("#asr-time").val(element.adjustments);
+                        break;
+                    case "Maghrib": $("#maghrib-time").val(element.adjustments);
+                        break;
+                    case "Isha": $("#isha-time").val(element.adjustments);
+                        break;
+                }
+            });
+        }
     });
 }
 buildObject();

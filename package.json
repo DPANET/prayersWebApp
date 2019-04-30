@@ -26,7 +26,7 @@
   "homepage": "https://github.com/DPANET/prayersWebApp#readme",
   "description": "",
   "dependencies": {
-    "@dpanet/prayers-lib": "^1.0.44",
+    "@dpanet/prayers-lib": "^1.0.50",
     "@types/body-parser": "^1.17.0",
     "@types/config": "0.0.34",
     "await-to-js": "^2.1.1",

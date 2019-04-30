@@ -18,15 +18,18 @@ export default class PrayersController implements IController
     }
     private initializeRoutes() {
         this.router.get(this.path+"/PrayersAdjustments", this.getPrayerAdjsutments);
-        // this.router.get(`${this.path}/:id`, this.getPostById);
-        // this.router.put(`${this.path}/:id`, this.modifyPost);
-        // this.router.delete(`${this.path}/:id`, this.deletePost);
-        // this.router.post(this.path, this.createPost);
+        this.router.get(this.path+"/PrayersSettings",this.getPrayersSettings)
       }
     private getPrayerAdjsutments=  (request: express.Request, response: express.Response)=>
     {
         let prayerAdjustments: prayerlib.IPrayerAdjustments[]= this._prayerManager.getPrayerAdjsutments();
          response.json( prayerAdjustments);
+    }
+
+    private getPrayersSettings = (request: express.Request, response: express.Response)=>
+    {
+        let prayersSettings: prayerlib.IPrayersSettings= (this._prayerManager.getPrayerSettings()as prayerlib.PrayersSettings).toJSON();
+         response.json( prayersSettings);
     }
     private async initializePrayerManger():Promise<void>
     {   
