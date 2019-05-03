@@ -9,6 +9,7 @@ export default class PrayersController implements IController {
     private initializeRoutes;
     private getPrayerAdjsutments;
     private getPrayersSettings;
+    private getPrayers;
     private initializePrayerManger;
     static getPrayerController(): PrayersController;
 }

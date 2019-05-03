@@ -1,6 +1,7 @@
 import * as prayerlib from "@dpanet/prayers-lib";
 import IController from "./controllers.interface";
 import express from 'express';
+import { timingSafeEqual } from "crypto";
 
 export default class PrayersController implements IController
 {
@@ -19,6 +20,7 @@ export default class PrayersController implements IController
     private initializeRoutes() {
         this.router.get(this.path+"/PrayersAdjustments", this.getPrayerAdjsutments);
         this.router.get(this.path+"/PrayersSettings",this.getPrayersSettings);
+        this.router.get(this.path+ "/Prayers",this.getPrayers);
       }
     private getPrayerAdjsutments=  (request: express.Request, response: express.Response)=>
     {
@@ -30,6 +32,11 @@ export default class PrayersController implements IController
     {
         let prayersSettings: prayerlib.IPrayersSettings= (this._prayerManager.getPrayerSettings()as prayerlib.PrayersSettings).toJSON();
          response.json( prayersSettings);
+    }
+    private getPrayers = (request: express.Request, response: express.Response)=>
+    {
+        let prayers: prayerlib.IPrayers[] = (this._prayerManager.getPrayers() as prayerlib.Prayers[]);
+        response.json(prayers);
     }
     private async initializePrayerManger():Promise<void>
     {   

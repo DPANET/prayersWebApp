@@ -6,7 +6,7 @@
 import * as prayerlib from "../../models/prayers.model";
 import daterangepicker from "daterangepicker";
 import moment from "moment";
-const datatable = require('datatables');
+const datatable = require("datatables.net");
 export async function buildObject() {
     try {
         setTimeout(() => {
@@ -15,12 +15,21 @@ export async function buildObject() {
 
         }, 5000);
 
-
+        $("#view-button").on("click",loadDataTable);
     }
     catch (err) {
         alert(err);
     }
 }
+function loadDataTable()
+{
+    $.ajax({
+        url: "PrayerManager/Prayers", success: (prayers: prayerlib.IPrayers[]) => {
+            
+        }
+    });
+}
+
 function loadPrayerPrayerSettings() {
     $.ajax({
         url: "PrayerManager/PrayersSettings", success: (prayerSettings: prayerlib.IPrayersSettings) => {

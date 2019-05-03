@@ -26,7 +26,7 @@
   "homepage": "https://github.com/DPANET/prayersWebApp#readme",
   "description": "",
   "dependencies": {
-    "@dpanet/prayers-lib": "^1.0.50",
+    "@dpanet/prayers-lib": "^1.0.51",
     "@types/body-parser": "^1.17.0",
     "@types/config": "0.0.34",
     "@types/daterangepicker": "^3.0.1",
@@ -34,6 +34,7 @@
     "body-parser": "^1.19.0",
     "config": "^3.1.0",
     "datatables": "^1.10.18",
+    "datatables.net": "^1.10.19",
     "daterangepicker": "^3.0.5",
     "express": "^4.16.4",
     "joi": "^14.3.1",
@@ -45,6 +46,7 @@
   },
   "devDependencies": {
     "@types/browserify": "^12.0.36",
+    "@types/datatables.net": "^1.10.17",
     "@types/joi": "^14.3.3",
     "@types/jquery": "^3.3.29",
     "@types/lodash": "^4.14.123",
