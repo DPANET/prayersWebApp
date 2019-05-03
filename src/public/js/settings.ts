@@ -4,7 +4,9 @@
 // const to = require('await-to-js').default;
 // import _ = require('lodash');
 import * as prayerlib from "../../models/prayers.model";
-
+import daterangepicker from "daterangepicker";
+import moment from "moment";
+const datatable = require('datatables');
 export async function buildObject() {
     try {
         setTimeout(() => {
@@ -26,6 +28,12 @@ function loadPrayerPrayerSettings() {
             $("#school").val(prayerSettings.school.id);
             $("#latitude").val(prayerSettings.latitudeAdjustment.id);
             $("#midnight").val(prayerSettings.midnight.id);
+            $('input[name="daterange"]').daterangepicker(
+                    {
+                        startDate:moment(prayerSettings.startDate),
+                        endDate:moment(prayerSettings.endDate)
+                    }
+            )       
         }
     });
 }

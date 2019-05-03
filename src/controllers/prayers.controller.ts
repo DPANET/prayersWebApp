@@ -18,7 +18,7 @@ export default class PrayersController implements IController
     }
     private initializeRoutes() {
         this.router.get(this.path+"/PrayersAdjustments", this.getPrayerAdjsutments);
-        this.router.get(this.path+"/PrayersSettings",this.getPrayersSettings)
+        this.router.get(this.path+"/PrayersSettings",this.getPrayersSettings);
       }
     private getPrayerAdjsutments=  (request: express.Request, response: express.Response)=>
     {
