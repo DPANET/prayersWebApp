@@ -1,8 +1,6 @@
 import * as prayerlib from "@dpanet/prayers-lib";
 import IController from "./controllers.interface";
 import express from 'express';
-import { timingSafeEqual } from "crypto";
-
 export default class PrayersController implements IController
 {
 

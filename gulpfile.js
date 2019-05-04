@@ -38,7 +38,7 @@ async function css()
 
    // await gulp.watch(['node_modules/bootstrap/scss/bootstrap.scss', 'src/scss/*.scss'], sassCSS);
     await gulp.watch(['lib/public/css/*.css'], css);
-    await gulp.watch(["lib/views/*.html","lib/public/js/*.js","lib/*.html"]).on('change',(path,stats)=> browserSync.reload());
+    await gulp.watch(["lib/views/*.html","lib/public/js/*.js","lib/*.html","lib/public/css/*.css"]).on('change',(path,stats)=> browserSync.reload());
 };
 
 exports.default = gulp.series(serve);

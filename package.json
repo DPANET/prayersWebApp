@@ -27,14 +27,12 @@
   "description": "",
   "dependencies": {
     "@dpanet/prayers-lib": "^1.0.51",
-    "@types/body-parser": "^1.17.0",
-    "@types/config": "0.0.34",
-    "@types/daterangepicker": "^3.0.1",
     "await-to-js": "^2.1.1",
     "body-parser": "^1.19.0",
     "config": "^3.1.0",
     "datatables": "^1.10.18",
     "datatables.net": "^1.10.19",
+    "datatables.net-responsive": "^2.2.3",
     "daterangepicker": "^3.0.5",
     "express": "^4.16.4",
     "joi": "^14.3.1",
@@ -45,6 +43,9 @@
     "ramda": "^0.26.1"
   },
   "devDependencies": {
+    "@types/body-parser": "^1.17.0",
+    "@types/config": "0.0.34",
+    "@types/daterangepicker": "^3.0.1",
     "@types/browserify": "^12.0.36",
     "@types/datatables.net": "^1.10.17",
     "@types/joi": "^14.3.3",

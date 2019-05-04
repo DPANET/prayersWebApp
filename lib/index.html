@@ -23,6 +23,7 @@
   <link rel="stylesheet" href="/css/normalize.css">
   <link rel="stylesheet" href="/css/skeleton.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css"/>
   <!-- Favicon
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
   <link rel="icon" type="image/png" href="/images/favicon.png">
@@ -141,16 +142,17 @@
       </form>
 
       <h5> Prayers Timings: <img class="help-icon" > </h5>
-      <div>
-        <div class = "u-full-width" >
-          <table id="table_id" class="display">
-            <thead>
+      <div id="prayers-section ">
+
+          <table id="prayers-table" class="u-full-width id stripe" hidden="true">
+            <thead >
                 <tr>
                     <th>Date</th>
                     <th>Fajr</th>
                     <th>Sunrise</th>
                     <th>Dhuhr</th>
                     <th>Asr</th>
+                    <th>Sunset</th>
                     <th>Maghrib</th>
                     <th>Isha</th>
                     <th>Midnight</th>
@@ -158,24 +160,15 @@
             </thead>
             <tbody>
                 <tr>
-                    <td>Row 1 Data 1</td>
-                    <td>Row 1 Data 2</td>
-                    <td>Row 1 Data 3</td>
-                    <td>Row 1 Data 4</td>
-                    <td>Row 1 Data 5</td>
-                    <td>Row 1 Data 6</td>
-                    <td>Row 1 Data 7</td>
-                    <td>Row 2 Data 8</td>
-                </tr>
-                <tr>
-                    <td>Row 2 Data 1</td>
-                    <td>Row 2 Data 2</td>
                 </tr>
             </tbody>
+            <tfoot>
+              
+            </tfoot>
         </table>
         </div>
 
-      </div>
+  
     </section>
 
     <footer>
@@ -185,11 +178,12 @@
 
   <!-- End Document
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-  <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.4.0.min.js"></script>
-  <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
-  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
-  <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
   <script src="/js/bundle.js"></script>
+  <!-- <script  src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script> -->
+  <!-- <script  src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script> -->
+  <!-- <script src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script> -->
+
+ 
 </body>
 
 </html>

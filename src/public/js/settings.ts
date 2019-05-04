@@ -3,12 +3,31 @@
 // import lowdbfile from "lowdb/adapters/FileAsync";
 // const to = require('await-to-js').default;
 // import _ = require('lodash');
+
 import * as prayerlib from "../../models/prayers.model";
-import daterangepicker from "daterangepicker";
+//import daterangepicker from "daterangepicker";
 import moment from "moment";
-const datatable = require("datatables.net");
+ import  $  = require( 'jquery');
+  const  DataTable = require("datatables.net")( window, $ );
+  const daterangepicker = require( "daterangepicker");
+  const DataTableResp = require("datatables.net-responsive")( window, $ );
+import ramda from "ramda";
+
+interface IPrayersView
+{
+    prayerDate:string,
+    fajr:string,
+    sunrise:string,
+    dhuhr:string,
+    asr:string,
+    sunset:string,
+    maghrib:string,
+    isha:string,
+    midnight:string
+}
 export async function buildObject() {
     try {
+        
         setTimeout(() => {
             loadPrayerAdjustments();
             loadPrayerPrayerSettings();
@@ -23,11 +42,59 @@ export async function buildObject() {
 }
 function loadDataTable()
 {
+    $('#prayers-table').show(300);
+    
     $.ajax({
         url: "PrayerManager/Prayers", success: (prayers: prayerlib.IPrayers[]) => {
-            
+            let prayersDataTable:IPrayersView[] = getPrayerView(prayers); 
+            $('#prayers-table').DataTable(
+                {
+                    data: prayersDataTable,
+                    searching:false,
+                    paging:false,
+                    ordering:false,
+                    responsive:true,
+                    columns:[
+                        { data: 'prayerDate',responsivePriority:1},
+                        { data: 'fajr' ,responsivePriority:2},
+                        { data: 'sunrise',responsivePriority:9 },
+                        { data: 'dhuhr',responsivePriority:3},
+                        { data: 'asr',responsivePriority:4 },
+                        { data: 'sunrise',responsivePriority:8},
+                        { data: 'maghrib' ,responsivePriority:5},
+                        { data: 'isha',responsivePriority:6},
+                        { data: 'midnight' ,responsivePriority:7 }
+                    ]
+                }
+            )
         }
     });
+}
+function getPrayerView(prayers:prayerlib.IPrayers []):IPrayersView[]
+{
+    let prayerView:Array<IPrayersView> = new Array<IPrayersView>();
+    let prayerTimings: Date[]= new Array<Date>();
+    prayers.forEach((curr,index,arr)=>{
+                
+        curr.prayerTime.forEach((prayerTiming,i)=>{
+       prayerTimings.push(prayerTiming.prayerTime);
+      });
+      prayerView.push(
+          {
+              prayerDate:moment( curr.prayersDate).format('L'),
+              fajr: moment(prayerTimings[0]).format('LT'),
+              sunrise:moment(prayerTimings[1]).format('LT'),
+              dhuhr:moment(prayerTimings[2]).format('LT'),
+              asr:moment(prayerTimings[3]).format('LT'),
+              sunset:moment(prayerTimings[4]).format('LT'),
+              maghrib:moment(prayerTimings[5]).format('LT'),
+              isha:moment(prayerTimings[6]).format('LT'),
+              midnight:moment(prayerTimings[7]).format('LT')
+          }
+      )
+   }
+   );
+    return prayerView;
 }
 
 function loadPrayerPrayerSettings() {
