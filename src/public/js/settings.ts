@@ -25,6 +25,12 @@ interface IPrayersView
     isha:string,
     midnight:string
 }
+interface IPrayersViewRow
+{
+    prayerDate:string,
+    prayerTime:string,
+    prayerName:prayerlib.PrayersName
+}
 export async function buildObject() {
     try {
         
@@ -73,25 +79,43 @@ function loadDataTable()
 function getPrayerView(prayers:prayerlib.IPrayers []):IPrayersView[]
 {
     let prayerView:Array<IPrayersView> = new Array<IPrayersView>();
+    let prayerViewObject:IPrayersView;
     let prayerTimings: Date[]= new Array<Date>();
+    let prayerViewRow:Array<IPrayersViewRow>= new Array<IPrayersViewRow>();
+    
     prayers.forEach((curr,index,arr)=>{
                 
         curr.prayerTime.forEach((prayerTiming,i)=>{
        prayerTimings.push(prayerTiming.prayerTime);
+       
       });
+      prayerViewObject=
+     {   
+        
+        prayerDate:moment( curr.prayersDate).format('L'),
+        fajr: moment(prayerTimings[0]).format('LT'),
+        sunrise:moment(prayerTimings[1]).format('LT'),
+        dhuhr:moment(prayerTimings[2]).format('LT'),
+        asr:moment(prayerTimings[3]).format('LT'),
+        sunset:moment(prayerTimings[4]).format('LT'),
+        maghrib:moment(prayerTimings[5]).format('LT'),
+        isha:moment(prayerTimings[6]).format('LT'),
+        midnight:moment(prayerTimings[7]).format('LT')
+    };
       prayerView.push(
-          {
-              prayerDate:moment( curr.prayersDate).format('L'),
-              fajr: moment(prayerTimings[0]).format('LT'),
-              sunrise:moment(prayerTimings[1]).format('LT'),
-              dhuhr:moment(prayerTimings[2]).format('LT'),
-              asr:moment(prayerTimings[3]).format('LT'),
-              sunset:moment(prayerTimings[4]).format('LT'),
-              maghrib:moment(prayerTimings[5]).format('LT'),
-              isha:moment(prayerTimings[6]).format('LT'),
-              midnight:moment(prayerTimings[7]).format('LT')
-          }
+        prayerViewObject
       )
+     prayerViewRow= [ 
+         {prayerDate:prayerViewObject.prayerDate, prayerName: prayerlib.PrayersName.FAJR,prayerTime:prayerViewObject.fajr},
+         {prayerDate:prayerViewObject.prayerDate, prayerName: prayerlib.PrayersName.SUNRISE,prayerTime:prayerViewObject.sunrise}, 
+         {prayerDate:prayerViewObject.prayerDate, prayerName: prayerlib.PrayersName.DHUHR,prayerTime:prayerViewObject.dhuhr}, 
+         {prayerDate:prayerViewObject.prayerDate, prayerName: prayerlib.PrayersName.ASR,prayerTime:prayerViewObject.asr}, 
+         {prayerDate:prayerViewObject.prayerDate, prayerName: prayerlib.PrayersName.SUNSET,prayerTime:prayerViewObject.sunset}, 
+         {prayerDate:prayerViewObject.prayerDate, prayerName: prayerlib.PrayersName.MAGHRIB,prayerTime:prayerViewObject.maghrib}, 
+         {prayerDate:prayerViewObject.prayerDate, prayerName: prayerlib.PrayersName.ISHA,prayerTime:prayerViewObject.isha}, 
+         {prayerDate:prayerViewObject.prayerDate, prayerName: prayerlib.PrayersName.MIDNIGHT,prayerTime:prayerViewObject.midnight},  
+    ]
+
    }
    );
     return prayerView;
