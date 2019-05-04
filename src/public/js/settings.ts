@@ -7,11 +7,11 @@
 import * as prayerlib from "../../models/prayers.model";
 //import daterangepicker from "daterangepicker";
 import moment from "moment";
-import $ = require('jquery');
+const  $  =require( 'jquery');
 const DataTable = require("datatables.net")(window, $);
 const daterangepicker = require("daterangepicker");
 const DataTableResp = require("datatables.net-responsive")(window, $);
-import ramda from "ramda";
+
 
 interface IPrayersView {
     prayerDate: string,
@@ -50,6 +50,8 @@ function loadDataTable() {
     $.ajax({
         url: "PrayerManager/Prayers", success: (prayers: prayerlib.IPrayers[]) => {
             let prayersDataTable: IPrayersView[] = getPrayerView(prayers);
+        //   let prayerDataTableMobile: IPrayersViewRow[] = getPrayerViewRow(prayersDataTable);
+          // console.log(prayerDataTableMobile);
             $('#prayers-table').DataTable(
                 {
                     data: prayersDataTable,
@@ -70,19 +72,32 @@ function loadDataTable() {
                     ]
                 }
             )
-        }
+            // $('#prayers-table-mobile').DataTable(
+            //     {
+            //         data: prayerDataTableMobile,
+            //         searching: false,
+            //         paging: false,
+            //         ordering: false,
+            //         responsive: true,
+            //         columns: [
+            //             { data: 'Date' },
+            //             { data: 'Prayer' },
+            //             { data: 'Time' }
+            //         ]
+            //     }
+            // )
+}
     });
 }
 function getPrayerView(prayers: prayerlib.IPrayers[]): IPrayersView[] {
     let prayerView: Array<IPrayersView> = new Array<IPrayersView>();
     let prayerViewObject: IPrayersView;
     let prayerTimings: Date[] = new Array<Date>();
-    let prayerViewRow: Array<IPrayersViewRow> = new Array<IPrayersViewRow>();
     prayers.forEach((curr, index, arr) => {
         curr.prayerTime.forEach((prayerTiming, i) => {
             prayerTimings.push(prayerTiming.prayerTime);
         });
-        prayerViewObject=
+        prayerViewObject =
             {
                 prayerDate: moment(curr.prayersDate).format('L'),
                 fajr: moment(prayerTimings[0]).format('LT'),
