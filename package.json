@@ -33,6 +33,7 @@
     "datatables": "^1.10.18",
     "datatables.net": "^1.10.19",
     "datatables.net-responsive": "^2.2.3",
+    "datatables.net-rowgroup": "^1.1.0",
     "daterangepicker": "^3.0.5",
     "express": "^4.16.4",
     "joi": "^14.3.1",

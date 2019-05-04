@@ -94,7 +94,7 @@ nav
 .nav-title
 {
   font-size: 1.2em; /* currently ems cause chrome bug misinterpreting rems on body element */
-  line-height: 1.6;
+
 }
 /* Section */
 
@@ -111,13 +111,13 @@ section
 html is set to 62.5% so that all the REM measurements throughout Skeleton
 are based on 10px sizing. So basically 1.5rem = 15px :) */
 html {
-  font-size: 62.5%; }
+  font-size: 62.5% }
 body{
   padding-top: 60px;
   font-size: 1.5em; /* currently ems cause chrome bug misinterpreting rems on body element */
   line-height: 1.6;
-  font-weight: 400;
-  font-family: "Raleway", "HelveticaNeue", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-weight: 300;
+  font-family: "Roboto", sans-serif;
   color: #222;
   box-sizing: border-box;
   background: #f6f6f6;
@@ -268,7 +268,7 @@ label,
 legend {
   display: block;
   margin-bottom: .5rem;
-  font-weight: 600; }
+  font-weight: 400; }
 fieldset
 {
   padding: 0;
@@ -280,7 +280,7 @@ input[type="radio"] {
 label > .label-body {
   display: inline-block;
   margin-left: .5rem;
-  font-weight: normal; 
+
 }
 .prayers-time-form-container
 {
@@ -358,15 +358,26 @@ th,
 td {
   text-align: left;
   max-width: 100%;
-  border-bottom: 1px solid #E1E1E1; }
+  border-bottom: 1px solid #E1E1E1; 
+  }
+
 th:first-child,
 td:first-child {
  } 
 th:last-child,
 td:last-child {
 }
-
-
+td[colspan]
+{
+   background: #eee;
+}
+.th:first{
+  font-weight: 500;
+}
+.th:first{
+  
+  font-weight: 500;
+}
 /* Spacing
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
 button,
