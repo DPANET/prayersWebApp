@@ -5,7 +5,10 @@ import * as request from 'request-promise-native';
 import { domainMatch } from "tough-cookie";
 const to = require('await-to-js').default;
 const app:mainRouter = new mainRouter([new prayersController(),new mainController()]);
- app.listen();
+setTimeout(() => {
+    app.listen();
+}, 5000);
+
 
 // setTimeout(()=>{doSomething()}, 5000);
 // async function  doSomething()

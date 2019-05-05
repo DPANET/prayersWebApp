@@ -115,7 +115,7 @@ html {
 body{
   padding-top: 60px;
   font-size: 1.5em; /* currently ems cause chrome bug misinterpreting rems on body element */
-  line-height: 1.6;
+  line-height: 1.2;
   font-weight: 300;
   font-family: "Roboto", sans-serif;
   color: #222;
@@ -172,7 +172,7 @@ input[type="button"] {
   color: #555;
   text-align: center;
   font-size: 11px;
-  font-weight: 600;
+  font-weight: 500;
   line-height: 38px;
   letter-spacing: .1rem;
   text-transform: uppercase;
@@ -378,6 +378,7 @@ td[colspan]
   
   font-weight: 500;
 }
+
 /* Spacing
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
 button,
@@ -397,7 +398,7 @@ p,
 ul,
 ol,
 form {
-  margin-bottom: 2.5rem; }
+  margin-bottom: 1 rem; }
 
 
 /* Utilities
@@ -442,7 +443,6 @@ near the relevant code. For example, if you wanted to change the styles for butt
 on small devices, paste the mobile query code up in the buttons section and style it
 there.
 */
-
 
 /* Larger than mobile */
 @media (min-width: 400px) {}

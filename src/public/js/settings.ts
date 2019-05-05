@@ -7,7 +7,7 @@
 import * as prayerlib from "../../models/prayers.model";
 //import daterangepicker from "daterangepicker";
 import moment from "moment";
-const  $  =require( 'jquery');
+import  $  =require( 'jquery');
 const DataTable = require("datatables.net")(window, $);
 const daterangepicker = require("daterangepicker");
 const DataTableResp = require("datatables.net-responsive")(window, $);
@@ -32,21 +32,41 @@ interface IPrayersViewRow {
 export async function buildObject() {
     try {
 
-        setTimeout(() => {
+  //      setTimeout(() => {
+    $('document').ready(()=>
+    {
             loadPrayerAdjustments();
             loadPrayerPrayerSettings();
+            loadDataTable();
+        $("#view-button").on("click", refreshDataTable);
+    }
+    );
 
-        }, 5000);
-
-        $("#view-button").on("click", loadDataTable);
     }
     catch (err) {
         alert(err);
     }
 }
-function loadDataTable() {
+function refreshDataTable()
+{
+    if( $('#prayers-table-mobile').is(":hidden") )
+    {
     $('#prayers-table-mobile').show(300);
+    }
+    $.ajax({
+        url: "PrayerManager/Prayers", success: (prayers: prayerlib.IPrayers[]) => {
+            let prayersDataTable: IPrayersView[] = getPrayerView(prayers);
+            let prayerDataTableMobile: IPrayersViewRow[] = getPrayerViewRow(prayersDataTable);
+            $('#prayers-table-mobile').DataTable(
+            {
+                data:prayerDataTableMobile
 
+            });
+        }});
+}
+function loadDataTable() {
+   // $('#prayers-table-mobile').show(300);
+    //$('#prayers-table').show(300);
     $.ajax({
         url: "PrayerManager/Prayers", success: (prayers: prayerlib.IPrayers[]) => {
             let prayersDataTable: IPrayersView[] = getPrayerView(prayers);
@@ -82,7 +102,6 @@ function loadDataTable() {
                     {
                         dataSrc:'prayerDate'
                     },
-                    
                     columns: [
                         { data: 'prayerName',responsivePriority:2, className:"th"},
                         { data: 'prayerTime' ,responsivePriority:3, className:"th"}
