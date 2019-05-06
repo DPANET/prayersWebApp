@@ -7,9 +7,8 @@
 import * as prayerlib from "../../models/prayers.model";
 //import daterangepicker from "daterangepicker";
 import moment from "moment";
-import $ = require('jquery');
-import { PrayerEvents } from "@dpanet/prayers-lib";
-import { string } from "joi";
+import $ from 'jquery';
+
 const DataTable = require("datatables.net")(window, $);
 const daterangepicker = require("daterangepicker");
 const DataTableResp = require("datatables.net-responsive")(window, $);
