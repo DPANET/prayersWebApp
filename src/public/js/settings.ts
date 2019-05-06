@@ -8,6 +8,8 @@ import * as prayerlib from "../../models/prayers.model";
 //import daterangepicker from "daterangepicker";
 import moment from "moment";
 import $ = require('jquery');
+import { PrayerEvents } from "@dpanet/prayers-lib";
+import { string } from "joi";
 const DataTable = require("datatables.net")(window, $);
 const daterangepicker = require("daterangepicker");
 const DataTableResp = require("datatables.net-responsive")(window, $);
@@ -22,6 +24,8 @@ export async function buildObject() {
             loadPrayerPrayerSettings();
             loadDataTable();
             $("#view-button").on("click", refreshDataTable);
+          //  refreshParams();
+            //$("#submit-button").on("click",saveDataTable);
         }
         );
 
@@ -29,6 +33,23 @@ export async function buildObject() {
     catch (err) {
         alert(err);
     }
+}
+function refreshParams():any
+{
+    let prayersConfig:any;
+    //     prayersConfig.method =$("#method").val() ;
+    //     prayersConfig.school = $("#school").val(); 
+    //     prayersConfig.latitudeAdjustment = $("#latitude").val();
+    //     prayersConfig.midnight= $("#midnight").val();
+        prayersConfig.adjustments.push (
+        {prayerName:prayerlib.PrayersName.FAJR, adjustments: $("#fajr-time").val()as number },
+        {prayerName:prayerlib.PrayersName.DHUHR, adjustments: $("#dhur-time").val()as number },
+        {prayerName:prayerlib.PrayersName.ASR, adjustments: $("#asr-time").val()as number },
+        {prayerName:prayerlib.PrayersName.MAGHRIB, adjustments: $("#maghrib-time").val()as number },
+        {prayerName:prayerlib.PrayersName.ISHA, adjustments: $("#isha-time").val()as number },
+        );
+    return prayersConfig;
+        
 }
 function refreshDataTable() {
     if($('#prayers-table-mobile').is(':hidden'))
@@ -41,6 +62,10 @@ function loadDataTable() {
         {
             ajax: {
                 url: 'PrayerManager/PrayersViewMobile',
+                type: 'GET',
+                // data:(d)=>{
+                //     return refreshParams();
+                // },
                 dataSrc: (d)=>{return d;}
             },
             autoWidth: false,

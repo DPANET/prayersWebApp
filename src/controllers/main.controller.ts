@@ -1,4 +1,4 @@
-import IController from "./controllers.interface";
+import {IController} from "./controllers.interface";
 import express from 'express';
 import path from 'path';
 export default class MainController implements IController

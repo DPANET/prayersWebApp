@@ -1,24 +1,9 @@
 import * as prayerlib from "@dpanet/prayers-lib";
-import IController from "./controllers.interface";
+import {IController,IPrayersView,IPrayersViewRow} from "./controllers.interface";
 import express from 'express';
 import moment from "moment";
 
-export interface IPrayersView {
-    prayerDate: string,
-    fajr: string,
-    sunrise: string,
-    dhuhr: string,
-    asr: string,
-    sunset: string,
-    maghrib: string,
-    isha: string,
-    midnight: string
-}
-export interface IPrayersViewRow {
-    prayerDate: string,
-    prayerTime: string,
-    prayerName: prayerlib.PrayersName
-}
+
 export default class PrayersController implements IController {
 
     path: string;
@@ -37,6 +22,23 @@ export default class PrayersController implements IController {
         this.router.get(this.path + "/Prayers", this.getPrayers);
         this.router.get(this.path + "/PrayersViewDesktop", this.getPrayerView);
         this.router.get(this.path + "/PrayersViewMobile", this.getPrayerViewRow);
+        this.router.get(this.path + "/PrayersViewMobile/:prayerconfig", this.getPrayersByCalculation);
+        this.router.put(this.path+ "/PrayersSettings/:id",this.putPrayersSettings);
+    }
+    private getPrayersByCalculation= async (request:express.Request,response:express.Response) =>
+    {
+        let prayerConfig: prayerlib.IPrayersConfig = request.params.prayerConfig;
+        let locationConfig:prayerlib.ILocationConfig = await new prayerlib.Configurator().getLocationConfig();
+        this._prayerManager = await prayerlib.PrayerTimeBuilder
+            .createPrayerTimeBuilder(locationConfig, prayerConfig)
+            .createPrayerTimeManager();
+       response.json(this.createPrayerViewRow(this.createPrayerView(this._prayerManager.getPrayers())));
+    }
+    private putPrayersSettings = (request:express.Request,response:express.Response) =>
+    {
+        let prayerSettings:prayerlib.IPrayersSettings = request.body;
+        
+
     }
     private getPrayerAdjsutments = (request: express.Request, response: express.Response) => {
         let prayerAdjustments: prayerlib.IPrayerAdjustments[] = this._prayerManager.getPrayerAdjsutments();

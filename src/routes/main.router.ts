@@ -3,7 +3,7 @@ import config from "config";
 import morgan from "morgan";
 import path from "path";
 import * as bodyParser from 'body-parser';
-import IController from "../controllers/controllers.interface";
+import {IController} from "../controllers/controllers.interface";
 import * as prayerController from "../controllers/prayers.controller"
 
 class App {
