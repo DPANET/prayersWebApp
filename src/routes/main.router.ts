@@ -6,7 +6,7 @@ import * as bodyParser from 'body-parser';
 import {IController} from "../controllers/controllers.interface";
 import * as prayerController from "../controllers/prayers.controller"
 
-class App {
+export class App {
   public app: express.Application;
   private _port: number;
   constructor(controllers: IController[]) {
@@ -41,4 +41,3 @@ class App {
   }
 }
  
-export default App;

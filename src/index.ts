@@ -1,10 +1,10 @@
-import mainRouter  from "./routes/main.router";
+import  {App} from "./routes/main.router";
 import prayersController from "./controllers/prayers.controller";
 import mainController from "./controllers/main.controller";
 import * as request from 'request-promise-native';
 import { domainMatch } from "tough-cookie";
 const to = require('await-to-js').default;
-const app:mainRouter = new mainRouter([new prayersController(),new mainController()]);
+let app:App = new App([new prayersController(),new mainController()]);
 setTimeout(() => {
     app.listen();
 }, 5000);

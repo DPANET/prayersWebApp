@@ -1,6 +1,6 @@
 import express from "express";
 import { IController } from "../controllers/controllers.interface";
-declare class App {
+export declare class App {
     app: express.Application;
     private _port;
     constructor(controllers: IController[]);
@@ -9,4 +9,3 @@ declare class App {
     private initializeControllers;
     private connectToTheDatabase;
 }
-export default App;
