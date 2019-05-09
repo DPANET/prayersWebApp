@@ -7,7 +7,7 @@
 import * as prayerlib from "../../models/prayers.model";
 //import daterangepicker from "daterangepicker";
 import moment from "moment";
-import $ from 'jquery';
+//import $ from 'jquery';
 
 const DataTable = require("datatables.net")(window, $);
 const daterangepicker = require("daterangepicker");
@@ -36,16 +36,17 @@ export async function buildObject() {
 function refreshParams():any
 {
     let prayersConfig:any;
-    //     prayersConfig.method =$("#method").val() ;
-    //     prayersConfig.school = $("#school").val(); 
-    //     prayersConfig.latitudeAdjustment = $("#latitude").val();
-    //     prayersConfig.midnight= $("#midnight").val();
+
+        prayersConfig.method =$("#method").val() ;
+        prayersConfig.school = $("#school").val(); 
+        prayersConfig.latitudeAdjustment = $("#latitude").val();
+        prayersConfig.midnight= $("#midnight").val();
         prayersConfig.adjustments.push (
-        {prayerName:prayerlib.PrayersName.FAJR, adjustments: $("#fajr-time").val()as number },
-        {prayerName:prayerlib.PrayersName.DHUHR, adjustments: $("#dhur-time").val()as number },
-        {prayerName:prayerlib.PrayersName.ASR, adjustments: $("#asr-time").val()as number },
-        {prayerName:prayerlib.PrayersName.MAGHRIB, adjustments: $("#maghrib-time").val()as number },
-        {prayerName:prayerlib.PrayersName.ISHA, adjustments: $("#isha-time").val()as number },
+        {prayerName:prayerlib.PrayersName.FAJR, adjustments: $("#fajr-time").val() },
+        {prayerName:prayerlib.PrayersName.DHUHR, adjustments: $("#dhur-time").val() },
+        {prayerName:prayerlib.PrayersName.ASR, adjustments: $("#asr-time").val()},
+        {prayerName:prayerlib.PrayersName.MAGHRIB, adjustments: $("#maghrib-time").val()},
+        {prayerName:prayerlib.PrayersName.ISHA, adjustments: $("#isha-time").val()},
         );
     return prayersConfig;
         
