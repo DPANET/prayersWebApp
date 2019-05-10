@@ -22,12 +22,12 @@ export default class PrayersController implements IController {
         this.router.get(this.path + "/Prayers", this.getPrayers);
         this.router.get(this.path + "/PrayersViewDesktop", this.getPrayerView);
         this.router.get(this.path + "/PrayersViewMobile", this.getPrayerViewRow);
-        this.router.get(this.path + "/PrayersViewMobile/:prayerconfig", this.getPrayersByCalculation);
+        this.router.post(this.path + "/PrayersViewMobile", this.getPrayersByCalculation);
         this.router.put(this.path+ "/PrayersSettings/:id",this.putPrayersSettings);
     }
     private getPrayersByCalculation= async (request:express.Request,response:express.Response) =>
     {
-        let prayerConfig: prayerlib.IPrayersConfig = request.params.prayerConfig;
+        let prayerConfig: prayerlib.IPrayersConfig = request.body.prayerConfig;
         let locationConfig:prayerlib.ILocationConfig = await new prayerlib.Configurator().getLocationConfig();
         this._prayerManager = await prayerlib.PrayerTimeBuilder
             .createPrayerTimeBuilder(locationConfig, prayerConfig)

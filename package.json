@@ -5,7 +5,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "compile": "tsc",
-    "bundlejs": "browserify lib/public/js/settings.js -o lib/public/js/bundle.js --debug",
+    "bundlejs": "browserify src/public/js/settings.ts -p [tsify] > lib/public/js/bundle.js --debug",
     "roolupjs": "rollup lib/public/js/settings.js --format iife --name \"main\"  --file lib/public/js/bundle.js",
     "html:copy": "copyfiles -u 1 src/**.html lib",
     "css:copy": "copyfiles -u 1 src/css/**.css lib/",
@@ -44,7 +44,8 @@
     "lowdb": "^1.0.0",
     "moment": "^2.24.0",
     "morgan": "^1.9.1",
-    "ramda": "^0.26.1"
+    "ramda": "^0.26.1",
+    "tsify": "^4.0.1"
   },
   "devDependencies": {
     "@types/body-parser": "^1.17.0",
@@ -67,6 +68,8 @@
     "esmify": "^2.1.1",
     "gulp": "^4.0.1",
     "gulp-sass": "^4.0.2",
+    "gulp-sourcemaps": "^2.6.5",
+    "gulp-typescript": "^5.0.1",
     "typescript": "^3.4.5"
   }
 }
