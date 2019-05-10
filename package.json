@@ -13,7 +13,7 @@
     "start:server": "node --inspect lib/index.js",
     "run:parallel": "npm-run-all -p start:server parallel",
     "wait": "wait-on http://localhost:7000",
-    "parallel": "npm-run-all wait bundlejs",
+    "parallel": "npm-run-all bundlejs wait",
     "reload": "browser-sync reload --port 7000",
     "start": "npm run compile && npm run run:parallel"
   },

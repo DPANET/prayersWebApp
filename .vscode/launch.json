@@ -9,11 +9,12 @@
             "request": "attach",
             "name": "Attach Chrome",
             "sourceMaps": true,
-            "webRoot": "${workspaceFolder}",
+            "webRoot": "${workspaceFolder}/lib",
             "urlFilter": "http://localhost:7000",
-            "port":9222,
-            "smartStep":true
-    },
+            "smartStep":true,
+            "port": 9222,
+            "skipFiles": ["${workspaceFolder}/node_modules/**/*.js"]
+        },
         {
             "type": "node",
             "request": "attach",
@@ -27,9 +28,8 @@
             "localRoot": "${workspaceFolder}",
             "remoteRoot": "${workspaceFolder}",
             "smartStep": true,
-            "skipFiles": [
-                "${workspaceFolder}/node_modules/**/*.js",
-            ]
+
+            "trace": true
         }
     ]
 }

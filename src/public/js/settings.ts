@@ -3,15 +3,15 @@
 // import lowdbfile from "lowdb/adapters/FileAsync";
 // const to = require('await-to-js').default;
 // import _ = require('lodash');
-
+import $ from 'jquery';
 import * as prayerlib from "../../models/prayers.model";
 //import daterangepicker from "daterangepicker";
 import moment from "moment";
 import { IPrayersConfig, PrayerAdjustment } from "@dpanet/prayers-lib";
-//import $ from 'jquery';
+
 
 const DataTable = require("datatables.net")(window, $);
-const daterangepicker = require("daterangepicker");
+const daterangepicker =require( "daterangepicker");
 const DataTableResp = require("datatables.net-responsive")(window, $);
 const DataTableRowGroup = require("datatables.net-rowgroup")(window, $);
 
@@ -19,12 +19,13 @@ export async function buildObject() {
     try {
 
         //      setTimeout(() => {
-        $('document').ready(() => {
-            loadPrayerAdjustments();
-            loadPrayerPrayerSettings();
-            loadDataTable();
+       await $('document').ready(async () => {
+            await loadPrayerAdjustments();
+            await loadPrayerPrayerSettings();
+            await loadDataTable();
             $("#view-button").on("click", refreshDataTable);
-            // refreshParams();
+            $("#view-button").on("click", refreshParams);
+//             refreshParams();
             //$("#submit-button").on("click",saveDataTable);
         }
         );
@@ -44,6 +45,7 @@ function refreshParams():any
         {prayerName:prayerlib.PrayersName.MAGHRIB, adjustments: $("#maghrib-time").val()as number},
         {prayerName:prayerlib.PrayersName.ISHA, adjustments: $("#isha-time").val()as number},
         );
+
     let prayersConfig:IPrayersConfig = {
     
         method :$("#method").val() as prayerlib.Methods,
@@ -53,25 +55,26 @@ function refreshParams():any
         adjustments: prayerAdjustment,
         startDate :$("#prayer-time-period").data('daterangepicker').startDate.toDate(),
         endDate:$("#prayer-time-period").data('daterangepicker').endDate.toDate()
+
     }
     return prayersConfig;
         
 }
-function refreshDataTable() {
+async function refreshDataTable() {
     if($('#prayers-table-mobile').is(':hidden'))
     $('#prayers-table-mobile').show();
-    $('#prayers-table-mobile').DataTable().ajax.reload();
+    $('#prayers-table-mobile').DataTable().ajax.reload()
 }
-function loadDataTable() {
+async function  loadDataTable() {
 
-    $('#prayers-table-mobile').DataTable(
+  await  $('#prayers-table-mobile').DataTable(
         {
             ajax: {
                 url: 'PrayerManager/PrayersViewMobile',
-                type: 'GET',
-                // data:(d)=>{
-                //     return JSON.stringify(refreshParams());
-                // },
+                type: 'POST',
+                data:(d)=>{
+                    return JSON.stringify(refreshParams());
+                },
                 dataSrc: (d)=>{return d;}
             },
             autoWidth: false,
@@ -93,14 +96,14 @@ function loadDataTable() {
 }
 
 
-function loadPrayerPrayerSettings() {
-    $.ajax({
+async function loadPrayerPrayerSettings() {
+ await   $.ajax({
         url: "PrayerManager/PrayersSettings", success: (prayerSettings: prayerlib.IPrayersSettings) => {
             $("#method").val(prayerSettings.method.id);
             $("#school").val(prayerSettings.school.id);
             $("#latitude").val(prayerSettings.latitudeAdjustment.id);
             $("#midnight").val(prayerSettings.midnight.id);
-            $('input[name="daterange"]').daterangepicker(
+            $('input[name="daterangepicker"]').daterangepicker(
                 {
                     startDate: moment(prayerSettings.startDate),
                     endDate: moment(prayerSettings.endDate)
@@ -109,9 +112,9 @@ function loadPrayerPrayerSettings() {
         }
     });
 }
-function loadPrayerAdjustments() {
+async function loadPrayerAdjustments() {
 
-    $.ajax({
+ await   $.ajax({
         url: "PrayerManager/PrayersAdjustments/", success: (prayerAdjustment: prayerlib.IPrayerAdjustments[]) => {
 
             prayerAdjustment.forEach(element => {
