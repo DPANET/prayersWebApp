@@ -10,9 +10,9 @@
     "html:copy": "copyfiles -u 1 src/**.html lib",
     "css:copy": "copyfiles -u 1 src/css/**.css lib/",
     "images:copy": "copyfiles -u 1 src/images/**/* lib/",
-    "start:server": "node lib/index.js",
+    "start:server": "node --inspect lib/index.js",
     "run:parallel": "npm-run-all -p start:server parallel",
-    "wait": "wait-on http://localhost:3005",
+    "wait": "wait-on http://localhost:7000",
     "parallel": "npm-run-all wait bundlejs",
     "reload": "browser-sync reload --port 7000",
     "start": "npm run compile && npm run run:parallel"

@@ -24,7 +24,7 @@ export async function buildObject() {
             loadPrayerPrayerSettings();
             loadDataTable();
             $("#view-button").on("click", refreshDataTable);
-             refreshParams();
+            // refreshParams();
             //$("#submit-button").on("click",saveDataTable);
         }
         );
@@ -68,10 +68,10 @@ function loadDataTable() {
         {
             ajax: {
                 url: 'PrayerManager/PrayersViewMobile',
-                type: 'POST',
-                data:(d)=>{
-                    return JSON.stringify(refreshParams());
-                },
+                type: 'GET',
+                // data:(d)=>{
+                //     return JSON.stringify(refreshParams());
+                // },
                 dataSrc: (d)=>{return d;}
             },
             autoWidth: false,

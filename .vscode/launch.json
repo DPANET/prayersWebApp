@@ -6,26 +6,26 @@
     "configurations": [
         {
             "type": "chrome",
-            "request": "launch",
-            "name": "Launch Chrome",
-            "url": "http://localhost:7000",
-            "webRoot": "${workspaceFolder}/lib/**/*.js"
-        },
-  
-        
+            "request": "attach",
+            "name": "Attach Chrome",
+            "sourceMaps": true,
+            "webRoot": "${workspaceFolder}",
+            "urlFilter": "http://localhost:7000",
+            "port":9222,
+            "smartStep":true
+    },
         {
             "type": "node",
-            "request": "launch",
-            "name": "Launch Program",
+            "request": "attach",
+            "name": "Debug Program",
             "sourceMaps": true,
-            "program": "${workspaceFolder}/src/index.ts",
+            "cwd": "${workspaceFolder}",
+            "port": 9229,
             "outFiles": [
                 "${workspaceFolder}/lib/**/*.js"
             ],
-            "runtimeArgs": [
-                "run-script",
-                "start"
-            ],
+            "localRoot": "${workspaceFolder}",
+            "remoteRoot": "${workspaceFolder}",
             "smartStep": true,
             "skipFiles": [
                 "${workspaceFolder}/node_modules/**/*.js",
