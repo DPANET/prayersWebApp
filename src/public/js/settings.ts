@@ -22,9 +22,9 @@ export async function buildObject() {
        await $('document').ready(async () => {
             await loadPrayerAdjustments();
             await loadPrayerPrayerSettings();
-            await loadDataTable();
+            //await loadDataTable();
             $("#view-button").on("click", refreshDataTable);
-            $("#view-button").on("click", refreshParams);
+    //        $("#view-button").on("click", refreshParams);
 //             refreshParams();
             //$("#submit-button").on("click",saveDataTable);
         }
@@ -62,8 +62,14 @@ function refreshParams():any
 }
 async function refreshDataTable() {
     if($('#prayers-table-mobile').is(':hidden'))
-    $('#prayers-table-mobile').show();
-    $('#prayers-table-mobile').DataTable().ajax.reload()
+    {
+        await loadDataTable();
+        $('#prayers-table-mobile').show();
+    }
+    else{
+        $('#prayers-table-mobile').DataTable().ajax.reload();
+    }
+
 }
 async function  loadDataTable() {
 
@@ -71,9 +77,10 @@ async function  loadDataTable() {
         {
             ajax: {
                 url: 'PrayerManager/PrayersViewMobile',
-                type: 'POST',
+                type: 'GET',
                 data:(d)=>{
-                    return JSON.stringify(refreshParams());
+                    
+                    return refreshParams();
                 },
                 dataSrc: (d)=>{return d;}
             },

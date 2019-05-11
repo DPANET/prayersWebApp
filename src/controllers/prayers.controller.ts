@@ -1,10 +1,16 @@
+const dotenv = require('dotenv').config();
+const debug = require('debug')('app:router');
 import * as prayerlib from "@dpanet/prayers-lib";
-import {IController,IPrayersView,IPrayersViewRow} from "./controllers.interface";
+import { IController, IPrayersView, IPrayersViewRow } from "./controllers.interface";
 import express from 'express';
 import moment from "moment";
+import { isNullOrUndefined } from "util";
+import Configurator from "@dpanet/prayers-lib/lib/configurators/configuration";
+
 
 
 export default class PrayersController implements IController {
+
 
     path: string;
     router: express.Router;
@@ -21,23 +27,56 @@ export default class PrayersController implements IController {
         this.router.get(this.path + "/PrayersSettings", this.getPrayersSettings);
         this.router.get(this.path + "/Prayers", this.getPrayers);
         this.router.get(this.path + "/PrayersViewDesktop", this.getPrayerView);
-        this.router.get(this.path + "/PrayersViewMobile", this.getPrayerViewRow);
-        this.router.post(this.path + "/PrayersViewMobile", this.getPrayersByCalculation);
-        this.router.put(this.path+ "/PrayersSettings/:id",this.putPrayersSettings);
+        //this.router.get(this.path + "/PrayersViewMobile", this.getPrayerViewRow);
+        this.router.get(this.path + "/PrayersViewMobile", this.getPrayersByCalculation);
+        this.router.put(this.path + "/PrayersSettings/:id", this.putPrayersSettings);
     }
-    private getPrayersByCalculation= async (request:express.Request,response:express.Response) =>
-    {
-        let prayerConfig: prayerlib.IPrayersConfig = request.body.prayerConfig;
-        let locationConfig:prayerlib.ILocationConfig = await new prayerlib.Configurator().getLocationConfig();
+    private getPrayersByCalculation = async (request: express.Request, response: express.Response,next:express.NextFunction) => {
+        try{
+        let prayerConfig: prayerlib.IPrayersConfig = this.buildPrayerConfigObject(request.query);
+        debug(prayerConfig);
+        let locationConfig: prayerlib.ILocationConfig = await new Configurator().getLocationConfig();
         this._prayerManager = await prayerlib.PrayerTimeBuilder
             .createPrayerTimeBuilder(locationConfig, prayerConfig)
             .createPrayerTimeManager();
-       response.json(this.createPrayerViewRow(this.createPrayerView(this._prayerManager.getPrayers())));
+        debug(this._prayerManager.getPrayerAdjsutments());
+        response.json(this.createPrayerViewRow(this.createPrayerView(this._prayerManager.getPrayers())));
+        }catch(err)
+        {
+            debug(err);
+            next(err);
+        }
     }
-    private putPrayersSettings = (request:express.Request,response:express.Response) =>
-    {
-        let prayerSettings:prayerlib.IPrayersSettings = request.body;
-        
+    private buildPrayerConfigObject(prayerConfigObject: any): prayerlib.IPrayersConfig {
+        for (var key in prayerConfigObject) {
+            switch(key)
+            {  
+            case "_":  delete prayerConfigObject['_'];
+              break;
+              case"startDate":
+              case "endDate":
+              prayerConfigObject[key] = new Date(prayerConfigObject[key]);
+              break;
+              case"adjustments":
+              let adjustmentArray: Array<any> = prayerConfigObject[key];
+              for (var adjustkey in  adjustmentArray)
+              {
+                  adjustmentArray[adjustkey].adjustments= parseInt(adjustmentArray[adjustkey].adjustments);
+              } 
+              break;
+              case "method":
+              case "school":
+              case "latitudeAdjustment":
+              case "midnight":
+              prayerConfigObject[key] = parseInt(prayerConfigObject[key]);
+              break;
+            }      
+        }
+        return prayerConfigObject;
+    }
+    private putPrayersSettings = (request: express.Request, response: express.Response) => {
+        let prayerSettings: prayerlib.IPrayersSettings = request.body;
+
 
     }
     private getPrayerAdjsutments = (request: express.Request, response: express.Response) => {
@@ -106,12 +145,12 @@ export default class PrayersController implements IController {
     }
 
     private async initializePrayerManger(): Promise<void> {
-        let prayerConfig: prayerlib.IPrayersConfig = await new prayerlib.Configurator().getPrayerConfig();
-        let locationConfig: prayerlib.ILocationConfig = await new prayerlib.Configurator().getLocationConfig();
+        let prayerConfig: prayerlib.IPrayersConfig = await new Configurator().getPrayerConfig();
+        let locationConfig: prayerlib.ILocationConfig = await new Configurator().getLocationConfig();
         this._prayerManager = await prayerlib.PrayerTimeBuilder
             .createPrayerTimeBuilder(locationConfig, prayerConfig)
             .createPrayerTimeManager();
-        console.log(this._prayerManager.getPrayerAdjsutments());
+            debug(this._prayerManager.getPrayerAdjsutments());
     }
     static getPrayerController(): PrayersController {
 

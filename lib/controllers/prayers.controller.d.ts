@@ -8,6 +8,7 @@ export default class PrayersController implements IController {
     constructor();
     private initializeRoutes;
     private getPrayersByCalculation;
+    private buildPrayerConfigObject;
     private putPrayersSettings;
     private getPrayerAdjsutments;
     private getPrayersSettings;
