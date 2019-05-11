@@ -86,7 +86,7 @@ async function  loadDataTable() {
             },
             autoWidth: false,
             searching: false,
-            paging: false,
+            paging: true,
             ordering: false,
             responsive: true,
             rowGroup:
