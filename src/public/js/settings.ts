@@ -67,7 +67,7 @@ async function refreshDataTable() {
         $('#prayers-table-mobile').show();
     }
     else{
-        $('#prayers-table-mobile').DataTable().ajax.reload();
+         $('#prayers-table-mobile').DataTable().ajax.reload();
     }
 
 }
