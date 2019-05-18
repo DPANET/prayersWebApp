@@ -67,6 +67,7 @@ export default class PrayersController implements IController {
                 case "school":
                 case "latitudeAdjustment":
                 case "midnight":
+                case "adjustmentMethod":
                     prayerConfigObject[key] = parseInt(prayerConfigObject[key]);
                     break;
             }

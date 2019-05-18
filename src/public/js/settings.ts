@@ -7,7 +7,7 @@ import $ from 'jquery';
 import * as prayerlib from "../../models/prayers.model";
 //import daterangepicker from "daterangepicker";
 import moment from "moment";
-import { IPrayersConfig, PrayerAdjustment } from "@dpanet/prayers-lib";
+import { IPrayersConfig, PrayerAdjustment, AdjsutmentMethod } from "@dpanet/prayers-lib";
 
 
 const DataTable = require("datatables.net")(window, $);
@@ -53,6 +53,7 @@ function refreshParams():any
         latitudeAdjustment : $("#latitude").val()as prayerlib.LatitudeMethod,
         midnight:$("#midnight").val() as prayerlib.MidnightMode,
         adjustments: prayerAdjustment,
+        adjustmentMethod: AdjsutmentMethod.Server,
         startDate :$("#prayer-time-period").data('daterangepicker').startDate.toDate(),
         endDate:$("#prayer-time-period").data('daterangepicker').endDate.toDate()
 
