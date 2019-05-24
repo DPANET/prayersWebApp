@@ -8,6 +8,6 @@ export declare class App {
     listen(): void;
     private initializeMiddlewares;
     private initializeControllers;
-    private initializeErrorHandling;
+    private initializeErrorMiddleware;
     private connectToTheDatabase;
 }

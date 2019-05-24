@@ -18,6 +18,7 @@ export class App {
     this.connectToTheDatabase();
     this.initializeMiddlewares();
     this.initializeControllers(controllers);
+    this.initializeErrorMiddleware()
     this._port = config.get("PORT");
   }
  
@@ -38,7 +39,7 @@ export class App {
       this.app.use('/', controller.router);
     });
   }
-  private initializeErrorHandling() {
+  private initializeErrorMiddleware() {
     this._excpetionMiddleware = new exceptionMiddleware.ExceptionMiddleware();
    this.app.use( this._excpetionMiddleware.errorMiddleware);
 } 

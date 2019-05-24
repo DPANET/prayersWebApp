@@ -8,6 +8,7 @@ import { isNullOrUndefined } from "util";
 import Configurator from "@dpanet/prayers-lib/lib/configurators/configuration";
 import { NextFunction, NextHandleFunction } from "connect";
 import { runInNewContext } from "vm";
+import { HttpException } from "../exceptions/exception.handler";
 
 
 export default class PrayersController implements IController {
@@ -48,7 +49,7 @@ export default class PrayersController implements IController {
             response.json(this.createPrayerViewRow(this.createPrayerView(this._prayerManager.getPrayers())));
         } catch (err) {
             debug(err);
-            next(err);
+            next(new HttpException(404,err.message));
         }
     }
     private buildPrayerConfigObject(prayerConfigObject: any): prayerlib.IPrayersConfig {
@@ -89,7 +90,7 @@ export default class PrayersController implements IController {
         }
         catch (err) {
             debug(err);
-            next(err);
+            next(new HttpException(404,err.message));
 
         }
     }
@@ -101,7 +102,7 @@ export default class PrayersController implements IController {
         }
         catch (err) {
             debug(err);
-            next(err);
+            next(new HttpException(404,err.message));
         }
     }
     private getPrayers = (request: express.Request, response: express.Response, next: NextFunction) => {
@@ -111,7 +112,7 @@ export default class PrayersController implements IController {
         }
         catch (err) {
             debug(err);
-            next(err);
+            next(new HttpException(404,err.message));
         }
     }
     private getPrayerView = (request: express.Request, response: express.Response, next: NextFunction) => {
@@ -121,7 +122,7 @@ export default class PrayersController implements IController {
         }
         catch (err) {
             debug(err);
-            next(err);
+            next(new HttpException(404,err.message));
         }
 
     }
@@ -132,7 +133,7 @@ export default class PrayersController implements IController {
         }
         catch (err) {
             debug(err);
-            next(err);
+            next(new HttpException(404,err.message));
         }
     }
     private createPrayerViewRow(prayersView: IPrayersView[]) {
