@@ -5,10 +5,13 @@ import path from "path";
 import * as bodyParser from 'body-parser';
 import {IController} from "../controllers/controllers.interface";
 import * as prayerController from "../controllers/prayers.controller"
+import * as exceptionMiddleware from "../middlewares/exceptions.middleware";
 
 export class App {
   public app: express.Application;
   private _port: number;
+  private _excpetionMiddleware:exceptionMiddleware.ExceptionMiddleware;
+
   constructor(controllers: IController[]) {
     this.app = express();
  
@@ -35,7 +38,10 @@ export class App {
       this.app.use('/', controller.router);
     });
   }
- 
+  private initializeErrorHandling() {
+    this._excpetionMiddleware = new exceptionMiddleware.ExceptionMiddleware();
+   this.app.use( this._excpetionMiddleware.errorMiddleware);
+} 
   private connectToTheDatabase() {
 
   }

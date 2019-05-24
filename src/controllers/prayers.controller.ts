@@ -10,8 +10,8 @@ import { NextFunction, NextHandleFunction } from "connect";
 import { runInNewContext } from "vm";
 
 
-
 export default class PrayersController implements IController {
+
 
 
     path: string;
@@ -23,6 +23,8 @@ export default class PrayersController implements IController {
         this.router = express.Router();
         this.initializeRoutes();
         this.initializePrayerManger();
+ 
+
     }
     private initializeRoutes() {
         this.router.get(this.path + "/PrayersAdjustments", this.getPrayerAdjsutments);
@@ -33,6 +35,7 @@ export default class PrayersController implements IController {
         this.router.get(this.path + "/PrayersViewMobile", this.getPrayersByCalculation);
         this.router.put(this.path + "/PrayersSettings/:id", this.putPrayersSettings);
     }
+
     private getPrayersByCalculation = async (request: express.Request, response: express.Response, next: express.NextFunction) => {
         try {
             let prayerConfig: prayerlib.IPrayersConfig = this.buildPrayerConfigObject(request.query);
