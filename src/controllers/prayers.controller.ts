@@ -10,7 +10,9 @@ import { NextFunction, NextHandleFunction } from "connect";
 import { runInNewContext } from "vm";
 import { HttpException } from "../exceptions/exception.handler";
 
-
+import * as validationController from "../middlewares/validations.middleware"
+import { validators } from "@dpanet/prayers-lib";
+import { request } from "https";
 export default class PrayersController implements IController {
 
 
@@ -19,9 +21,11 @@ export default class PrayersController implements IController {
     router: express.Router;
     private _prayersController: PrayersController;
     private _prayerManager: prayerlib.IPrayerManager;
+    private _validationController:validationController.ValidationMiddleware;
     constructor() {
         this.path = "/PrayerManager";
         this.router = express.Router();
+        this._validationController = new validationController.ValidationMiddleware();
         this.initializeRoutes();
         this.initializePrayerManger();
  
@@ -33,8 +37,13 @@ export default class PrayersController implements IController {
         this.router.get(this.path + "/Prayers", this.getPrayers);
         this.router.get(this.path + "/PrayersViewDesktop", this.getPrayerView);
         //this.router.get(this.path + "/PrayersViewMobile", this.getPrayerViewRow);
-        this.router.get(this.path + "/PrayersViewMobile", this.getPrayersByCalculation);
+        this.router.get(this.path + "/PrayersViewMobile", this._validationController.validationMiddleware(validators.ConfigValidator.createValidator()),this.getPrayersByCalculation);
         this.router.put(this.path + "/PrayersSettings/:id", this.putPrayersSettings);
+    }
+    private validateConfig= async(request: express.Request, response: express.Response, next: express.NextFunction)=>
+    {
+     //  await this._validationController.validationMiddleware(validators.ConfigValidator.createValidator(),request.query);
+       // next();
     }
 
     private getPrayersByCalculation = async (request: express.Request, response: express.Response, next: express.NextFunction) => {

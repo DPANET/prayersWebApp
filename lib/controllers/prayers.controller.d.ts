@@ -5,8 +5,10 @@ export default class PrayersController implements IController {
     router: express.Router;
     private _prayersController;
     private _prayerManager;
+    private _validationController;
     constructor();
     private initializeRoutes;
+    private validateConfig;
     private getPrayersByCalculation;
     private buildPrayerConfigObject;
     private putPrayersSettings;
