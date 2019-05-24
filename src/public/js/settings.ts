@@ -14,15 +14,16 @@ const DataTable = require("datatables.net")(window, $);
 const daterangepicker =require( "daterangepicker");
 const DataTableResp = require("datatables.net-responsive")(window, $);
 const DataTableRowGroup = require("datatables.net-rowgroup")(window, $);
-import noty = require("noty");
+import Noty from "noty";
 export async function buildObject() {
+    let noty:Noty;
     try {
 
         //      setTimeout(() => {
        await $('document').ready(async () => {
             await loadPrayerAdjustments();
             await loadPrayerPrayerSettings();
-            loadNotification();
+            noty=loadNotification();
             $("#view-button").on("click", refreshDataTable);
             
         }
@@ -31,46 +32,29 @@ export async function buildObject() {
     }
     catch (err) {
     //    alert(err);
-        $.noty.setText("Error",err.message);
+        noty.setText("Error",err.message);
+        noty.show();
     }
 }
-function loadNotification():any {
-    $.noty.defaults = {
+function loadNotification():Noty {
+  return  new Noty( {
         layout: 'top',
-        theme: 'bootstrapTheme', // or relax
+        theme: "bootstrap-v4", // or relax
         type: 'error', // success, error, warning, information, notification
         text: '', // [string|html] can be HTML or STRING
-      
-        dismissQueue: true, // [boolean] If you want to use queue feature set this true
-        force: false, // [boolean] adds notification to the beginning of queue when set to true
-        maxVisible: 5, // [integer] you can set max visible notification count for dismissQueue true option,
-      
-        template: '<div class="noty_message"><span class="noty_text"></span><div class="noty_close"></div></div>',
-      
+        force: false, // [boolean] adds notification to the beginning of queue when set to true      
         timeout: false, // [integer|boolean] delay for closing event in milliseconds. Set false for sticky notifications
         progressBar: false, // [boolean] - displays a progress bar
       
         animation: {
-          open: {height: 'toggle'}, // or Animate.css class names like: 'animated bounceInLeft'
-          close: {height: 'toggle'}, // or Animate.css class names like: 'animated bounceOutLeft'
-          easing: 'swing',
-          speed: 500 // opening & closing animation speed
+          open: "noty_effects_open", // or Animate.css class names like: 'animated bounceInLeft'
+          close: "noty_effects_close", // or Animate.css class names like: 'animated bounceOutLeft'
         },
         closeWith: ['click'], // ['click', 'button', 'hover', 'backdrop'] // backdrop click will close all notifications
       
         modal: false, // [boolean] if true adds an overlay
         killer: false, // [boolean] if true closes all notifications and shows itself
-      
-        callback: {
-          onShow: function() {},
-          afterShow: function() {},
-          onClose: function() {},
-          afterClose: function() {},
-          onCloseClick: function() {},
-        },
-      
-        buttons: false // [boolean|array] an array of buttons, for creating confirmation dialogs.
-      };
+      });
 }
 
 function refreshParams():any

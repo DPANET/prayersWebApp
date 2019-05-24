@@ -58,7 +58,6 @@
     "@types/debug": "^4.1.4",
     "@types/hapi__joi": "^15.0.1",
     "@types/jquery": "^3.3.29",
-    "@types/jquery.noty": "^2.4.3",
     "@types/lodash": "^4.14.132",
     "@types/lowdb": "^1.0.9",
     "@types/moment": "^2.13.0",
