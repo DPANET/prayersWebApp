@@ -400,7 +400,11 @@ ol,
 form {
   margin-bottom: 1 rem; }
 
-
+/* Notification
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+.noty_layout > .noty_bar {
+  height: 3em;
+}
 /* Utilities
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
 .u-full-width {
