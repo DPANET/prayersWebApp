@@ -7,14 +7,13 @@ import $ = require('jquery');
 import * as prayerlib from "../../models/prayers.model";
 //import daterangepicker from "daterangepicker";
 import moment from "moment";
-import { IPrayersConfig, PrayerAdjustment, AdjsutmentMethod } from "@dpanet/prayers-lib";
-
+import Noty from "noty";
 
 const DataTable = require("datatables.net")(window, $);
 const daterangepicker =require( "daterangepicker");
 const DataTableResp = require("datatables.net-responsive")(window, $);
 const DataTableRowGroup = require("datatables.net-rowgroup")(window, $);
-import Noty from "noty";
+
 export async function buildObject() {
     let noty:Noty;
     try {
@@ -23,37 +22,45 @@ export async function buildObject() {
        await $('document').ready(async () => {
             await loadPrayerAdjustments();
             await loadPrayerPrayerSettings();
-            noty=loadNotification();
             $("#view-button").on("click", refreshDataTable);
-            
+           // $('#submit-button').on("click",notify);
+               
         }
         );
 
     }
     catch (err) {
-    //    alert(err);
-        noty.setText("Error",err.message);
-        noty.show();
+     alert(err);
+
     }
+}
+function notify(message:string)
+{    
+    
+    let noty:Noty=loadNotification();
+
+    noty.setText(message,true);
+    noty.show();
+    
+
 }
 function loadNotification():Noty {
   return  new Noty( {
         layout: 'top',
-        theme: "bootstrap-v4", // or relax
-        type: 'error', // success, error, warning, information, notification
-        text: '', // [string|html] can be HTML or STRING
+        theme:"bootstrap-v4",
+        type: "error", // success, error, warning, information, notification
+        text: 'Test Hi', // [string|html] can be HTML or STRING
         force: false, // [boolean] adds notification to the beginning of queue when set to true      
         timeout: false, // [integer|boolean] delay for closing event in milliseconds. Set false for sticky notifications
         progressBar: false, // [boolean] - displays a progress bar
-      
         animation: {
-          open: "noty_effects_open", // or Animate.css class names like: 'animated bounceInLeft'
-          close: "noty_effects_close", // or Animate.css class names like: 'animated bounceOutLeft'
+            open: 'animated fadeInDown', // Animate.css class names
+            close: 'animated fadeOutUp' // Animate.css class names
         },
         closeWith: ['click'], // ['click', 'button', 'hover', 'backdrop'] // backdrop click will close all notifications
       
         modal: false, // [boolean] if true adds an overlay
-        killer: false, // [boolean] if true closes all notifications and shows itself
+        killer: true, // [boolean] if true closes all notifications and shows itself
       });
 }
 
@@ -68,14 +75,14 @@ function refreshParams():any
         {prayerName:prayerlib.PrayersName.ISHA, adjustments: $("#isha-time").val()as number},
         );
 
-    let prayersConfig:IPrayersConfig = {
+    let prayersConfig:prayerlib.IPrayersConfig = {
     
         method :$("#method").val() as prayerlib.Methods,
         school : $("#school").val() as prayerlib.Schools,
         latitudeAdjustment : $("#latitude").val()as prayerlib.LatitudeMethod,
         midnight:$("#midnight").val() as prayerlib.MidnightMode,
         adjustments: prayerAdjustment,
-        adjustmentMethod: AdjsutmentMethod.Server,
+        adjustmentMethod: prayerlib.AdjsutmentMethod.Server,
         startDate :$("#prayer-time-period").data('daterangepicker').startDate.toDate(),
         endDate:$("#prayer-time-period").data('daterangepicker').endDate.toDate()
 
@@ -84,18 +91,25 @@ function refreshParams():any
         
 }
 async function refreshDataTable() {
+    try {
     if($('#prayers-table-mobile').is(':hidden'))
     {
         await loadDataTable();
         $('#prayers-table-mobile').show();
     }
     else{
-         $('#prayers-table-mobile').DataTable().ajax.reload();
+        await $('#prayers-table-mobile').DataTable().ajax.reload();
     }
+}catch(err)
+{
+    let noty:Noty= loadNotification();
+    noty.setText(err.message,true);
+    noty.show();
+}
 
 }
 async function  loadDataTable() {
-
+    $.fn.dataTable.ext.errMode='throw';
   await  $('#prayers-table-mobile').DataTable(
         {
             ajax: {
@@ -105,6 +119,8 @@ async function  loadDataTable() {
                     
                     return refreshParams();
                 },
+                error: (jqXHR: JQueryXHR,textStatus:string,errorThrown:string)=> notify(jqXHR.responseJSON),
+
                 dataSrc: (d)=>{return d;}
             },
             autoWidth: false,
@@ -112,6 +128,7 @@ async function  loadDataTable() {
             paging: true,
             ordering: false,
             responsive: true,
+
             rowGroup:
             {
                 dataSrc: 'prayerDate'
@@ -122,6 +139,9 @@ async function  loadDataTable() {
             ]
         }
     );
+    // $('#prayers-table-mobile')
+    // .on( 'error.dt',  ( e, settings, techNote, message ) => notify(`Error Number: ${techNote} Messeage: ${message}`))
+    // .DataTable();
  
 }
 
