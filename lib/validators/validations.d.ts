@@ -1,1 +1,1 @@
-export * from "@dpanet/prayers-lib/lib/validators/validator";
+export { validators } from "@dpanet/prayers-lib/lib/validators/validator";

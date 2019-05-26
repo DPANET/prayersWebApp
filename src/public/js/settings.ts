@@ -2,6 +2,8 @@ import $ = require('jquery');
 import * as prayerlib from "../../models/prayers.model";
 import moment from "moment";
 import Noty from "noty";
+import { isNullOrUndefined } from 'util';
+import {validators} from "../../validators/validations";
 const DataTable = require("datatables.net")(window, $);
 const daterangepicker = require("daterangepicker");
 const DataTableResp = require("datatables.net-responsive")(window, $);
@@ -48,7 +50,7 @@ function loadNotification(): Noty {
     });
 }
 
-function refreshParams(): any {
+function refreshParams(): prayerlib.IPrayersConfig {
     let prayerAdjustment: prayerlib.IPrayerAdjustments[] = new Array<prayerlib.IPrayerAdjustments>();
     prayerAdjustment.push(
         { prayerName: prayerlib.PrayersName.FAJR, adjustments: $("#fajr-time").val() as number },
@@ -67,7 +69,31 @@ function refreshParams(): any {
         startDate: $("#prayer-time-period").data('daterangepicker').startDate.toDate(),
         endDate: $("#prayer-time-period").data('daterangepicker').endDate.toDate()
     }
+   
     return prayersConfig;
+
+}
+    //notify(validator.getValidationError().message);
+
+
+
+
+function validateForm():boolean
+{
+   let prayersConfig: prayerlib.IPrayersConfig =refreshParams();
+   let validator:validators.IValid<prayerlib.IPrayersConfig> =validators.ConfigValidator.createValidator();
+   let result:boolean = validator.validate(prayersConfig);
+   if(result)
+   return result;
+   else
+   {
+   let err:validators.IValidationError = validator.getValidationError();
+   let message:string[] = err.details.map((detail:any)=>`${detail.value.label} with value ${detail.value.value}: ${detail.message}`);
+
+   let messageShort = message.reduce((prvs,curr,index,array)=> prvs.concat(' <br>',curr));
+   
+   throw new Error(messageShort);
+   }
 
 }
 async function refreshDataTable() {
@@ -77,6 +103,8 @@ async function refreshDataTable() {
             $('#prayers-table-mobile').show();
         }
         else {
+            let result:boolean = validateForm();
+            if(result)
             await $('#prayers-table-mobile').DataTable().ajax.reload();
         }
     } catch (err) {
@@ -94,11 +122,16 @@ async function loadDataTable() {
                 url: 'PrayerManager/PrayersViewMobile',
                 type: 'GET',
                 data: (d) => {
-
+                    try{
                     return refreshParams();
-                },
-                error: (jqXHR: JQueryXHR, textStatus: string, errorThrown: string) => notify(jqXHR.responseJSON.message),
+                    }
+                    catch(err)
+                    {
+                        notify(err.message);
+                    }
 
+                },
+                error: dataRefreshErrorHandler,
                 dataSrc: (d) => { return d; }
             },
             autoWidth: false,
@@ -106,7 +139,12 @@ async function loadDataTable() {
             paging: true,
             ordering: false,
             responsive: true,
-
+            language:{
+                loadingRecords: "Loading...",
+                processing:     "Processing...",
+                zeroRecords: "No records to display",
+                emptyTable: "No data available in table"
+            },
             rowGroup:
             {
                 dataSrc: 'prayerDate'
@@ -117,13 +155,16 @@ async function loadDataTable() {
             ]
         }
     );
-    // $('#prayers-table-mobile')
-    // .on( 'error.dt',  ( e, settings, techNote, message ) => notify(`Error Number: ${techNote} Messeage: ${message}`))
-    // .DataTable();
-
 }
 
-
+async function dataRefreshErrorHandler(jqXHR: JQueryXHR, textStatus: string, errorThrown: string)
+{
+    if(jqXHR.status >=400 && !isNullOrUndefined(jqXHR.responseJSON.message))
+        notify(jqXHR.responseJSON.message);
+    else
+        notify(errorThrown);
+    $('#prayers-table-mobile').DataTable().clear().draw();
+}
 async function loadPrayerPrayerSettings() {
     await $.ajax({
         url: "PrayerManager/PrayersSettings", success: (prayerSettings: prayerlib.IPrayersSettings) => {

@@ -403,7 +403,9 @@ form {
 /* Notification
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
 .noty_layout > .noty_bar {
-  height: 3em;
+  min-height: 3em;
+  max-width: 1150px;
+
 }
 /* Utilities
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
