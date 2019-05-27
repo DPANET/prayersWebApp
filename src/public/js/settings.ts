@@ -9,6 +9,8 @@ const daterangepicker = require("daterangepicker");
 const DataTableResp = require("datatables.net-responsive")(window, $);
 const DataTableRowGroup = require("datatables.net-rowgroup")(window, $);
 
+
+
 export async function buildObject() {
     let noty: Noty;
     try {

@@ -9,15 +9,14 @@ import Configurator from "@dpanet/prayers-lib/lib/configurators/configuration";
 import { NextFunction, NextHandleFunction } from "connect";
 import { runInNewContext } from "vm";
 import { HttpException } from "../exceptions/exception.handler";
-
+import * as sentry from "@sentry/node";
 import * as validationController from "../middlewares/validations.middleware"
 import { validators } from "@dpanet/prayers-lib";
 import { request } from "https";
+sentry.init({ dsn:process.env.DNS  });
+
 export default class PrayersController implements IController {
-
-
-
-    path: string;
+ path: string;
     router: express.Router;
     private _prayersController: PrayersController;
     private _prayerManager: prayerlib.IPrayerManager;
@@ -28,9 +27,7 @@ export default class PrayersController implements IController {
         this._validationController = new validationController.ValidationMiddleware();
         this.initializeRoutes();
         this.initializePrayerManger();
- 
-
-    }
+     }
     private initializeRoutes() {
         this.router.get(this.path + "/PrayersAdjustments", this.getPrayerAdjsutments);
         this.router.get(this.path + "/PrayersSettings", this.getPrayersSettings);
@@ -42,8 +39,8 @@ export default class PrayersController implements IController {
     }
     private validateConfig= async(request: express.Request, response: express.Response, next: express.NextFunction)=>
     {
-     //  await this._validationController.validationMiddleware(validators.ConfigValidator.createValidator(),request.query);
-       // next();
+        // await this._validationController.validationMiddleware(validators.ConfigValidator.createValidator(),request.query);
+         // next();
     }
 
     private getPrayersByCalculation = async (request: express.Request, response: express.Response, next: express.NextFunction) => {
@@ -121,6 +118,7 @@ export default class PrayersController implements IController {
         }
         catch (err) {
             debug(err);
+            
             next(new HttpException(404,err.message));
         }
     }
