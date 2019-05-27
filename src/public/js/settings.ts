@@ -18,6 +18,7 @@ export async function buildObject() {
             await loadPrayerAdjustments();
             await loadPrayerPrayerSettings();
             $("#view-button").on("click", refreshDataTable);
+            $("#submit-button").on("click", refreshDataTable);
         }
         );
     }
@@ -95,11 +96,25 @@ async function refreshDataTable() {
             $('#prayers-table-mobile').show();
         }
         else {
-            let result: boolean =true// validateForm();
+            let result: boolean = validateForm();
             if (result)
                 await $('#prayers-table-mobile').DataTable().ajax.reload();
         }
     } catch (err) {
+        let noty: Noty = loadNotification();
+        noty.setText(err.message, true);
+        noty.show();
+    }
+
+}
+async function saveDataTable() {
+    try {
+            let result: boolean = validateForm();
+            if (result)
+                await $('#prayers-table-mobile').DataTable().ajax.reload();
+        
+    } 
+    catch (err) {
         let noty: Noty = loadNotification();
         noty.setText(err.message, true);
         noty.show();
