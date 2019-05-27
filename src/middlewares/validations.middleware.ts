@@ -5,6 +5,9 @@ import * as exceptionHandler from '../exceptions/exception.handler';
 import * as val from '../validators/validations';
 import valiadtors = val.validators;
 import { validators } from '../validators/validations';
+import * as sentry from "@sentry/node";
+sentry.init({ dsn:process.env.DSN  });
+
 export class ValidationMiddleware {
     constructor() {
     }
@@ -24,6 +27,7 @@ export class ValidationMiddleware {
                     if (err.name === "ValidationError")
                         message = err.details.map((detail: any) => `${detail.value.label} with value ${detail.value.value}: ${detail.message}`);
                     debug(message);
+                    sentry.captureException(err);
                     next(new exceptionHandler.HttpException(400, message.reduce((prvs, curr) => prvs.concat('\r\n', curr))));
                     break;
             }

@@ -13,8 +13,7 @@ import * as sentry from "@sentry/node";
 import * as validationController from "../middlewares/validations.middleware"
 import { validators } from "@dpanet/prayers-lib";
 import { request } from "https";
-sentry.init({ dsn:process.env.DNS  });
-
+sentry.init({ dsn:process.env.DSN  });
 export default class PrayersController implements IController {
  path: string;
     router: express.Router;
@@ -55,6 +54,7 @@ export default class PrayersController implements IController {
             response.json(this.createPrayerViewRow(this.createPrayerView(this._prayerManager.getPrayers())));
         } catch (err) {
             debug(err);
+            sentry.captureException(err);
             next(new HttpException(404,err.message));
         }
     }
@@ -96,6 +96,8 @@ export default class PrayersController implements IController {
         }
         catch (err) {
             debug(err);
+            sentry.captureException(err);
+
             next(new HttpException(404,err.message));
 
         }
@@ -108,6 +110,8 @@ export default class PrayersController implements IController {
         }
         catch (err) {
             debug(err);
+            sentry.captureException(err);
+
             next(new HttpException(404,err.message));
         }
     }
@@ -118,7 +122,8 @@ export default class PrayersController implements IController {
         }
         catch (err) {
             debug(err);
-            
+            sentry.captureException(err);
+
             next(new HttpException(404,err.message));
         }
     }
@@ -129,6 +134,8 @@ export default class PrayersController implements IController {
         }
         catch (err) {
             debug(err);
+            sentry.captureException(err);
+
             next(new HttpException(404,err.message));
         }
 
@@ -140,6 +147,8 @@ export default class PrayersController implements IController {
         }
         catch (err) {
             debug(err);
+            sentry.captureException(err);
+
             next(new HttpException(404,err.message));
         }
     }
@@ -196,6 +205,8 @@ export default class PrayersController implements IController {
         }
         catch (err) {
             debug(err);
+            sentry.captureException(err);
+
             throw err;
         }
     }

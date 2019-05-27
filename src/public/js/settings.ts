@@ -95,7 +95,7 @@ async function refreshDataTable() {
             $('#prayers-table-mobile').show();
         }
         else {
-            let result: boolean = validateForm();
+            let result: boolean =true// validateForm();
             if (result)
                 await $('#prayers-table-mobile').DataTable().ajax.reload();
         }
