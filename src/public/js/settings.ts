@@ -25,9 +25,10 @@ export async function buildObject() {
         noty.show();
     }
 }
-function notify(message: string) {
+function notify(type:Noty.Type,message: string) {
     let noty: Noty = loadNotification();
     noty.setText(message, true);
+    noty.setType(type);
     noty.show();
 }
 function loadNotification(): Noty {
@@ -104,7 +105,13 @@ async function saveDataTable() {
             let prayersConfig: prayerlib.IPrayersConfig = refreshPrayerConfigForm();
             let result: boolean = validateForm(prayersConfig);
             if (result)
-                await $('#prayers-table-mobile').DataTable().ajax.reload();      
+            {
+                await $.ajax({
+                    url: "PrayerManager/PrayersViewMobile",type:"PUT",
+                    error:genericErrorHandler,
+                     success: ()=>notify("success","Configuration is saved")
+                    });
+            }      
     } 
     catch (err) {
         let noty: Noty = loadNotification();
@@ -124,7 +131,7 @@ async function loadDataTable() {
                         return refreshPrayerConfigForm();
                     }
                     catch (err) {
-                        notify(err.message);
+                        notify("error",err.message);
                     }
                 },
                 error: dataRefreshErrorHandler,
@@ -154,14 +161,22 @@ async function loadDataTable() {
 }
 async function dataRefreshErrorHandler(jqXHR: JQueryXHR, textStatus: string, errorThrown: string) {
     if (jqXHR.status >= 400 && !isNullOrUndefined(jqXHR.responseJSON.message))
-        notify(jqXHR.responseJSON.message);
+        notify("error",jqXHR.responseJSON.message);
     else
-        notify(errorThrown);
+        notify("error",errorThrown);
     $('#prayers-table-mobile').DataTable().clear().draw();
+}
+async function genericErrorHandler(jqXHR: JQueryXHR, textStatus: string, errorThrown: string) {
+    if (jqXHR.status >= 400 && !isNullOrUndefined(jqXHR.responseJSON.message))
+        notify("error",jqXHR.responseJSON.message);
+    else
+        notify("error",errorThrown);
 }
 async function loadPrayerPrayerSettings() {
     await $.ajax({
-        url: "PrayerManager/PrayersSettings", success: (prayerSettings: prayerlib.IPrayersSettings) => {
+        url: "PrayerManager/PrayersSettings",
+        error:genericErrorHandler,
+        success: (prayerSettings: prayerlib.IPrayersSettings) => {
             $("#method").val(prayerSettings.method.id);
             $("#school").val(prayerSettings.school.id);
             $("#latitude").val(prayerSettings.latitudeAdjustment.id);
@@ -172,12 +187,14 @@ async function loadPrayerPrayerSettings() {
                     endDate: moment(prayerSettings.endDate)
                 }
             )
-        }
+        },
     });
 }
 async function loadPrayerAdjustments() {
     await $.ajax({
-        url: "PrayerManager/PrayersAdjustments/", success: (prayerAdjustment: prayerlib.IPrayerAdjustments[]) => {
+        url: "PrayerManager/PrayersAdjustments/",         
+        error:genericErrorHandler,
+        success: (prayerAdjustment: prayerlib.IPrayerAdjustments[]) => {
             prayerAdjustment.forEach(element => {
                 switch (element.prayerName) {
                     case "Fajr": $("#fajr-time").val(element.adjustments);

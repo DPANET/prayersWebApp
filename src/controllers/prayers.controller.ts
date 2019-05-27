@@ -7,12 +7,10 @@ import moment from "moment";
 import { isNullOrUndefined } from "util";
 import Configurator from "@dpanet/prayers-lib/lib/configurators/configuration";
 import { NextFunction, NextHandleFunction } from "connect";
-import { runInNewContext } from "vm";
 import { HttpException } from "../exceptions/exception.handler";
 import * as sentry from "@sentry/node";
 import * as validationController from "../middlewares/validations.middleware"
 import { validators } from "@dpanet/prayers-lib";
-import { request } from "https";
 sentry.init({ dsn:process.env.DSN  });
 export default class PrayersController implements IController {
  path: string;
@@ -33,15 +31,26 @@ export default class PrayersController implements IController {
         this.router.get(this.path + "/Prayers", this.getPrayers);
         this.router.get(this.path + "/PrayersViewDesktop", this.getPrayerView);
         //this.router.get(this.path + "/PrayersViewMobile", this.getPrayerViewRow);
-        this.router.get(this.path + "/PrayersViewMobile", this._validationController.validationMiddleware(validators.ConfigValidator.createValidator()),this.getPrayersByCalculation);
+        this.router.get(this.path + "/PrayersViewMobile", 
+        this._validationController.validationMiddleware( validationController.ParameterType.query,validators.ConfigValidator.createValidator()),this.getPrayersByCalculation);
+        this.router.put(this.path + "/PrayersViewMobile", 
+        this._validationController.validationMiddleware( validationController.ParameterType.body,validators.ConfigValidator.createValidator()),this.updatePrayersByCalculation);
+
         this.router.put(this.path + "/PrayersSettings/:id", this.putPrayersSettings);
     }
-    private validateConfig= async(request: express.Request, response: express.Response, next: express.NextFunction)=>
-    {
-        // await this._validationController.validationMiddleware(validators.ConfigValidator.createValidator(),request.query);
-         // next();
+    private updatePrayersByCalculation=(request: express.Request, response: express.Response, next: express.NextFunction) =>{
+        try{
+            let prayerConfig: prayerlib.IPrayersConfig = this.buildPrayerConfigObject(request.query);
+            this._prayerManager.savePrayerConfig(prayerConfig);
+            }
+            catch(err)
+            {
+                debug(err);
+                sentry.captureException(err);
+                next(new HttpException(404,err.message));
+            }
+        
     }
-
     private getPrayersByCalculation = async (request: express.Request, response: express.Response, next: express.NextFunction) => {
         try {
             let prayerConfig: prayerlib.IPrayersConfig = this.buildPrayerConfigObject(request.query);

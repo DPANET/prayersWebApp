@@ -7,17 +7,26 @@ import valiadtors = val.validators;
 import { validators } from '../validators/validations';
 import * as sentry from "@sentry/node";
 sentry.init({ dsn:process.env.DSN  });
-
+export const enum ParameterType
+{
+    query=0,
+    body
+}
 export class ValidationMiddleware {
     constructor() {
     }
 
-    validationMiddleware<T>(validator: valiadtors.IValid<T>): express.RequestHandler {
+    validationMiddleware<T>(prameterType:ParameterType,validator: valiadtors.IValid<T>): express.RequestHandler {
         let result: boolean = false;
         let err: validators.IValidationError;
         let message: string[];
+        let object:any ;
         return (req, res, next) => {
-            result = validator.validate(req.query);
+            if(prameterType===ParameterType.body)
+                object = req.body;
+            else
+                object= req.query;
+            result = validator.validate(object);
             switch (result) {
                 case true:
                     next();
