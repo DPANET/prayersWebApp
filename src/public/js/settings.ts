@@ -108,6 +108,7 @@ async function saveDataTable() {
             {
                 await $.ajax({
                     url: "PrayerManager/PrayersViewMobile",type:"PUT",
+                    data: JSON.stringify(prayersConfig),
                     error:genericErrorHandler,
                      success: ()=>notify("success","Configuration is saved")
                     });
