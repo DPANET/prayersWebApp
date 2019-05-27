@@ -3,7 +3,7 @@ import * as prayerlib from "../../models/prayers.model";
 import moment from "moment";
 import Noty from "noty";
 import { isNullOrUndefined } from 'util';
-import {validators} from "../../validators/validations";
+import { validators } from "../../validators/validations";
 const DataTable = require("datatables.net")(window, $);
 const daterangepicker = require("daterangepicker");
 const DataTableResp = require("datatables.net-responsive")(window, $);
@@ -49,7 +49,6 @@ function loadNotification(): Noty {
         killer: true, // [boolean] if true closes all notifications and shows itself
     });
 }
-
 function refreshParams(): prayerlib.IPrayersConfig {
     let prayerAdjustment: prayerlib.IPrayerAdjustments[] = new Array<prayerlib.IPrayerAdjustments>();
     prayerAdjustment.push(
@@ -69,31 +68,22 @@ function refreshParams(): prayerlib.IPrayersConfig {
         startDate: $("#prayer-time-period").data('daterangepicker').startDate.toDate(),
         endDate: $("#prayer-time-period").data('daterangepicker').endDate.toDate()
     }
-   
     return prayersConfig;
-
 }
-    //notify(validator.getValidationError().message);
+function validateForm(): boolean {
+    let prayersConfig: prayerlib.IPrayersConfig = refreshParams();
+    let validator: validators.IValid<prayerlib.IPrayersConfig> = validators.ConfigValidator.createValidator();
+    let result: boolean = validator.validate(prayersConfig);
+    if (result)
+        return result;
+    else {
+        let err: validators.IValidationError = validator.getValidationError();
+        let message: string[] = err.details.map((detail: any) => `${detail.value.label} with value ${detail.value.value}: ${detail.message}`);
 
+        let messageShort = message.reduce((prvs, curr, index, array) => prvs.concat(' <br>', curr));
 
-
-
-function validateForm():boolean
-{
-   let prayersConfig: prayerlib.IPrayersConfig =refreshParams();
-   let validator:validators.IValid<prayerlib.IPrayersConfig> =validators.ConfigValidator.createValidator();
-   let result:boolean = validator.validate(prayersConfig);
-   if(result)
-   return result;
-   else
-   {
-   let err:validators.IValidationError = validator.getValidationError();
-   let message:string[] = err.details.map((detail:any)=>`${detail.value.label} with value ${detail.value.value}: ${detail.message}`);
-
-   let messageShort = message.reduce((prvs,curr,index,array)=> prvs.concat(' <br>',curr));
-   
-   throw new Error(messageShort);
-   }
+        throw new Error(messageShort);
+    }
 
 }
 async function refreshDataTable() {
@@ -103,9 +93,9 @@ async function refreshDataTable() {
             $('#prayers-table-mobile').show();
         }
         else {
-            let result:boolean = validateForm();
-            if(result)
-            await $('#prayers-table-mobile').DataTable().ajax.reload();
+            let result: boolean = validateForm();
+            if (result)
+                await $('#prayers-table-mobile').DataTable().ajax.reload();
         }
     } catch (err) {
         let noty: Noty = loadNotification();
@@ -122,14 +112,12 @@ async function loadDataTable() {
                 url: 'PrayerManager/PrayersViewMobile',
                 type: 'GET',
                 data: (d) => {
-                    try{
-                    return refreshParams();
+                    try {
+                        return refreshParams();
                     }
-                    catch(err)
-                    {
+                    catch (err) {
                         notify(err.message);
                     }
-
                 },
                 error: dataRefreshErrorHandler,
                 dataSrc: (d) => { return d; }
@@ -139,9 +127,9 @@ async function loadDataTable() {
             paging: true,
             ordering: false,
             responsive: true,
-            language:{
+            language: {
                 loadingRecords: "Loading...",
-                processing:     "Processing...",
+                processing: "Processing...",
                 zeroRecords: "No records to display",
                 emptyTable: "No data available in table"
             },
@@ -156,10 +144,8 @@ async function loadDataTable() {
         }
     );
 }
-
-async function dataRefreshErrorHandler(jqXHR: JQueryXHR, textStatus: string, errorThrown: string)
-{
-    if(jqXHR.status >=400 && !isNullOrUndefined(jqXHR.responseJSON.message))
+async function dataRefreshErrorHandler(jqXHR: JQueryXHR, textStatus: string, errorThrown: string) {
+    if (jqXHR.status >= 400 && !isNullOrUndefined(jqXHR.responseJSON.message))
         notify(jqXHR.responseJSON.message);
     else
         notify(errorThrown);
@@ -182,10 +168,8 @@ async function loadPrayerPrayerSettings() {
     });
 }
 async function loadPrayerAdjustments() {
-
     await $.ajax({
         url: "PrayerManager/PrayersAdjustments/", success: (prayerAdjustment: prayerlib.IPrayerAdjustments[]) => {
-
             prayerAdjustment.forEach(element => {
                 switch (element.prayerName) {
                     case "Fajr": $("#fajr-time").val(element.adjustments);
