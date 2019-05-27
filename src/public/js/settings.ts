@@ -8,9 +8,6 @@ const DataTable = require("datatables.net")(window, $);
 const daterangepicker = require("daterangepicker");
 const DataTableResp = require("datatables.net-responsive")(window, $);
 const DataTableRowGroup = require("datatables.net-rowgroup")(window, $);
-
-
-
 export async function buildObject() {
     let noty: Noty;
     try {
@@ -18,7 +15,7 @@ export async function buildObject() {
             await loadPrayerAdjustments();
             await loadPrayerPrayerSettings();
             $("#view-button").on("click", refreshDataTable);
-            $("#submit-button").on("click", refreshDataTable);
+            $("#submit-button").on("click", saveDataTable);
         }
         );
     }
@@ -47,12 +44,11 @@ function loadNotification(): Noty {
             close: 'animated slideOutUp' // Animate.css class names
         },
         closeWith: ['click', 'button'], // ['click', 'button', 'hover', 'backdrop'] // backdrop click will close all notifications
-
         modal: false, // [boolean] if true adds an overlay
         killer: true, // [boolean] if true closes all notifications and shows itself
     });
 }
-function refreshParams(): prayerlib.IPrayersConfig {
+function refreshPrayerConfigForm(): prayerlib.IPrayersConfig {
     let prayerAdjustment: prayerlib.IPrayerAdjustments[] = new Array<prayerlib.IPrayerAdjustments>();
     prayerAdjustment.push(
         { prayerName: prayerlib.PrayersName.FAJR, adjustments: $("#fajr-time").val() as number },
@@ -73,8 +69,7 @@ function refreshParams(): prayerlib.IPrayersConfig {
     }
     return prayersConfig;
 }
-function validateForm(): boolean {
-    let prayersConfig: prayerlib.IPrayersConfig = refreshParams();
+function validateForm(prayersConfig: prayerlib.IPrayersConfig): boolean {
     let validator: validators.IValid<prayerlib.IPrayersConfig> = validators.ConfigValidator.createValidator();
     let result: boolean = validator.validate(prayersConfig);
     if (result)
@@ -82,12 +77,9 @@ function validateForm(): boolean {
     else {
         let err: validators.IValidationError = validator.getValidationError();
         let message: string[] = err.details.map((detail: any) => `${detail.value.label} with value ${detail.value.value}: ${detail.message}`);
-
-        let messageShort = message.reduce((prvs, curr, index, array) => prvs.concat(' <br>', curr));
-
+        let messageShort = message.reduce((prvs, curr, index, array) => prvs.concat('<br>', curr));
         throw new Error(messageShort);
     }
-
 }
 async function refreshDataTable() {
     try {
@@ -96,7 +88,8 @@ async function refreshDataTable() {
             $('#prayers-table-mobile').show();
         }
         else {
-            let result: boolean = validateForm();
+            let prayersConfig: prayerlib.IPrayersConfig = refreshPrayerConfigForm();
+            let result: boolean = validateForm(prayersConfig);
             if (result)
                 await $('#prayers-table-mobile').DataTable().ajax.reload();
         }
@@ -105,21 +98,19 @@ async function refreshDataTable() {
         noty.setText(err.message, true);
         noty.show();
     }
-
 }
 async function saveDataTable() {
     try {
-            let result: boolean = validateForm();
+            let prayersConfig: prayerlib.IPrayersConfig = refreshPrayerConfigForm();
+            let result: boolean = validateForm(prayersConfig);
             if (result)
-                await $('#prayers-table-mobile').DataTable().ajax.reload();
-        
+                await $('#prayers-table-mobile').DataTable().ajax.reload();      
     } 
     catch (err) {
         let noty: Noty = loadNotification();
         noty.setText(err.message, true);
         noty.show();
     }
-
 }
 async function loadDataTable() {
     $.fn.dataTable.ext.errMode = 'throw';
@@ -130,7 +121,7 @@ async function loadDataTable() {
                 type: 'GET',
                 data: (d) => {
                     try {
-                        return refreshParams();
+                        return refreshPrayerConfigForm();
                     }
                     catch (err) {
                         notify(err.message);
