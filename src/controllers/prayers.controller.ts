@@ -39,13 +39,13 @@ export default class PrayersController implements IController {
         this.router.get(this.path + "/PrayersViewDesktop", this.getPrayerView);
         this.router.get(this.path + "/PrayersViewMobile",
             this._validationController
-                .validationMiddleware(validationController.ParameterType.query, validators.ConfigValidator.createValidator()), this.getPrayersByCalculation);
+                .validationMiddleware(validationController.ParameterType.query, validators.ConfigValidator.createValidator()),
+                 this.getPrayersByCalculation);
         this.router.put(this.path + "/PrayersViewMobile",
             this._validationController
                 .validationMiddleware(validationController.ParameterType.body, validators.ConfigValidator.createValidator()),
             this.updatePrayersByCalculation);
-
-        this.router.put(this.path + "/PrayersSettings/:id", this.putPrayersSettings);
+      //  this.router.put(this.path + "/PrayersSettings/:id", this.putPrayersSettings);
     }
     private updatePrayersByCalculation = async (request: express.Request, response: express.Response, next: express.NextFunction) => {
         try {
@@ -59,7 +59,6 @@ export default class PrayersController implements IController {
             sentry.captureException(err);
             next(new HttpException(404, err.message));
         }
-
     }
     private getPrayersByCalculation = async (request: express.Request, response: express.Response, next: express.NextFunction) => {
         try {
@@ -103,8 +102,6 @@ export default class PrayersController implements IController {
     }
     private putPrayersSettings = (request: express.Request, response: express.Response) => {
         let prayerSettings: prayerlib.IPrayersSettings = request.body;
-
-
     }
     private getPrayerAdjsutments = (request: express.Request, response: express.Response, next: NextFunction) => {
         try {
@@ -114,22 +111,18 @@ export default class PrayersController implements IController {
         catch (err) {
             debug(err);
             sentry.captureException(err);
-
             next(new HttpException(404, err.message));
-
         }
     }
 
     private getPrayersSettings = (request: express.Request, response: express.Response, next: NextFunction) => {
         try {
-            
             let prayersSettings: prayerlib.IPrayersSettings = (this._prayerManager.getPrayerSettings() as prayerlib.PrayersSettings).toJSON();
             response.json(prayersSettings);
         }
         catch (err) {
             debug(err);
             sentry.captureException(err);
-
             next(new HttpException(404, err.message));
         }
     }
@@ -153,7 +146,6 @@ export default class PrayersController implements IController {
         catch (err) {
             debug(err);
             sentry.captureException(err);
-
             next(new HttpException(404, err.message));
         }
 
@@ -230,8 +222,6 @@ export default class PrayersController implements IController {
             return Promise.reject(err);
         }
     }
-
-
     private async initializePrayerManger(): Promise<void> {
         try {
             let locationConfig: prayerlib.ILocationConfig = await new Configurator().getLocationConfig();
@@ -243,7 +233,6 @@ export default class PrayersController implements IController {
             sentry.captureException(err);
             throw err;
         }
-
     }
     static getPrayerController(): PrayersController {
 
