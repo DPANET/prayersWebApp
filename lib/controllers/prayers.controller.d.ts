@@ -19,6 +19,7 @@ export default class PrayersController implements IController {
     private getPrayerViewRow;
     private createPrayerViewRow;
     private createPrayerView;
+    private refreshPrayerManager;
     private initializePrayerManger;
     static getPrayerController(): PrayersController;
 }

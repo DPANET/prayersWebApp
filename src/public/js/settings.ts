@@ -10,22 +10,25 @@ const DataTableResp = require("datatables.net-responsive")(window, $);
 const DataTableRowGroup = require("datatables.net-rowgroup")(window, $);
 export async function buildObject() {
     let noty: Noty;
-    try {
-        await $('document').ready(async () => {
-            await loadPrayerAdjustments();
+
+    await $('document').ready(async () => {
+        try {
             await loadPrayerPrayerSettings();
+            await loadPrayerAdjustments();
             $("#view-button").on("click", refreshDataTable);
             $("#submit-button").on("click", saveDataTable);
         }
-        );
+        catch (err) {
+            let noty: Noty = loadNotification();
+            noty.setText(err.message, true);
+            noty.show();
+        }
+
     }
-    catch (err) {
-        let noty: Noty = loadNotification();
-        noty.setText(err.message, true);
-        noty.show();
-    }
+    );
 }
-function notify(type:Noty.Type,message: string) {
+
+function notify(type: Noty.Type, message: string) {
     let noty: Noty = loadNotification();
     noty.setText(message, true);
     noty.setType(type);
@@ -102,20 +105,19 @@ async function refreshDataTable() {
 }
 async function saveDataTable() {
     try {
-            let prayersConfig: prayerlib.IPrayersConfig = refreshPrayerConfigForm();
-            let result: boolean = validateForm(prayersConfig);
-            if (result)
-            {
-                await $.ajax({
-                    url: "PrayerManager/PrayersViewMobile",type:"PUT",
-                    data: JSON.stringify(prayersConfig),
-                    contentType: "application/json; charset=utf-8",
-                    dataType: "json",
-                    error:genericErrorHandler,
-                     success: ()=>notify("success","Configuration is saved")
-                    });
-            }      
-    } 
+        let prayersConfig: prayerlib.IPrayersConfig = refreshPrayerConfigForm();
+        let result: boolean = validateForm(prayersConfig);
+        if (result) {
+            await $.ajax({
+                url: 'PrayerManager/PrayersViewMobile', type: "PUT",
+                data: JSON.stringify(prayersConfig),
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                error: genericErrorHandler,
+                success: () => notify("success", "Configuration is saved")
+            });
+        }
+    }
     catch (err) {
         let noty: Noty = loadNotification();
         noty.setText(err.message, true);
@@ -134,7 +136,7 @@ async function loadDataTable() {
                         return refreshPrayerConfigForm();
                     }
                     catch (err) {
-                        notify("error",err.message);
+                        notify("error", err.message);
                     }
                 },
                 error: dataRefreshErrorHandler,
@@ -164,21 +166,21 @@ async function loadDataTable() {
 }
 async function dataRefreshErrorHandler(jqXHR: JQueryXHR, textStatus: string, errorThrown: string) {
     if (jqXHR.status >= 400 && !isNullOrUndefined(jqXHR.responseJSON.message))
-        notify("error",jqXHR.responseJSON.message);
+        notify("error", jqXHR.responseJSON.message);
     else
-        notify("error",errorThrown);
+        notify("error", errorThrown);
     $('#prayers-table-mobile').DataTable().clear().draw();
 }
 async function genericErrorHandler(jqXHR: JQueryXHR, textStatus: string, errorThrown: string) {
     if (jqXHR.status >= 400 && !isNullOrUndefined(jqXHR.responseJSON.message))
-        notify("error",jqXHR.responseJSON.message);
+        notify("error", jqXHR.responseJSON.message);
     else
-        notify("error",errorThrown);
+        notify("error", errorThrown);
 }
 async function loadPrayerPrayerSettings() {
     await $.ajax({
         url: "PrayerManager/PrayersSettings",
-        error:genericErrorHandler,
+        error: genericErrorHandler,
         success: (prayerSettings: prayerlib.IPrayersSettings) => {
             $("#method").val(prayerSettings.method.id);
             $("#school").val(prayerSettings.school.id);
@@ -195,8 +197,8 @@ async function loadPrayerPrayerSettings() {
 }
 async function loadPrayerAdjustments() {
     await $.ajax({
-        url: "PrayerManager/PrayersAdjustments/",         
-        error:genericErrorHandler,
+        url: "PrayerManager/PrayersAdjustments/",
+        error: genericErrorHandler,
         success: (prayerAdjustment: prayerlib.IPrayerAdjustments[]) => {
             prayerAdjustment.forEach(element => {
                 switch (element.prayerName) {

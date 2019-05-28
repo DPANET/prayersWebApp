@@ -26,7 +26,9 @@ export class ValidationMiddleware {
                 object = req.body;
             else
                 object= req.query;
+            debug(object);
             result = validator.validate(object);
+        
             switch (result) {
                 case true:
                     next();
