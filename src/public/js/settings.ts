@@ -3,7 +3,6 @@ import * as prayerlib from "../../models/prayers.model";
 import moment from "moment";
 import Noty from "noty";
 import { isNullOrUndefined } from 'util';
-import { validators } from "../../validators/validations";
 const DataTable = require("datatables.net")(window, $);
 const daterangepicker = require("daterangepicker");
 const DataTableResp = require("datatables.net-responsive")(window, $);
@@ -74,12 +73,13 @@ function refreshPrayerConfigForm(): prayerlib.IPrayersConfig {
     return prayersConfig;
 }
 function validateForm(prayersConfig: prayerlib.IPrayersConfig): boolean {
-    let validator: validators.IValid<prayerlib.IPrayersConfig> = validators.ConfigValidator.createValidator();
+
+    let validator: prayerlib.IValid<prayerlib.IPrayersConfig> = prayerlib.ConfigValidator.createValidator();
     let result: boolean = validator.validate(prayersConfig);
     if (result)
         return result;
     else {
-        let err: validators.IValidationError = validator.getValidationError();
+        let err: prayerlib.IValidationError = validator.getValidationError();
         let message: string[] = err.details.map((detail: any) => `${detail.value.label} with value ${detail.value.value}: ${detail.message}`);
         let messageShort = message.reduce((prvs, curr, index, array) => prvs.concat('<br>', curr));
         throw new Error(messageShort);

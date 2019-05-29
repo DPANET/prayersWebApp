@@ -8,6 +8,9 @@ export default class PrayersController implements IController {
     private _validationController;
     constructor();
     private initializeRoutes;
+    private prayerManagerValidator;
+    private prayerSettingsRequestValidator;
+    private prayerViewMobileRequestValidator;
     private updatePrayersByCalculation;
     private getPrayersByCalculation;
     private buildPrayerConfigObject;

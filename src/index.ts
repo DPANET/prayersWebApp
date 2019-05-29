@@ -1,8 +1,6 @@
 import  {App} from "./routes/main.router";
 import prayersController from "./controllers/prayers.controller";
 import mainController from "./controllers/main.controller";
-import * as request from 'request-promise-native';
-import { domainMatch } from "tough-cookie";
 const to = require('await-to-js').default;
 let app:App = new App([new prayersController(),new mainController()]);
 setTimeout(() => {
