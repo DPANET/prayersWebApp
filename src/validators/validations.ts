@@ -16,7 +16,10 @@ export class PrayerMangerValidator extends validators.Validator<IPrayerManager>
     }
     private setSchema(): void {
 
-        this._prayerManagerSchema = Joi.any().empty();
+        this._prayerManagerSchema = Joi.any()
+        .required()
+        .label("Prayer Manager")
+        .error(this.processErrorMessage);
     }
     public validate(validateObject: IPrayerManager): boolean {
         return  super.genericValidator(() => Joi.validate(validateObject, this._prayerManagerSchema, { abortEarly: false, allowUnknown: true }));

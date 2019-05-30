@@ -48,8 +48,8 @@ export class ValidationMiddleware {
         let message: string[];
         return (req, res, next) => {
 
-            debug("how is the object :"+validObject);
             result = validator.validate(validObject);
+            debug(`object Validation Result is ${result} for ${validObject} `);
 
             switch (result) {
                 case true:

@@ -31,8 +31,10 @@ export default class PrayersController implements IController {
             this._validationController = new validationController.ValidationMiddleware();
             
           //  this.prayerViewMobileRequestValidator =
-            this.initializePrayerManger();
-            this.initializeRoutes();
+            this.initializePrayerManger()
+            .then(()=>     this.initializeRoutes())
+            .catch((err)=> {throw err});
+       
 
         }
         catch (err) {
@@ -40,10 +42,22 @@ export default class PrayersController implements IController {
         }
     }
     private initializeRoutes() {
-        this.router.get(this.path + "/PrayersAdjustments",this.getPrayerAdjsutments);
-        this.router.get(this.path + "/PrayersSettings",this.getPrayersSettings);
-        this.router.get(this.path + "/Prayers",this.getPrayers);
-        this.router.get(this.path + "/PrayersViewDesktop",this.getPrayerView);
+        this.router.get(this.path + "/PrayersAdjustments",
+        this._validationController
+        .validationMiddlewareByObject(this._prayerManager, validators.PrayerMangerValidator.createValidator()),
+        this.getPrayerAdjsutments);
+        this.router.get(this.path + "/PrayersSettings",
+        this._validationController
+        .validationMiddlewareByObject(this._prayerManager, validators.PrayerMangerValidator.createValidator()),
+        this.getPrayersSettings);
+        this.router.get(this.path + "/Prayers",
+        this._validationController
+        .validationMiddlewareByObject(this._prayerManager, validators.PrayerMangerValidator.createValidator()),
+        this.getPrayers);
+        this.router.get(this.path + "/PrayersViewDesktop",
+        this._validationController
+        .validationMiddlewareByObject(this._prayerManager, validators.PrayerMangerValidator.createValidator()),
+        this.getPrayerView);
         this.router.get(this.path + "/PrayersViewMobile",
         this._validationController
         .validationMiddlewareByRequest(validationController.ParameterType.query, validators.ConfigValidator.createValidator()),

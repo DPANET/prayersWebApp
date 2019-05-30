@@ -12,7 +12,8 @@ export async function buildObject() {
 
     await $('document').ready(async () => {
         try {
-            await loadPrayerPrayerSettings();
+            await loadPrayerPrayerSettings()
+            
             await loadPrayerAdjustments();
             $("#view-button").on("click", refreshDataTable);
             $("#submit-button").on("click", saveDataTable);
@@ -179,10 +180,10 @@ async function genericErrorHandler(jqXHR: JQueryXHR, textStatus: string, errorTh
     else
     notify("error", errorThrown);
 }
-async function loadPrayerPrayerSettings() {
-    await $.ajax({
+async function loadPrayerPrayerSettings():Promise<JQuery.jqXHR<any>> {
+return    await $.ajax({
         url: "PrayerManager/PrayersSettings",
-        error: genericErrorHandler,
+       // error: genericErrorHandler,
         success: (prayerSettings: prayerlib.IPrayersSettings) => {
             $("#method").val(prayerSettings.method.id);
             $("#school").val(prayerSettings.school.id);
@@ -195,12 +196,12 @@ async function loadPrayerPrayerSettings() {
                 }
             )
         },
-    });
+    }).catch((jqXHR: JQueryXHR, textStatus: string, errorThrown: string)=>{throw new Error(jqXHR.responseJSON.message)})
 }
 async function loadPrayerAdjustments() {
-    await $.ajax({
+  return  await $.ajax({
         url: "PrayerManager/PrayersAdjustments/",
-        error: genericErrorHandler,
+       // error: genericErrorHandler,
         success: (prayerAdjustment: prayerlib.IPrayerAdjustments[]) => {
             prayerAdjustment.forEach(element => {
                 switch (element.prayerName) {
@@ -217,7 +218,7 @@ async function loadPrayerAdjustments() {
                 }
             });
         }
-    });
+    }).catch((jqXHR: JQueryXHR, textStatus: string, errorThrown: string)=>{throw new Error(jqXHR.responseJSON.message)});
 }
 buildObject();
 //  async function  getDB(): Promise<lowdb.LowdbAsync<any>> {
