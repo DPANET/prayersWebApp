@@ -11,7 +11,7 @@ import * as sentry from "@sentry/node";
 import * as validationController from "../middlewares/validations.middleware"
 import * as validators from "../validators/validations";
 import * as retry from "async-retry";
-import Configurator from "@dpanet/prayers-lib/lib/configurators/configuration";
+
 import { SSL_OP_SSLEAY_080_CLIENT_DH_BUG } from "constants";
 import * as ramda from "ramda";
 import { RequestHandlerParams } from "express-serve-static-core";
@@ -71,9 +71,9 @@ export default class PrayersController implements IController {
     private updatePrayersByCalculation = async (request: express.Request, response: express.Response, next: express.NextFunction) => {
         try {
             let prayerConfig: prayerlib.IPrayersConfig = this.buildPrayerConfigObject(request.body);
-            let locationConfig: prayerlib.ILocationConfig = await new Configurator().getLocationConfig();
+            let locationConfig: prayerlib.ILocationConfig = await new prayerlib.Configurator().getLocationConfig();
             await this._prayerManager.savePrayerConfig(prayerConfig);
-            prayerConfig = await new Configurator().getPrayerConfig();
+            prayerConfig = await new prayerlib.Configurator().getPrayerConfig();
             this._prayerManager = await this.refreshPrayerManager(prayerConfig,locationConfig)
             response.json(this._prayerManager.getPrayerSettings());
         }
@@ -87,7 +87,7 @@ export default class PrayersController implements IController {
         try {
             let prayerConfig: prayerlib.IPrayersConfig = this.buildPrayerConfigObject(request.query);
             debug(prayerConfig);
-            let locationConfig: prayerlib.ILocationConfig = await new Configurator().getLocationConfig();
+            let locationConfig: prayerlib.ILocationConfig = await new prayerlib.Configurator().getLocationConfig();
             this._prayerManager = await this.refreshPrayerManager(prayerConfig, locationConfig);
             debug(this._prayerManager.getPrayerAdjsutments());
             response.json(this.createPrayerViewRow(this.createPrayerView(this._prayerManager.getPrayers())));
@@ -249,8 +249,8 @@ export default class PrayersController implements IController {
     }
     private async initializePrayerManger(): Promise<void> {
         try {
-            let locationConfig: prayerlib.ILocationConfig = await new Configurator().getLocationConfig();
-            let prayerConfig: prayerlib.IPrayersConfig = await new Configurator().getPrayerConfig();
+            let locationConfig: prayerlib.ILocationConfig = await new prayerlib.Configurator().getLocationConfig();
+            let prayerConfig: prayerlib.IPrayersConfig = await new prayerlib.Configurator().getPrayerConfig();
             this._prayerManager = await this.refreshPrayerManager(prayerConfig, locationConfig);
         }
         catch (err) {
