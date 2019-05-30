@@ -48,35 +48,20 @@ export default class PrayersController implements IController {
         this._validationController
         .validationMiddlewareByRequest(validationController.ParameterType.query, validators.ConfigValidator.createValidator()),
         this.getPrayersByCalculation);
-        this.router.put(this.path + "/PrayersViewMobile", this._validationController
+        this.router.post(this.path + "/PrayersViewMobile/", this._validationController
         .validationMiddlewareByRequest(validationController.ParameterType.body, validators.ConfigValidator.createValidator())
         ,this.updatePrayersByCalculation);
       //  this.router.put(this.path + "/PrayersSettings/:id", this.putPrayersSettings);
-    }
-    private prayerManagerValidator =async (request: express.Request, response: express.Response, next: express.NextFunction)=>
-    { this._validationController.validationMiddlewareByObject(this._prayerManager,
-        validators.PrayerMangerValidator.createValidator())
-    }
-        
-    private prayerSettingsRequestValidator = async (request: express.Request, response: express.Response, next: express.NextFunction)=>{
-       
-
-    
-    
-}
-
-    private prayerViewMobileRequestValidator= async (request: express.Request, response: express.Response, next: express.NextFunction)=>
-    {
-        next(this._validationController
-    .validationMiddlewareByRequest(validationController.ParameterType.body, validators.ConfigValidator.createValidator()))}
-    
+    }    
     
     private updatePrayersByCalculation = async (request: express.Request, response: express.Response, next: express.NextFunction) => {
         try {
-            debug(request.body);
             let prayerConfig: prayerlib.IPrayersConfig = this.buildPrayerConfigObject(request.body);
+            let locationConfig: prayerlib.ILocationConfig = await new Configurator().getLocationConfig();
             await this._prayerManager.savePrayerConfig(prayerConfig);
-            next();
+            prayerConfig = await new Configurator().getPrayerConfig();
+            this._prayerManager = await this.refreshPrayerManager(prayerConfig,locationConfig)
+            response.json(this._prayerManager.getPrayerSettings());
         }
         catch (err) {
             debug(err);

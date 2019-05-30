@@ -24,12 +24,12 @@ export class ValidationMiddleware {
                 object = req.body;
             else
                 object = req.query;
-            debug(object);
+            debug(`validation the following object: ${object}`);
             result = validator.validate(object);
 
             switch (result) {
                 case true:
-                    return next();
+                     next();
                     break;
                 case false:
                     err = validator.getValidationError();
@@ -37,7 +37,7 @@ export class ValidationMiddleware {
                         message = err.details.map((detail: any) => `${detail.value.label} with value ${detail.value.value}: ${detail.message}`);
                     debug(message);
                     sentry.captureException(err);
-                   return next(new exceptionHandler.HttpException(400, message.reduce((prvs, curr) => prvs.concat('\r\n', curr))));
+                    next(new exceptionHandler.HttpException(400, message.reduce((prvs, curr) => prvs.concat('\r\n', curr))));
                     break;
             }
         }
