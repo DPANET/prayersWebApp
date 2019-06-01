@@ -12,11 +12,10 @@ export async function buildObject() {
 
     await $('document').ready(async () => {
         try {
-            await loadPrayerPrayerSettings()
-            
+
+            initForm();
+            await loadPrayerPrayerSettings()      
             await loadPrayerAdjustments();
-            $("#view-button").on("click", refreshDataTable);
-            $("#submit-button").on("click", saveDataTable);
         }
         catch (err) {
             let noty: Noty = loadNotification();
@@ -26,6 +25,17 @@ export async function buildObject() {
 
     }
     );
+}
+function initForm()
+{
+    $("#view-button").on("click", refreshDataTable);
+    $("#submit-button").on("click", saveDataTable);
+    $('input[name="daterangepicker"]').daterangepicker(
+        {
+            startDate: moment(new Date()),//moment(prayerSettings.startDate),
+            endDate: moment(new Date()).add(1,"M")//moment(prayerSettings.endDate)
+        }
+    )
 }
 
 function notify(type: Noty.Type, message: string) {
@@ -189,12 +199,7 @@ return    await $.ajax({
             $("#school").val(prayerSettings.school.id);
             $("#latitude").val(prayerSettings.latitudeAdjustment.id);
             $("#midnight").val(prayerSettings.midnight.id);
-            $('input[name="daterangepicker"]').daterangepicker(
-                {
-                    startDate: moment(prayerSettings.startDate),
-                    endDate: moment(prayerSettings.endDate)
-                }
-            )
+
         },
     }).catch((jqXHR: JQueryXHR, textStatus: string, errorThrown: string)=>{throw new Error(jqXHR.responseJSON.message)})
 }

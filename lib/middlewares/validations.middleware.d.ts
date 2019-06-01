@@ -6,6 +6,6 @@ export declare const enum ParameterType {
 }
 export declare class ValidationMiddleware {
     constructor();
-    validationMiddlewareByRequest<T>(prameterType: ParameterType, validator: validators.IValid<T>): express.RequestHandler;
-    validationMiddlewareByObject<T>(validObject: T, validator: validators.IValid<T>): express.RequestHandler;
+    validationMiddlewareByRequest<T>(validator: validators.IValid<T>, prameterType: ParameterType): express.RequestHandler;
+    validationMiddlewareByObject<T>(validator: validators.IValid<T>, validObject: T): express.RequestHandler;
 }

@@ -10,7 +10,10 @@ export default class PrayersController implements IController {
     private _validateConfigParam;
     private _validateConfigBody;
     constructor();
+    private initializeValidators;
     private initializeRoutes;
+    private getPrayerManager;
+    private validatePrayerManagerRequest;
     private updatePrayersByCalculation;
     private getPrayersByCalculation;
     private buildPrayerConfigObject;

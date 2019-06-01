@@ -11,10 +11,12 @@ export class App {
   public app: express.Application;
   private _port: number;
   private _excpetionMiddleware:exceptionMiddleware.ExceptionMiddleware;
-
+  private _mainFolder:string;
+  private _stataicFolder:string;
   constructor(controllers: IController[]) {
     this.app = express();
- 
+    this._mainFolder = config.get('WEBROOT');
+    this._stataicFolder= config.get('STATIC_FILES');
     this.connectToTheDatabase();
     this.initializeMiddlewares();
     this.initializeControllers(controllers);
@@ -30,7 +32,7 @@ export class App {
  
   private initializeMiddlewares():void {
     this.app.use(bodyParser.json());
-    this.app.use(express.static('lib/public'));
+    this.app.use(express.static(path.join(this._mainFolder,this._stataicFolder)));
     this.app.use(morgan('tiny'));
 }
  

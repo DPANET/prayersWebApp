@@ -4,9 +4,9 @@ import mainController from "./controllers/main.controller";
 import * as  events from "./events/events";
 const to = require('await-to-js').default;
 let app:App = new App([new prayersController(),new mainController()]);
-let eventProvider:events.ConfigEventProvider = new events.ConfigEventProvider("config/config.json");
-let eventListener:events.ConfigEventListener = new events.ConfigEventListener();
-eventProvider.registerListener(eventListener);
+// let eventProvider:events.ConfigEventProvider = new events.ConfigEventProvider("config/config.json");
+// let eventListener:events.ConfigEventListener = new events.ConfigEventListener();
+// eventProvider.registerListener(eventListener);
 setTimeout(() => {
     app.listen();
 }, 5000);

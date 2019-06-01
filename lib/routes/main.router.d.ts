@@ -4,6 +4,8 @@ export declare class App {
     app: express.Application;
     private _port;
     private _excpetionMiddleware;
+    private _mainFolder;
+    private _stataicFolder;
     constructor(controllers: IController[]);
     listen(): void;
     private initializeMiddlewares;

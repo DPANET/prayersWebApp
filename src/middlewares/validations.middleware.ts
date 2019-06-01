@@ -15,7 +15,7 @@ export class ValidationMiddleware {
     constructor() {
     }
 
-    public validationMiddlewareByRequest<T>(prameterType: ParameterType, validator: validators.IValid<T>): express.RequestHandler {
+    public validationMiddlewareByRequest<T>( validator: validators.IValid<T>,prameterType: ParameterType): express.RequestHandler {
         let result: boolean = false;
         let err: validators.IValidationError;
         let message: string[];
@@ -43,7 +43,7 @@ export class ValidationMiddleware {
             }
         }
     }
-    public validationMiddlewareByObject<T>(validObject: T, validator: validators.IValid<T>): express.RequestHandler {
+    public validationMiddlewareByObject<T>(validator: validators.IValid<T>,validObject: T): express.RequestHandler {
         let result: boolean = false;
         let err: validators.IValidationError;
         let message: string[];

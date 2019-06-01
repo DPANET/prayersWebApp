@@ -3,7 +3,7 @@ const debug = require('debug')('app:router');
 import config = require('config');
 import * as prayerlib from "@dpanet/prayers-lib";
 import { IController, IPrayersView, IPrayersViewRow } from "./controllers.interface";
-import express from 'express';
+import express, { Router } from 'express';
 import moment from "moment";
 import { NextFunction, NextHandleFunction } from "connect";
 import { HttpException } from "../exceptions/exception.handler";
@@ -11,6 +11,10 @@ import * as sentry from "@sentry/node";
 import * as validationController from "../middlewares/validations.middleware"
 import * as validators from "../validators/validations";
 import * as retry from "async-retry";
+import request = require('request');
+import { RequestHandler } from 'express-serve-static-core';
+import { HTTPRequest } from '@sentry/node/dist/transports/base';
+import { FpReturnSync } from 'lowdb';
 sentry.init({ dsn: config.get("DSN") });
 export default class PrayersController implements IController {
     path: string;
@@ -28,35 +32,60 @@ export default class PrayersController implements IController {
             this.router = express.Router();
             this._validationController = new validationController.ValidationMiddleware();
             
+            this.initializeValidators();
           //  this.prayerViewMobileRequestValidator =
             this.initializePrayerManger()
             .then(()=> {
-            this._validatePrayerManager=  this._validationController
-            .validationMiddlewareByObject.bind(this,this._prayerManager, validators.PrayerMangerValidator.createValidator());
-            this._validateConfigParam= this._validationController.validationMiddlewareByRequest
-            .bind(this,validationController.ParameterType.query, validators.ConfigValidator.createValidator());
-            this._validateConfigBody = this._validationController.validationMiddlewareByRequest
-            .bind(this,validationController.ParameterType.body, validators.ConfigValidator.createValidator()),
-            this.initializeRoutes()
+
             })
             .catch((err)=> {throw err});
        
-
+            this.initializeRoutes();
         }
         catch (err) {
             throw err;
         }
     }
+    private initializeValidators()
+    {
+        this._validatePrayerManager=this._validationController
+        .validationMiddlewareByObject.bind(this, validators.PrayerMangerValidator.createValidator());
+        this._validateConfigParam= this._validationController.validationMiddlewareByRequest
+        .bind(this, validators.ConfigValidator.createValidator(),validationController.ParameterType.query);
+        this._validateConfigBody = this._validationController.validationMiddlewareByRequest
+        .bind(this, validators.ConfigValidator.createValidator(),validationController.ParameterType.body);
+  
+    }
     private initializeRoutes() {
-        this.router.get(this.path + "/PrayersAdjustments",this._validatePrayerManager(),this.getPrayerAdjsutments);
-        this.router.get(this.path + "/PrayersSettings",this._validatePrayerManager(),this.getPrayersSettings);
-        this.router.get(this.path + "/Prayers",  this._validatePrayerManager(),this.getPrayers);
-        this.router.get(this.path + "/PrayersViewDesktop", this._validatePrayerManager(),this.getPrayerView);
+    this.router.get(this.path + "/PrayersAdjustments",this.validatePrayerManagerRequest(),this.getPrayerAdjsutments);
+        this.router.get(this.path + "/PrayersSettings",this.validatePrayerManagerRequest(),this.getPrayersSettings);
+        this.router.get(this.path + "/Prayers",  this.validatePrayerManagerRequest(),this.getPrayers);
+        this.router.get(this.path + "/PrayersViewDesktop", this.validatePrayerManagerRequest(),this.getPrayerView);
         this.router.get(this.path + "/PrayersViewMobile",this._validateConfigParam(),this.getPrayersByCalculation);
         this.router.post(this.path + "/PrayersViewMobile/",  this._validateConfigBody(),this.updatePrayersByCalculation);
       //  this.router.put(this.path + "/PrayersSettings/:id", this.putPrayersSettings);
     }    
-    
+    // private validatePrayerManagerRequest= async(request: express.Request, response: express.Response, next: express.NextFunction)=>
+    // {
+    //     try{
+    //    return this._validatePrayerManager();
+    //     next();
+    //     }
+    //     catch (err) {
+    //         debug(err);
+    //         sentry.captureException(err);
+    //         next(new HttpException(404, err.message));
+    //     }
+    // }
+    private getPrayerManager()
+    {
+        return this._prayerManager;
+    }
+    private validatePrayerManagerRequest =() => { 
+        debug('Im  running');
+        return this._validatePrayerManager(eval.bind(this,this.getPrayerManager));
+        //next();
+    }
     private updatePrayersByCalculation = async (request: express.Request, response: express.Response, next: express.NextFunction) => {
         try {
             let prayerConfig: prayerlib.IPrayersConfig = this.buildPrayerConfigObject(request.body);
