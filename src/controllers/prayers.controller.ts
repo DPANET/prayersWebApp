@@ -4,17 +4,12 @@ import * as prayerlib from "@dpanet/prayers-lib";
 import { IController, IPrayersView, IPrayersViewRow } from "./controllers.interface";
 import express from 'express';
 import moment from "moment";
-import { isNullOrUndefined } from "util";
 import { NextFunction, NextHandleFunction } from "connect";
 import { HttpException } from "../exceptions/exception.handler";
 import * as sentry from "@sentry/node";
 import * as validationController from "../middlewares/validations.middleware"
 import * as validators from "../validators/validations";
 import * as retry from "async-retry";
-
-import { SSL_OP_SSLEAY_080_CLIENT_DH_BUG } from "constants";
-import * as ramda from "ramda";
-import { RequestHandlerParams } from "express-serve-static-core";
 sentry.init({ dsn: process.env.DSN });
 export default class PrayersController implements IController {
     path: string;
@@ -22,7 +17,9 @@ export default class PrayersController implements IController {
     private _prayersController: PrayersController;
     private _prayerManager: prayerlib.IPrayerManager;
     private _validationController: validationController.ValidationMiddleware;
-
+    private _validatePrayerManager:Function;
+    private _validateConfigParam:Function;
+    private _validateConfigBody:Function;
     constructor() {
         try {
         
@@ -32,7 +29,15 @@ export default class PrayersController implements IController {
             
           //  this.prayerViewMobileRequestValidator =
             this.initializePrayerManger()
-            .then(()=>     this.initializeRoutes())
+            .then(()=> {
+            this._validatePrayerManager=  this._validationController
+            .validationMiddlewareByObject.bind(this,this._prayerManager, validators.PrayerMangerValidator.createValidator());
+            this._validateConfigParam= this._validationController.validationMiddlewareByRequest
+            .bind(this,validationController.ParameterType.query, validators.ConfigValidator.createValidator());
+            this._validateConfigBody = this._validationController.validationMiddlewareByRequest
+            .bind(this,validationController.ParameterType.body, validators.ConfigValidator.createValidator()),
+            this.initializeRoutes()
+            })
             .catch((err)=> {throw err});
        
 
@@ -42,29 +47,12 @@ export default class PrayersController implements IController {
         }
     }
     private initializeRoutes() {
-        this.router.get(this.path + "/PrayersAdjustments",
-        this._validationController
-        .validationMiddlewareByObject(this._prayerManager, validators.PrayerMangerValidator.createValidator()),
-        this.getPrayerAdjsutments);
-        this.router.get(this.path + "/PrayersSettings",
-        this._validationController
-        .validationMiddlewareByObject(this._prayerManager, validators.PrayerMangerValidator.createValidator()),
-        this.getPrayersSettings);
-        this.router.get(this.path + "/Prayers",
-        this._validationController
-        .validationMiddlewareByObject(this._prayerManager, validators.PrayerMangerValidator.createValidator()),
-        this.getPrayers);
-        this.router.get(this.path + "/PrayersViewDesktop",
-        this._validationController
-        .validationMiddlewareByObject(this._prayerManager, validators.PrayerMangerValidator.createValidator()),
-        this.getPrayerView);
-        this.router.get(this.path + "/PrayersViewMobile",
-        this._validationController
-        .validationMiddlewareByRequest(validationController.ParameterType.query, validators.ConfigValidator.createValidator()),
-        this.getPrayersByCalculation);
-        this.router.post(this.path + "/PrayersViewMobile/", this._validationController
-        .validationMiddlewareByRequest(validationController.ParameterType.body, validators.ConfigValidator.createValidator())
-        ,this.updatePrayersByCalculation);
+        this.router.get(this.path + "/PrayersAdjustments",this._validatePrayerManager(),this.getPrayerAdjsutments);
+        this.router.get(this.path + "/PrayersSettings",this._validatePrayerManager(),this.getPrayersSettings);
+        this.router.get(this.path + "/Prayers",  this._validatePrayerManager(),this.getPrayers);
+        this.router.get(this.path + "/PrayersViewDesktop", this._validatePrayerManager(),this.getPrayerView);
+        this.router.get(this.path + "/PrayersViewMobile",this._validateConfigParam(),this.getPrayersByCalculation);
+        this.router.post(this.path + "/PrayersViewMobile/",  this._validateConfigBody(),this.updatePrayersByCalculation);
       //  this.router.put(this.path + "/PrayersSettings/:id", this.putPrayersSettings);
     }    
     
