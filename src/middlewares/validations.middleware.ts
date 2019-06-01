@@ -1,11 +1,12 @@
 const dotenv = require('dotenv').config();
 const debug = require('debug')('app:router');
+import config= require('config');
 import * as express from 'express';
 import * as exceptionHandler from '../exceptions/exception.handler';
 
 import * as validators from '../validators/validations';
 import * as sentry from "@sentry/node";
-sentry.init({ dsn: process.env.DSN });
+sentry.init({ dsn: config.get("DSN") });
 export const enum ParameterType {
     query = 0,
     body

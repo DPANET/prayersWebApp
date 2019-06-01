@@ -7,4 +7,11 @@ export declare class ConfigEventProvider extends EventProvider<string> {
     removeListener(observer: IObserver<string>): void;
     notifyObservers(eventType: EventsType, fileName: string, error?: Error): void;
     private fileChangedEvent;
+    private fileChangeError;
+}
+export declare class ConfigEventListener implements IObserver<string> {
+    constructor();
+    onCompleted(): void;
+    onError(error: Error): void;
+    onNext(value: string): void;
 }

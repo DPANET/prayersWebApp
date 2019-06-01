@@ -4,7 +4,6 @@ import {EventProvider,EventsType,IObserver,IObservable}from '@dpanet/prayers-lib
 const to = require('await-to-js').default;
 import chokidar = require('chokidar');
 import { isNullOrUndefined } from 'util';
-import { IPrayersConfig } from '@dpanet/prayers-lib/lib/configurators/inteface.configuration';
 export class ConfigEventProvider extends EventProvider<string>
 {
     private _pathName: string;
@@ -13,7 +12,12 @@ export class ConfigEventProvider extends EventProvider<string>
         super();
         this._pathName= pathName;
         this._chokidar = chokidar.watch(this._pathName);
-        this._chokidar.on("change",this.fileChangedEvent);
+        this._chokidar.options={
+            
+
+        }
+        this._chokidar.on("change",this.fileChangedEvent.bind(this))
+        this._chokidar.on("error",this.fileChangeError.bind(this));
     }
     public registerListener(observer: IObserver<string>): void {
         super.registerListener(observer);
@@ -26,7 +30,33 @@ export class ConfigEventProvider extends EventProvider<string>
     }
     private fileChangedEvent(pathName:string)
     {
+        try{
         this.notifyObservers(EventsType.OnNext,pathName);
+        }
+        catch(err)
+        {
+            this.notifyObservers(EventsType.OnError,pathName,err)
+        }
 
+    }
+    private fileChangeError(error:Error)
+    {
+        this.notifyObservers(EventsType.OnError,this._pathName,error);
+    }
+}
+
+export class ConfigEventListener implements IObserver<string>
+{
+    //private _prayerAppManager: manager.PrayersAppManager
+    constructor() {
+        
+    }
+    onCompleted(): void {
+          }
+    onError(error: Error): void {
+      debug(error);
+    }
+    onNext(value: string): void {
+        debug(`${value} config file has been saved, good job`);
     }
 }

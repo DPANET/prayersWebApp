@@ -1,5 +1,6 @@
 const dotenv = require('dotenv').config();
 const debug = require('debug')('app:router');
+import config = require('config');
 import * as prayerlib from "@dpanet/prayers-lib";
 import { IController, IPrayersView, IPrayersViewRow } from "./controllers.interface";
 import express from 'express';
@@ -10,7 +11,7 @@ import * as sentry from "@sentry/node";
 import * as validationController from "../middlewares/validations.middleware"
 import * as validators from "../validators/validations";
 import * as retry from "async-retry";
-sentry.init({ dsn: process.env.DSN });
+sentry.init({ dsn: config.get("DSN") });
 export default class PrayersController implements IController {
     path: string;
     router: express.Router;
