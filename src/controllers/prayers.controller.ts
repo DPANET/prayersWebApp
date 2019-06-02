@@ -57,35 +57,46 @@ export default class PrayersController implements IController {
   
     }
     private initializeRoutes() {
-    this.router.get(this.path + "/PrayersAdjustments",this.validatePrayerManagerRequest(),this.getPrayerAdjsutments);
-        this.router.get(this.path + "/PrayersSettings",this.validatePrayerManagerRequest(),this.getPrayersSettings);
-        this.router.get(this.path + "/Prayers",  this.validatePrayerManagerRequest(),this.getPrayers);
-        this.router.get(this.path + "/PrayersViewDesktop", this.validatePrayerManagerRequest(),this.getPrayerView);
+    this.router.get(this.path + "/PrayersAdjustments",this.validatePrayerManagerRequest,this.getPrayerAdjsutments);
+        this.router.get(this.path + "/PrayersSettings",this.validatePrayerManagerRequest,this.getPrayersSettings);
+        this.router.get(this.path + "/Prayers",  this.validatePrayerManagerRequest,this.getPrayers);
+        this.router.get(this.path + "/PrayersViewDesktop", this.validatePrayerManagerRequest,this.getPrayerView);
         this.router.get(this.path + "/PrayersViewMobile",this._validateConfigParam(),this.getPrayersByCalculation);
+        this.router.get(this.path+"/LoadSettings",this.reloadConfig)
         this.router.post(this.path + "/PrayersViewMobile/",  this._validateConfigBody(),this.updatePrayersByCalculation);
       //  this.router.put(this.path + "/PrayersSettings/:id", this.putPrayersSettings);
-    }    
-    // private validatePrayerManagerRequest= async(request: express.Request, response: express.Response, next: express.NextFunction)=>
-    // {
-    //     try{
-    //    return this._validatePrayerManager();
-    //     next();
-    //     }
-    //     catch (err) {
-    //         debug(err);
-    //         sentry.captureException(err);
-    //         next(new HttpException(404, err.message));
-    //     }
-    // }
+    } 
+    private reloadConfig = async(request: express.Request, response: express.Response, next: express.NextFunction)=>
+    {
+        try{
+            await this.initializePrayerManger();
+            response.json('ok');
+        }
+        catch(err)
+        {
+            debug(err);
+            sentry.captureException(err);
+            next(new HttpException(404, err.message));
+
+        }
+    }
+    private validatePrayerManagerRequest=async(request: express.Request, response: express.Response, next: express.NextFunction)=>
+    {
+        try{
+        let fn:RequestHandler = this._validatePrayerManager(this._prayerManager);
+        fn(request,response,next);
+        }
+        catch (err) {
+            debug(err);
+            sentry.captureException(err);
+            next(new HttpException(404, err.message));
+        }
+    }
     private getPrayerManager()
     {
         return this._prayerManager;
     }
-    private validatePrayerManagerRequest =() => { 
-        debug('Im  running');
-        return this._validatePrayerManager(eval.bind(this,this.getPrayerManager));
-        //next();
-    }
+
     private updatePrayersByCalculation = async (request: express.Request, response: express.Response, next: express.NextFunction) => {
         try {
             let prayerConfig: prayerlib.IPrayersConfig = this.buildPrayerConfigObject(request.body);

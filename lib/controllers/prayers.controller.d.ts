@@ -12,8 +12,9 @@ export default class PrayersController implements IController {
     constructor();
     private initializeValidators;
     private initializeRoutes;
-    private getPrayerManager;
+    private reloadConfig;
     private validatePrayerManagerRequest;
+    private getPrayerManager;
     private updatePrayersByCalculation;
     private getPrayersByCalculation;
     private buildPrayerConfigObject;

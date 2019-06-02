@@ -30,12 +30,25 @@ function initForm()
 {
     $("#view-button").on("click", refreshDataTable);
     $("#submit-button").on("click", saveDataTable);
+    $('#load-button').on("click",reloadSettings);
     $('input[name="daterangepicker"]').daterangepicker(
         {
             startDate: moment(new Date()),//moment(prayerSettings.startDate),
             endDate: moment(new Date()).add(1,"M")//moment(prayerSettings.endDate)
         }
     )
+}
+async function reloadSettings()
+{
+    await $.ajax({
+        url: "PrayerManager/LoadSettings",
+       // error: genericErrorHandler,
+        type:"GET",    
+        success: async () => {
+            await loadPrayerPrayerSettings();      
+            await loadPrayerAdjustments();
+        },
+    }).catch((jqXHR: JQueryXHR, textStatus: string, errorThrown: string)=>{throw new Error(jqXHR.responseJSON.message)})
 }
 
 function notify(type: Noty.Type, message: string) {
