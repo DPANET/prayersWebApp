@@ -27,7 +27,7 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/noty@3.2.0-beta/lib/themes/bootstrap-v4.css">
 
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
-  <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css"/>
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" />
   <!-- Favicon
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
   <link rel="icon" type="image/png" href="/images/favicon.png">
@@ -54,14 +54,14 @@
 
     </header> -->
     <section>
-      <h5> Calculations: <img class="help-icon" > </h5>
-      
+      <h5> Calculations: <img class="help-icon"> </h5>
+
       <form>
         <fieldset>
           <div class="calcuation-form-container">
-            <div>             
-              <label for="method">Prayer Method:               
-              </label>            
+            <div>
+              <label for="method">Prayer Method:
+              </label>
               <select class="u-full-width" id="method" name="prayer_method">
                 <option value="4">Mecca</option>
                 <option value="3">Muslim League</option>
@@ -98,8 +98,8 @@
               </select>
             </div>
             <div>
-              <label for= "period">Period:</label>
-              <input id="prayer-time-period" class="u-full-width id" type="text" name="daterangepicker"  />
+              <label for="period">Period:</label>
+              <input id="prayer-time-period" class="u-full-width id" type="text" name="daterangepicker" />
 
               </select>
             </div>
@@ -109,14 +109,14 @@
           </div>
         </fieldset>
       </form>
-      <h5> Adjust Prayers:   <img class="help-icon" ></h5>
-    
+      <h5> Adjust Prayers: <img class="help-icon"></h5>
+
       <form>
         <fieldset>
           <div class="prayers-time-form-container">
             <div>
               <label for="fajr-time">Fajr:</label>
-         
+
               <input class="short-input" id='fajr-time' name='fajr' type='number' value="0" />
             </div>
             <div>
@@ -136,58 +136,58 @@
               <input class="short-input" id='isha-time' name='isha' type='number' value="0" />
             </div>
           </div>
-          <div class="button-layout" >
-              <input id="load-button"  type="button" value="Load" >
-              <input id="view-button"  type="button" value="View" >
-            <input id="submit-button" class="button-primary" type="button" value="Save" >
+          <div class="button-layout">
+            <input id="load-button" type="button" value="Load">
+            <input id="view-button" type="button" value="View">
+            <input id="submit-button" class="button-primary" type="button" value="Save">
           </div>
 
 
         </fieldset>
       </form>
 
-      <h5> Prayers Timings: <img class="help-icon" > </h5>
+      <h5> Prayers Timings: <img class="help-icon"> </h5>
       <div id="prayers-section ">
 
-          <table id="prayers-table" class="u-full-width id stripe" hidden="true" >
-            <thead >
-                <tr>
-                    <th>Date</th>
-                    <th>Fajr</th>
-                    <th>Sunrise</th>
-                    <th>Dhuhr</th>
-                    <th>Asr</th>
-                    <th>Sunset</th>
-                    <th>Maghrib</th>
-                    <th>Isha</th>
-                    <th>Midnight</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                </tr>
-            </tbody>
-            <tfoot>
-              
-            </tfoot>
+        <table id="prayers-table" class="u-full-width id stripe" hidden="true">
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Fajr</th>
+              <th>Sunrise</th>
+              <th>Dhuhr</th>
+              <th>Asr</th>
+              <th>Sunset</th>
+              <th>Maghrib</th>
+              <th>Isha</th>
+              <th>Midnight</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+            </tr>
+          </tbody>
+          <tfoot>
+
+          </tfoot>
         </table>
         <table id="prayers-table-mobile" class="u-full-width id stripe compact" hidden="true">
-          <thead >
-              <tr>
-                  <th>Prayer</th>
-                  <th>Time</th>
-              </tr>
+          <thead>
+            <tr>
+              <th>Prayer</th>
+              <th>Time</th>
+            </tr>
           </thead>
           <tbody>
 
           </tbody>
           <tfoot>
-            
-          </tfoot>
-      </table>
-        </div>
 
-  
+          </tfoot>
+        </table>
+      </div>
+
+
     </section>
 
     <footer>
@@ -197,16 +197,15 @@
 
   <!-- End Document
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-  <!-- <script type="text/javascript"
-  src="https://code.jquery.com/jquery-3.4.1.min.js"
-  integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
-  crossorigin="anonymous"></script> -->
-  <script type="text/javascript"  src="/js/bundle.js"></script>
-  <!-- <script  src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script> -->
-  <!-- <script  src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script> -->
-  <!-- <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script> -->
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js"
+    integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+  <script  src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+  <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
 
- 
+  <script type="text/javascript" src="/js/bundle.js"></script>
+
+
 </body>
 
 </html>

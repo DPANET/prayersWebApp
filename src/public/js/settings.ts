@@ -1,12 +1,12 @@
-import $ = require('jquery');
+//import $ = require('jquery');
 import * as prayerlib from "../../models/prayers.model";
 import moment from "moment";
 import Noty from "noty";
 import { isNullOrUndefined } from 'util';
-const DataTable = require("datatables.net")(window, $);
-const daterangepicker = require("daterangepicker");
-const DataTableResp = require("datatables.net-responsive")(window, $);
-const DataTableRowGroup = require("datatables.net-rowgroup")(window, $);
+// const DataTable = require("datatables.net")(window, $);
+//const daterangepicker = require("daterangepicker");
+// const DataTableResp = require("datatables.net-responsive")(window, $);
+// const DataTableRowGroup = require("datatables.net-rowgroup")(window, $);
 export async function buildObject() {
     let noty: Noty;
 
