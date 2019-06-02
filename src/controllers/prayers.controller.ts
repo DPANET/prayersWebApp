@@ -11,10 +11,7 @@ import * as sentry from "@sentry/node";
 import * as validationController from "../middlewares/validations.middleware"
 import * as validators from "../validators/validations";
 import * as retry from "async-retry";
-import request = require('request');
 import { RequestHandler } from 'express-serve-static-core';
-import { HTTPRequest } from '@sentry/node/dist/transports/base';
-import { FpReturnSync } from 'lowdb';
 sentry.init({ dsn: config.get("DSN") });
 export default class PrayersController implements IController {
     path: string;

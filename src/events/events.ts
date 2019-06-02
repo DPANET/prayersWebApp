@@ -1,8 +1,6 @@
 const dotenv = require('dotenv').config();
 const debug = require('debug')('app:router');
 import {EventProvider,EventsType,IObserver,IObservable}from '@dpanet/prayers-lib/lib/managers/event';
-const to = require('await-to-js').default;
-import chokidar = require('chokidar');
 import { isNullOrUndefined } from 'util';
 // export class ConfigEventProvider extends EventProvider<string>
 // {
