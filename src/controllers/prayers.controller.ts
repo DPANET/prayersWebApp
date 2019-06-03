@@ -67,7 +67,7 @@ export default class PrayersController implements IController {
     {
         try{
             await this.initializePrayerManger();
-            response.json('ok');
+            response.jsonp('ok');
         }
         catch(err)
         {
@@ -101,7 +101,7 @@ export default class PrayersController implements IController {
             await this._prayerManager.savePrayerConfig(prayerConfig);
            // prayerConfig = await new prayerlib.Configurator().getPrayerConfig();
            // this._prayerManager = await this.refreshPrayerManager(prayerConfig,locationConfig)
-            response.json("completed");
+            response.jsonp("completed");
         }
         catch (err) {
             debug(err);
@@ -116,7 +116,7 @@ export default class PrayersController implements IController {
             let locationConfig: prayerlib.ILocationConfig = await new prayerlib.Configurator().getLocationConfig();
             this._prayerManager = await this.refreshPrayerManager(prayerConfig, locationConfig);
             debug(this._prayerManager.getPrayerAdjsutments());
-            response.json(this.createPrayerViewRow(this.createPrayerView(this._prayerManager.getPrayers())));
+            response.jsonp(this.createPrayerViewRow(this.createPrayerView(this._prayerManager.getPrayers())));
         } catch (err) {
             debug(err);
             sentry.captureException(err);
@@ -157,7 +157,7 @@ export default class PrayersController implements IController {
     private getPrayerAdjsutments = (request: express.Request, response: express.Response, next: NextFunction) => {
         try {
             let prayerAdjustments: prayerlib.IPrayerAdjustments[] = this._prayerManager.getPrayerAdjsutments();
-            response.json(prayerAdjustments);
+            response.jsonp(prayerAdjustments);
         }
         catch (err) {
             debug(err);
@@ -169,7 +169,7 @@ export default class PrayersController implements IController {
     private getPrayersSettings = (request: express.Request, response: express.Response, next: NextFunction) => {
         try {
             let prayersSettings: prayerlib.IPrayersSettings = (this._prayerManager.getPrayerSettings() as prayerlib.PrayersSettings).toJSON();
-            response.json(prayersSettings);
+            response.jsonp(prayersSettings);
         }
         catch (err) {
             debug(err);
@@ -180,7 +180,7 @@ export default class PrayersController implements IController {
     private getPrayers = (request: express.Request, response: express.Response, next: NextFunction) => {
         try {
             let prayers: prayerlib.IPrayers[] = (this._prayerManager.getPrayers() as prayerlib.Prayers[]);
-            response.json(prayers);
+            response.jsonp(prayers);
         }
         catch (err) {
             debug(err);
@@ -192,7 +192,7 @@ export default class PrayersController implements IController {
     private getPrayerView = (request: express.Request, response: express.Response, next: NextFunction) => {
         try {
             let prayersView: IPrayersView[] = this.createPrayerView(this._prayerManager.getPrayers());
-            response.json(prayersView);
+            response.jsonp(prayersView);
         }
         catch (err) {
             debug(err);
@@ -204,7 +204,7 @@ export default class PrayersController implements IController {
     private getPrayerViewRow = (request: express.Request, response: express.Response, next: NextFunction) => {
         try {
             let prayerViewRow: Array<IPrayersViewRow> = this.createPrayerViewRow(this.createPrayerView(this._prayerManager.getPrayers()));
-            response.json(prayerViewRow);
+            response.jsonp(prayerViewRow);
         }
         catch (err) {
             debug(err);

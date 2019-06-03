@@ -43,6 +43,8 @@ async function reloadSettings()
     await $.ajax({
         url: "PrayerManager/LoadSettings",
        // error: genericErrorHandler,
+       dataType:"jsonp",
+       crossDomain:true,
         type:"GET",    
         success: async () => {
             await loadPrayerPrayerSettings();      
@@ -136,7 +138,8 @@ async function saveDataTable() {
              $.ajax({
                 url: 'PrayerManager/PrayersViewMobile', type: "POST",
                 data: JSON.stringify(prayersConfig),
-                dataType: "json",
+                dataType:"jsonp",
+                crossDomain:true,
                 contentType: "application/json; charset=utf-8",
                // error: genericErrorHandler,
                 success: () => notify("success", "Configuration is saved")
@@ -157,6 +160,8 @@ async function loadDataTable() {
             ajax: {
                 url: 'PrayerManager/PrayersViewMobile',
                 type: 'GET',
+                dataType:"jsonp",
+                crossDomain:true,
                 data: (d) => {
                     try {
                         return refreshPrayerConfigForm();
@@ -207,6 +212,8 @@ async function loadPrayerPrayerSettings():Promise<JQuery.jqXHR<any>> {
 return    await $.ajax({
         url: "PrayerManager/PrayersSettings",
        // error: genericErrorHandler,
+       dataType:"jsonp",
+       crossDomain:true,
         success: (prayerSettings: prayerlib.IPrayersSettings) => {
             $("#method").val(prayerSettings.method.id);
             $("#school").val(prayerSettings.school.id);
@@ -219,6 +226,8 @@ return    await $.ajax({
 async function loadPrayerAdjustments() {
   return  await $.ajax({
         url: "PrayerManager/PrayersAdjustments/",
+        dataType:"jsonp",
+        crossDomain:true,
        // error: genericErrorHandler,
         success: (prayerAdjustment: prayerlib.IPrayerAdjustments[]) => {
             prayerAdjustment.forEach(element => {

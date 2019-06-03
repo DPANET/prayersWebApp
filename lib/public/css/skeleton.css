@@ -315,7 +315,7 @@ label > .label-body {
   right: 0;
   height: 16px;
   width: 15px;
-  content: url(/images/help-icon.svg);
+  content: url(../images/help-icon.svg);
 }
 /* Lists
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
