@@ -34,7 +34,7 @@ async function css()
 
     await browserSync.init(null,{
         files: [".lib/"],
-        proxy: "http://localhost:" + port,
+        proxy: "https://localhost:" + port,
         port: browserPort
     });
 

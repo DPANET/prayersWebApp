@@ -1,6 +1,6 @@
 {
   "name": "@dpanet/prayerswebapp",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "main": "lib/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -12,7 +12,7 @@
     "images:copy": "copyfiles -u 1 src/images/**/* lib/",
     "start:server": "node --inspect lib/app.js",
     "run:parallel": "npm-run-all -p start:server parallel",
-    "wait": "wait-on http://localhost:7000",
+    "wait": "wait-on https://localhost:7000",
     "parallel": "npm-run-all bundlejs wait",
     "reload": "browser-sync reload --port 7000",
     "start": "npm run compile && npm run run:parallel"

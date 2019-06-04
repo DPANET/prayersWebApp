@@ -2,7 +2,7 @@
 import * as prayerlib from "../../models/prayers.model";
 import moment from "moment";
 import Noty from "noty";
-import { isNullOrUndefined } from 'util';
+//import { isNullOrUndefined } from 'util';
 // const DataTable = require("datatables.net")(window, $);
 //const daterangepicker = require("daterangepicker");
 // const DataTableResp = require("datatables.net-responsive")(window, $);
@@ -246,6 +246,10 @@ async function loadPrayerAdjustments() {
             });
         }
     }).catch((jqXHR: JQueryXHR, textStatus: string, errorThrown: string)=>{throw new Error(jqXHR.responseJSON.message)});
+}
+
+function isNullOrUndefined<T>(obj: T | null | undefined): obj is null | undefined {
+    return typeof obj === "undefined" || obj === null;
 }
 buildObject();
 //  async function  getDB(): Promise<lowdb.LowdbAsync<any>> {
