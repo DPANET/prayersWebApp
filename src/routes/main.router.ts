@@ -6,7 +6,8 @@ import * as bodyParser from 'body-parser';
 import {IController} from "../controllers/controllers.interface";
 import * as prayerController from "../controllers/prayers.controller"
 import * as exceptionMiddleware from "../middlewares/exceptions.middleware";
-
+import fs from "fs";
+import https from "https";
 export class App {
   public app: express.Application;
   private _port: number;
@@ -25,7 +26,11 @@ export class App {
   }
  
   public listen():void {
-    this.app.listen(this._port, () => {
+    https.createServer({
+      key: fs.readFileSync(config.get("KEY")),
+      cert: fs.readFileSync(config.get("CERT")),
+      passphrase: config.get("PASSPHRASE")
+  },this.app).listen(this._port, () => {
       console.log(`App listening on the port ${this._port}`);
     });
   }
