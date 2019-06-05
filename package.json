@@ -5,7 +5,9 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "compile": "tsc",
-    "bundlejs": "browserify src/public/js/settings.ts -p [tsify] > lib/public/js/bundle.js -v --m --im --ignore crypto",
+    "bundlejs": "browserify lib/public/js/settings.js -p [tinyify] > lib/public/js/bundle.js -v --m --im --ignore crypto",
+    "uglifyjs": "uglifyjs lib/public/js/bundle.js --compress --output lib/public/js/bundleUgly.js",
+    "tinyify": "tinyify lib/public/js/bundle.js --compress --output lib/public/js/bundleUgly.js",
     "roolupjs": "rollup lib/public/js/settings.js --format iife --name \"main\"  --file lib/public/js/bundle.js",
     "html:copy": "copyfiles -u 1 src/**.html lib",
     "css:copy": "copyfiles -u 1 src/css/**.css lib/",
@@ -69,6 +71,7 @@
     "gulp-sourcemaps": "^2.6.5",
     "gulp-typescript": "^5.0.1",
     "jquery": "^3.4.1",
+    "tinyify": "^2.5.1",
     "tsify": "^4.0.1",
     "typescript": "^3.5.1"
   },
