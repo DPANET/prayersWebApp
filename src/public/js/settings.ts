@@ -28,7 +28,7 @@ export async function buildObject() {
 }
 function initForm()
 {
-    $("#view-button").on("click", refreshDataTable);
+   $("#view-button").on("click", refreshDataTable);
     $("#submit-button").on("click", saveDataTable);
     $('#load-button').on("click",reloadSettings);
     $('input[name="daterangepicker"]').daterangepicker(
@@ -101,7 +101,7 @@ function refreshPrayerConfigForm(): prayerlib.IPrayersConfig {
 }
 function validateForm(prayersConfig: prayerlib.IPrayersConfig): boolean {
 
-    let validator: prayerlib.IValid<prayerlib.IPrayersConfig> = prayerlib.ConfigValidator.createValidator();
+   let validator: prayerlib.IValid<prayerlib.IPrayersConfig> = prayerlib.ConfigValidator.createValidator();
     let result: boolean = validator.validate(prayersConfig);
     if (result)
         return result;
@@ -170,7 +170,7 @@ async function loadDataTable() {
                         notify("error", err.message);
                     }
                 },
-                error: dataRefreshErrorHandler,
+               // error: dataRefreshErrorHandler,
                 dataSrc: (d) => { return d; }
             },
             autoWidth: false,

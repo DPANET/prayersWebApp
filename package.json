@@ -5,14 +5,14 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "compile": "tsc",
-    "bundlejs": "browserify src/public/js/settings.ts -p [tsify] > lib/public/js/bundle.js --debug",
+    "bundlejs": "browserify src/public/js/settings.ts -p [tsify] > lib/public/js/bundle.js -v --m --im --ignore crypto",
     "roolupjs": "rollup lib/public/js/settings.js --format iife --name \"main\"  --file lib/public/js/bundle.js",
     "html:copy": "copyfiles -u 1 src/**.html lib",
     "css:copy": "copyfiles -u 1 src/css/**.css lib/",
     "images:copy": "copyfiles -u 1 src/images/**/* lib/",
     "start:server": "node --inspect lib/app.js",
     "run:parallel": "npm-run-all -p start:server parallel",
-    "wait": "wait-on https://localhost:7000",
+    "wait": "wait-on http://localhost:7000",
     "parallel": "npm-run-all bundlejs wait",
     "reload": "browser-sync reload --port 7000",
     "start": "npm run compile && npm run run:parallel"
@@ -31,6 +31,7 @@
     "@hapi/joi": "^15.0.3",
     "async-retry": "^1.2.3",
     "body-parser": "^1.19.0",
+    "compression": "^1.7.4",
     "config": "^3.1.0",
     "debug": "^4.1.1",
     "dotenv": "^8.0.0",
@@ -40,11 +41,12 @@
     "noty": "^3.2.0-beta"
   },
   "devDependencies": {
-    "@dpanet/prayers-lib": "^1.3.9",
+    "@dpanet/prayers-lib": "^1.3.10",
     "@sentry/node": "^5.4.0",
     "@types/async-retry": "^1.4.1",
     "@types/body-parser": "^1.17.0",
     "@types/browserify": "^12.0.36",
+    "@types/compression": "0.0.36",
     "@types/config": "0.0.34",
     "@types/datatables.net": "^1.10.17",
     "@types/daterangepicker": "^3.0.1",
@@ -53,25 +55,26 @@
     "@types/jquery": "^3.3.29",
     "@types/moment": "^2.13.0",
     "@types/morgan": "^1.7.35",
-    "@types/node": "^11.13.12",
+    "@types/node": "^11.13.13",
     "@types/typescript": "^2.0.0",
-    "jquery": "^3.4.1",
     "browser-sync": "^2.26.5",
+    "datatables": "^1.10.18",
+    "datatables.net": "^1.10.19",
+    "datatables.net-responsive": "^2.2.3",
+    "datatables.net-rowgroup": "^1.1.0",
+    "daterangepicker": "^3.0.5",
     "esmify": "^2.1.1",
     "gulp": "^4.0.2",
     "gulp-sass": "^4.0.2",
     "gulp-sourcemaps": "^2.6.5",
     "gulp-typescript": "^5.0.1",
+    "jquery": "^3.4.1",
     "tsify": "^4.0.1",
-    "typescript": "^3.5.1",
-    "datatables": "^1.10.18",
-    "datatables.net": "^1.10.19",
-    "datatables.net-responsive": "^2.2.3",
-    "datatables.net-rowgroup": "^1.1.0",
-    "daterangepicker": "^3.0.5"
+    "typescript": "^3.5.1"
   },
   "directories": {
     "lib": "lib"
   },
+  "browser": {},
   "description": ""
 }
