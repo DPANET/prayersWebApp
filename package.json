@@ -1,12 +1,12 @@
 {
   "name": "@dpanet/prayerswebapp",
-  "version": "1.0.9",
+  "version": "1.0.10",
   "main": "lib/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "compile": "tsc",
     "bundlejs": "browserify lib/public/js/settings.js -p [tinyify] > lib/public/js/bundle.js -v --m --im --ignore crypto",
-    "debug": "browserify src/public/js/settings.ts -p [tsify] > lib/public/js/bundle.js --debug -v --m --im --ignore crypto",  
+    "debug": "browserify src/public/js/settings.ts -p [tsify] > lib/public/js/bundle.js --debug -v --m --im --ignore crypto",
     "html:copy": "copyfiles -u 1 src/**.html lib",
     "css:copy": "copyfiles -u 1 src/css/**.css lib/",
     "images:copy": "copyfiles -u 1 src/images/**/* lib/",
