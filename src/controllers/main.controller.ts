@@ -17,7 +17,8 @@ export default class MainController implements IController
         this.path = "/";
         this.router= express.Router();
         this._filePath = config.get("MAIN_FILE_PATH");
-        this._fileName = config.get("MAIN_FILE_NAME")
+        this._fileName = config.get("MAIN_FILE_NAME");
+
         this.initializeRoutes();
         
     }
@@ -26,7 +27,6 @@ export default class MainController implements IController
       }
     private mainPageRoute=  (request: express.Request, response: express.Response)=>
     {
-        debug(path.join(__dirname,this._filePath));
         response.sendFile(path.join(__dirname,this._filePath),{index:false,dotfiles:"allow",redirect:true});
     }
 

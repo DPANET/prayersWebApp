@@ -75,7 +75,7 @@ function loadNotification(): Noty {
         },
         closeWith: ['click', 'button'], // ['click', 'button', 'hover', 'backdrop'] // backdrop click will close all notifications
         modal: false, // [boolean] if true adds an overlay
-        killer: true, // [boolean] if true closes all notifications and shows itself
+        killer: false, // [boolean] if true closes all notifications and shows itself
     });
 }
 function refreshPrayerConfigForm(): prayerlib.IPrayersConfig {
@@ -143,7 +143,7 @@ async function saveDataTable() {
                 contentType: "application/json; charset=utf-8",
                // error: genericErrorHandler,
                 success: () => notify("success", "Configuration is saved")
-            }).catch((jqXHR: JQueryXHR, textStatus: string, errorThrown: string)=>genericErrorHandler(jqXHR,textStatus,errorThrown));
+            }).catch((jqXHR: JQueryXHR, textStatus: string, errorThrown: string)=>{throw new Error(jqXHR.responseText)});
             
         }
     }
