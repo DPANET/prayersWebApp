@@ -134,7 +134,7 @@ async function saveDataTable() {
         let prayersConfig: prayerlib.IPrayersConfig = refreshPrayerConfigForm();
         let result: boolean = validateForm(prayersConfig);
         if (result) {
-            $.ajax({
+          await  $.ajax({
                 url: 'PrayerManager/PrayersViewMobile', type: "POST",
                 data: JSON.stringify(prayersConfig),
                 dataType: "json",
@@ -142,7 +142,7 @@ async function saveDataTable() {
                 contentType: "application/json; charset=utf-8",
                 // error: genericErrorHandler,
                 success: () => notify("success", "Configuration is saved")
-            }).catch((jqXHR: JQueryXHR, textStatus: string, errorThrown: string) => { throw new Error(jqXHR.responseJSON.messaget) });
+            }).catch((jqXHR: JQueryXHR, textStatus: string, errorThrown: string) => { throw new Error(jqXHR.responseJSON.message) });
 
         }
     }

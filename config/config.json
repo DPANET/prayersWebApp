@@ -1,0 +1,70 @@
+{
+  "config": {
+    "prayerConfig": {
+      "prayer": {
+        "timing": "monthly"
+      },
+      "calculations": {
+        "method": 4,
+        "school": 0,
+        "midnight": 0,
+        "latitudeAdjustment": 3,
+        "adjustmentMethod": 1,
+        "adjustments": [
+          {
+            "prayerName": "Imsak",
+            "adjustments": 2
+          },
+          {
+            "prayerName": "Fajr",
+            "adjustments": 1
+          },
+          {
+            "prayerName": "Sunrise",
+            "adjustments": 3
+          },
+          {
+            "prayerName": "Dhuhr",
+            "adjustments": 2
+          },
+          {
+            "prayerName": "Asr",
+            "adjustments": 3
+          },
+          {
+            "prayerName": "Maghrib",
+            "adjustments": 3
+          },
+          {
+            "prayerName": "Sunset",
+            "adjustments": 0
+          },
+          {
+            "prayerName": "Isha",
+            "adjustments": -28
+          },
+          {
+            "prayerName": "Midnight",
+            "adjustments": 0
+          }
+        ]
+      }
+    },
+    "locationConfig": {
+      "location": {
+        "latitude": 24.444103,
+        "longtitude": 54.370867,
+        "city": "Abu Dhabi",
+        "countryCode": "AE",
+        "countryName": "United Arab Emirates",
+        "address": "Abu Dhabi - United Arab Emirates"
+      },
+      "timezone": {
+        "timeZoneId": "Asia/Dubai",
+        "timeZoneName": "Gulf Standard Time",
+        "dstOffset": 0,
+        "rawOffset": 14400
+      }
+    }
+  }
+}
