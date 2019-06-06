@@ -4,15 +4,14 @@ import config = require('config');
 import * as prayerlib from "@dpanet/prayers-lib";
 import { IController } from "./controllers.interface";
 import {IPrayersView,IPrayersViewRow} from "./views.interface";
-import express, { Router } from 'express';
+import express from 'express';
 import moment from "moment";
-import { NextFunction, NextHandleFunction } from "connect";
+//import { NextFunction, NextHandleFunction } from "connect";
 import { HttpException } from "../exceptions/exception.handler";
 import * as sentry from "@sentry/node";
 import * as validationController from "../middlewares/validations.middleware"
 import * as validators from "../validators/validations";
 import * as retry from "async-retry";
-import { RequestHandler } from 'express-serve-static-core';
 sentry.init({ dsn: config.get("DSN") });
 export default class PrayersController implements IController {
     path: string;
@@ -81,7 +80,7 @@ export default class PrayersController implements IController {
     private validatePrayerManagerRequest=async(request: express.Request, response: express.Response, next: express.NextFunction)=>
     {
         try{
-        let fn:RequestHandler = this._validatePrayerManager(this._prayerManager);
+        let fn:express.RequestHandler = this._validatePrayerManager(this._prayerManager);
         fn(request,response,next);
         }
         catch (err) {
@@ -155,7 +154,7 @@ export default class PrayersController implements IController {
     private putPrayersSettings = (request: express.Request, response: express.Response) => {
         let prayerSettings: prayerlib.IPrayersSettings = request.body;
     }
-    private getPrayerAdjsutments = (request: express.Request, response: express.Response, next: NextFunction) => {
+    private getPrayerAdjsutments = (request: express.Request, response: express.Response, next: express.NextFunction) => {
         try {
             let prayerAdjustments: prayerlib.IPrayerAdjustments[] = this._prayerManager.getPrayerAdjsutments();
             response.json(prayerAdjustments);
@@ -167,7 +166,7 @@ export default class PrayersController implements IController {
         }
     }
 
-    private getPrayersSettings = (request: express.Request, response: express.Response, next: NextFunction) => {
+    private getPrayersSettings = (request: express.Request, response: express.Response, next: express.NextFunction) => {
         try {
             let prayersSettings: prayerlib.IPrayersSettings = (this._prayerManager.getPrayerSettings() as prayerlib.PrayersSettings).toJSON();
             response.json(prayersSettings);
@@ -178,7 +177,7 @@ export default class PrayersController implements IController {
             next(new HttpException(404, err.message));
         }
     }
-    private getPrayers = (request: express.Request, response: express.Response, next: NextFunction) => {
+    private getPrayers = (request: express.Request, response: express.Response, next: express.NextFunction) => {
         try {
             let prayers: prayerlib.IPrayers[] = (this._prayerManager.getPrayers() as prayerlib.Prayers[]);
             response.json(prayers);
@@ -190,7 +189,7 @@ export default class PrayersController implements IController {
             next(new HttpException(404, err.message));
         }
     }
-    private getPrayerView = (request: express.Request, response: express.Response, next: NextFunction) => {
+    private getPrayerView = (request: express.Request, response: express.Response, next: express.NextFunction) => {
         try {
             let prayersView: IPrayersView[] = this.createPrayerView(this._prayerManager.getPrayers());
             response.json(prayersView);
@@ -202,7 +201,7 @@ export default class PrayersController implements IController {
         }
 
     }
-    private getPrayerViewRow = (request: express.Request, response: express.Response, next: NextFunction) => {
+    private getPrayerViewRow = (request: express.Request, response: express.Response, next:express. NextFunction) => {
         try {
             let prayerViewRow: Array<IPrayersViewRow> = this.createPrayerViewRow(this.createPrayerView(this._prayerManager.getPrayers()));
             response.json(prayerViewRow);
