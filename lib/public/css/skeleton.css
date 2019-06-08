@@ -243,8 +243,7 @@ input[type="button"].button-primary:focus {
 .search-form .search-input
 {
   margin: 0;
-  min-width:80%;
-  max-width:90%;
+  width:85%;
   border-right: none;
 
   
@@ -516,8 +515,13 @@ there.
 @media (min-width: 400px) {}
 
 /* Larger than phablet (also point when grid becomes active) */
-@media (min-width: 550px) {
-
+@media (min-width: 600px) {
+  .search-form .search-input
+  {
+    min-width: initial;
+    max-width: initial;
+    width:400px;
+  }
 
 }
 
