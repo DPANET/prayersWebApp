@@ -217,10 +217,66 @@ input[type="button"].button-primary:focus {
   color: #FFF;
   background-color: #1EAEDB;
   border-color: #1EAEDB; }
+/* Search Box
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+.location{
+  overflow: hidden;
+}
+.search-form
+{
+  position: relative;
+  height: 100px;
+  display: flex;
+  flex-grow: 1;
+  justify-content: center;
+  align-items: center;
+  margin: 0px -15px 10px -15px;
+  
+  background: #dcdcdc66;
+}
+.search-form > *
+{
+  margin: 0;
+  border-radius: 0 !important ;
+  
+}
+.search-form .search-input
+{
+  margin: 0;
+  min-width:80%;
+  max-width:90%;
+  border-right: none;
 
+  
+}
+.search-form .search-button
+{
+  position:relative;
+  background:#1EAEDB;
+  width: 40px;
+  padding:10px;
+  border:none ;
+  border-left: none !important;
+}
+ .icon
+{
+  position: absolute;
+  align-content: center;
+  content: url(../images/search-icon.svg);
+  top:50%;
+  left:50%;
+  width: 50%;
+  height: 50%;
+  transform:translate(-50%, -50%);
 
+  color: white;
+}
 /* Forms
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
+input::placeholder
+{
+  color: #bbb;
+}
 input[type="email"],
 input[type="number"],
 input[type="search"],
@@ -291,7 +347,7 @@ label > .label-body {
   margin-bottom:10px;; 
   grid-auto-rows: auto;
 }
-.calcuation-form-container
+.calcuation-form-container,.location-form-container
 {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(250px,1fr));
@@ -307,14 +363,20 @@ label > .label-body {
 .prayers-time-form-container .button-layout{
   grid-row: 4/auto;
 }
-
+.header-title{
+  position: relative;
+  display: inline-block;
+}
 .help-icon
 {
- 
-  display: inline;
-  right: 0;
-  height: 16px;
-  width: 15px;
+  display: inline-block;
+  position: absolute;
+  top:50%;
+  left:100%;
+  padding-left: 22px;
+  width: 50%;
+  height: 50%;
+  transform:translate(-50%, -50%);
   content: url(../images/help-icon.svg);
 }
 /* Lists
