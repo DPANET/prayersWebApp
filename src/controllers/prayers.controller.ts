@@ -3,7 +3,7 @@ const debug = require('debug')('app:router');
 import config = require('config');
 import * as prayerlib from "@dpanet/prayers-lib";
 import { IController } from "./controllers.interface";
-import {IPrayersView,IPrayersViewRow} from "./views.interface";
+import { IPrayersView, IPrayersViewRow } from "./views.interface";
 import express from 'express';
 import moment from "moment";
 //import { NextFunction, NextHandleFunction } from "connect";
@@ -19,69 +19,79 @@ export default class PrayersController implements IController {
     private _prayersController: PrayersController;
     private _prayerManager: prayerlib.IPrayerManager;
     private _validationController: validationController.ValidationMiddleware;
-    private _validatePrayerManager:Function;
-    private _validateConfigParam:Function;
-    private _validateConfigBody:Function;
+    private _validatePrayerManager: Function;
+    private _validateConfigParam: Function;
+    private _validateConfigBody: Function;
     constructor() {
         try {
-        
+
             this.path = "/PrayerManager";
             this.router = express.Router();
             this._validationController = new validationController.ValidationMiddleware();
-            
-            this.initializeValidators();
-          //  this.prayerViewMobileRequestValidator =
-            this.initializePrayerManger()
-            .then(()=> {
 
-            })
-            .catch((err)=> {throw err});
-       
+            this.initializeValidators();
+            //  this.prayerViewMobileRequestValidator =
+            this.initializePrayerManger()
+                .then(() => {
+
+                })
+                .catch((err) => { throw err });
+
             this.initializeRoutes();
         }
         catch (err) {
             throw err;
         }
     }
-    private initializeValidators()
-    {
-        this._validatePrayerManager=this._validationController
-        .validationMiddlewareByObject.bind(this, validators.PrayerMangerValidator.createValidator());
-        this._validateConfigParam= this._validationController.validationMiddlewareByRequest
-        .bind(this, validators.ConfigValidator.createValidator(),validationController.ParameterType.query);
+    private initializeValidators() {
+        this._validatePrayerManager = this._validationController
+            .validationMiddlewareByObject.bind(this, validators.PrayerMangerValidator.createValidator());
+        this._validateConfigParam = this._validationController.validationMiddlewareByRequest
+            .bind(this, validators.ConfigValidator.createValidator(), validationController.ParameterType.query);
         this._validateConfigBody = this._validationController.validationMiddlewareByRequest
-        .bind(this, validators.ConfigValidator.createValidator(),validationController.ParameterType.body);
-  
+            .bind(this, validators.ConfigValidator.createValidator(), validationController.ParameterType.body);
+
     }
     private initializeRoutes() {
-    this.router.get(this.path + "/PrayersAdjustments",this.validatePrayerManagerRequest,this.getPrayerAdjsutments);
-        this.router.get(this.path + "/PrayersSettings",this.validatePrayerManagerRequest,this.getPrayersSettings);
-        this.router.get(this.path + "/Prayers",  this.validatePrayerManagerRequest,this.getPrayers);
-        this.router.get(this.path + "/PrayersViewDesktop", this.validatePrayerManagerRequest,this.getPrayerView);
-        this.router.get(this.path + "/PrayersViewMobile",this._validateConfigParam(),this.getPrayersByCalculation);
-        this.router.get(this.path+"/LoadSettings",this.reloadConfig)
-        this.router.post(this.path + "/PrayersViewMobile/",  this._validateConfigBody(),this.updatePrayersByCalculation);
-      //  this.router.put(this.path + "/PrayersSettings/:id", this.putPrayersSettings);
-    } 
-    private reloadConfig = async(request: express.Request, response: express.Response, next: express.NextFunction)=>
-    {
-        try{
-            await this.initializePrayerManger();
-            response.json('ok');
+        this.router.get(this.path + "/PrayersAdjustments", this.validatePrayerManagerRequest, this.getPrayerAdjsutments);
+        this.router.get(this.path + "/PrayersSettings", this.validatePrayerManagerRequest, this.getPrayersSettings);
+        this.router.get(this.path + "/Prayers", this.validatePrayerManagerRequest, this.getPrayers);
+        this.router.get(this.path + "/PrayersViewDesktop", this.validatePrayerManagerRequest, this.getPrayerView);
+        this.router.get(this.path + "/PrayersViewMobile", this._validateConfigParam(), this.getPrayersByCalculation);
+        this.router.get(this.path + "/LoadSettings", this.reloadConfig)
+        this.router.post(this.path + "/PrayersViewMobile/", this._validateConfigBody(), this.updatePrayersByCalculation);
+        this.router.get(this.path + "/PrayersLocation/", this.validatePrayerManagerRequest, this.getPrayerLocation);
+
+        //  this.router.put(this.path + "/PrayersSettings/:id", this.putPrayersSettings);
+    }
+    private getPrayerLocation = (request: express.Request, response: express.Response, next: express.NextFunction) => {
+        try {
+
+            response.json(this._prayerManager.getPrayerLocationSettings());
         }
-        catch(err)
-        {
+        catch (err) {
             debug(err);
             sentry.captureException(err);
             next(new HttpException(404, err.message));
 
         }
     }
-    private validatePrayerManagerRequest=async(request: express.Request, response: express.Response, next: express.NextFunction)=>
-    {
-        try{
-        let fn:express.RequestHandler = this._validatePrayerManager(this._prayerManager);
-        fn(request,response,next);
+    private reloadConfig = async (request: express.Request, response: express.Response, next: express.NextFunction) => {
+        try {
+            await this.initializePrayerManger();
+            response.json('ok');
+        }
+        catch (err) {
+            debug(err);
+            sentry.captureException(err);
+            next(new HttpException(404, err.message));
+
+        }
+    }
+    private validatePrayerManagerRequest = async (request: express.Request, response: express.Response, next: express.NextFunction) => {
+        try {
+            let fn: express.RequestHandler = this._validatePrayerManager(this._prayerManager);
+            fn(request, response, next);
         }
         catch (err) {
             debug(err);
@@ -89,8 +99,7 @@ export default class PrayersController implements IController {
             next(new HttpException(404, err.message));
         }
     }
-    private getPrayerManager()
-    {
+    private getPrayerManager() {
         return this._prayerManager;
     }
 
@@ -99,8 +108,8 @@ export default class PrayersController implements IController {
             let prayerConfig: prayerlib.IPrayersConfig = this.buildPrayerConfigObject(request.body);
             let locationConfig: prayerlib.ILocationConfig = await new prayerlib.Configurator().getLocationConfig();
             await this._prayerManager.savePrayerConfig(prayerConfig);
-           // prayerConfig = await new prayerlib.Configurator().getPrayerConfig();
-           // this._prayerManager = await this.refreshPrayerManager(prayerConfig,locationConfig)
+            // prayerConfig = await new prayerlib.Configurator().getPrayerConfig();
+            // this._prayerManager = await this.refreshPrayerManager(prayerConfig,locationConfig)
             response.json("completed");
         }
         catch (err) {
@@ -123,8 +132,8 @@ export default class PrayersController implements IController {
             next(new HttpException(404, err.message));
         }
     }
-    
-  
+
+
     private buildPrayerConfigObject(prayerConfigObject: any): prayerlib.IPrayersConfig {
         for (var key in prayerConfigObject) {
             switch (key) {
@@ -201,7 +210,7 @@ export default class PrayersController implements IController {
         }
 
     }
-    private getPrayerViewRow = (request: express.Request, response: express.Response, next:express. NextFunction) => {
+    private getPrayerViewRow = (request: express.Request, response: express.Response, next: express.NextFunction) => {
         try {
             let prayerViewRow: Array<IPrayersViewRow> = this.createPrayerViewRow(this.createPrayerView(this._prayerManager.getPrayers()));
             response.json(prayerViewRow);
@@ -256,7 +265,7 @@ export default class PrayersController implements IController {
     private async refreshPrayerManager(prayerConfig: prayerlib.IPrayersConfig, locationConfig: prayerlib.ILocationConfig): Promise<prayerlib.IPrayerManager> {
         let count: number = 0
         try {
-           return await retry.default(async bail => {
+            return await retry.default(async bail => {
                 count += 1;
                 debug(`the number is now reached ${count}`);
                 let _prayerManager: prayerlib.IPrayerManager = await prayerlib.PrayerTimeBuilder

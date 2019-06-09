@@ -16,6 +16,7 @@ export async function buildObject() {
             initForm();
             await loadPrayerPrayerSettings()
             await loadPrayerAdjustments();
+            await loadPrayerLocation();
         }
         catch (err) {
             let noty: Noty = loadNotification();
@@ -26,6 +27,20 @@ export async function buildObject() {
     }
     );
 }
+async function loadPrayerLocation() {
+    return await $.ajax({
+        url: "PrayerManager/PrayersLocation",
+        // error: genericErrorHandler,
+        dataType: "json",
+        success: (prayersLocation: prayerlib.ILocationSettings) => {
+            $("#address").val(prayersLocation.address);
+            $("#city").val(`${prayersLocation.city}/ ${prayersLocation.countryCode}`);
+            $("#coordinates").val(`(${prayersLocation.latitude},${prayersLocation.longtitude})`);
+            $("#time-zone").val(`(${prayersLocation.timeZoneId})`);
+          },
+    }).catch((jqXHR: JQueryXHR, textStatus: string, errorThrown: string) => { throw new Error(jqXHR.responseJSON.message) });
+}
+
 function initForm() {
     $("#view-button").on("click", refreshDataTable);
     $("#submit-button").on("click", saveDataTable);
@@ -216,6 +231,7 @@ async function loadPrayerPrayerSettings(): Promise<JQuery.jqXHR<any>> {
             $("#school").val(prayerSettings.school.id);
             $("#latitude").val(prayerSettings.latitudeAdjustment.id);
             $("#midnight").val(prayerSettings.midnight.id);
+          
 
         },
     }).catch((jqXHR: JQueryXHR, textStatus: string, errorThrown: string) => { throw new Error(jqXHR.responseJSON.message) })

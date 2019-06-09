@@ -237,7 +237,6 @@ input[type="button"].button-primary:focus {
 .search-form > *
 {
   margin: 0;
-  border-radius: 0 !important ;
   
 }
 .search-form .search-input
@@ -245,8 +244,7 @@ input[type="button"].button-primary:focus {
   margin: 0;
   width:85%;
   border-right: none;
-
-  
+  border-radius: 4px 0px 0px 4px;  
 }
 .search-form .search-button
 {
@@ -256,6 +254,7 @@ input[type="button"].button-primary:focus {
   padding:10px;
   border:none ;
   border-left: none !important;
+  border-radius: 0px 4px 4px 0px;
 }
  .icon
 {

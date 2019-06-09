@@ -59,7 +59,7 @@
     "@types/morgan": "^1.7.35",
     "@types/node": "^11.13.13",
     "@types/typescript": "^2.0.0",
-    "browser-sync": "^2.26.5",
+    "browser-sync": "^2.26.7",
     "datatables": "^1.10.18",
     "datatables.net": "^1.10.19",
     "datatables.net-responsive": "^2.2.3",
