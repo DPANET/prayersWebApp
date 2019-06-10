@@ -2,6 +2,8 @@
 import * as prayerlib from "../../models/prayers.model";
 import moment from "moment";
 import Noty from "noty";
+import { ILocationSettings } from "../../models/prayers.model";
+import { json } from "body-parser";
 //import { isNullOrUndefined } from 'util';
 // const DataTable = require("datatables.net")(window, $);
 //const daterangepicker = require("daterangepicker");
@@ -33,14 +35,17 @@ async function loadPrayerLocation() {
         // error: genericErrorHandler,
         dataType: "json",
         success: (prayersLocation: prayerlib.ILocationSettings) => {
-            $("#address").val(prayersLocation.address);
-            $("#city").val(`${prayersLocation.city}/ ${prayersLocation.countryCode}`);
-            $("#coordinates").val(`(${prayersLocation.latitude},${prayersLocation.longtitude})`);
-            $("#time-zone").val(`(${prayersLocation.timeZoneId})`);
+            loadLocationSettings(prayersLocation)
           },
     }).catch((jqXHR: JQueryXHR, textStatus: string, errorThrown: string) => { throw new Error(jqXHR.responseJSON.message) });
 }
-
+function loadLocationSettings(prayersLocation:prayerlib.ILocationSettings)
+{
+    $("#address").val(prayersLocation.address);
+    $("#city").val(`${prayersLocation.city}/ ${prayersLocation.countryCode}`);
+    $("#coordinates").val(`(${prayersLocation.latitude},${prayersLocation.longtitude})`);
+    $("#time-zone").val(`(${prayersLocation.timeZoneId})`);
+}
 function initForm() {
     $("#view-button").on("click", refreshDataTable);
     $("#submit-button").on("click", saveDataTable);
@@ -51,6 +56,25 @@ function initForm() {
             endDate: moment(new Date()).add(1, "M")//moment(prayerSettings.endDate)
         }
     )
+    $('#search-button').on("click",searchLocation);
+}
+async function searchLocation()
+{
+    let searchText:string = $('#search-input').val() as string;
+
+    if (!isNullOrUndefined(searchText))
+    {
+        await $.ajax({
+            url: "PrayerManager/SearchLocation",
+            // error: genericErrorHandler,
+            dataType: "JSON",
+            type: "GET",
+            data:{'address':searchText},
+            success: async (prayerLocationSettings:ILocationSettings) => {
+                    loadLocationSettings(prayerLocationSettings);
+            },
+        }).catch((jqXHR: JQueryXHR, textStatus: string, errorThrown: string) => { throw new Error(jqXHR.responseJSON.message) });
+    }
 }
 async function reloadSettings() {
     await $.ajax({

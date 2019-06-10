@@ -12,6 +12,7 @@ import * as sentry from "@sentry/node";
 import * as validationController from "../middlewares/validations.middleware"
 import * as validators from "../validators/validations";
 import * as retry from "async-retry";
+import { listenerCount } from 'cluster';
 sentry.init({ dsn: config.get("DSN") });
 export default class PrayersController implements IController {
     path: string;
@@ -61,8 +62,23 @@ export default class PrayersController implements IController {
         this.router.get(this.path + "/LoadSettings", this.reloadConfig)
         this.router.post(this.path + "/PrayersViewMobile/", this._validateConfigBody(), this.updatePrayersByCalculation);
         this.router.get(this.path + "/PrayersLocation/", this.validatePrayerManagerRequest, this.getPrayerLocation);
-
+        this.router.get(this.path +"/SearchLocation/",this.searchLocation)
         //  this.router.put(this.path + "/PrayersSettings/:id", this.putPrayersSettings);
+    }
+    private searchLocation  = async (request:express.Request,response:express.Response,next:express.NextFunction)=>
+    {
+        try{
+            let locationSettings:prayerlib.ILocationSettings;
+            let address = request.query;
+            locationSettings = await prayerlib.LocationBuilder.createLocationBuilder()
+            .setLocationAddress(address.address,"AE")
+            .createLocation();
+            response.json(locationSettings);
+        }
+        catch
+        {
+        
+        }
     }
     private getPrayerLocation = (request: express.Request, response: express.Response, next: express.NextFunction) => {
         try {
