@@ -4,6 +4,8 @@ import moment from "moment";
 import Noty from "noty";
 import { ILocationSettings } from "../../models/prayers.model";
 import { json } from "body-parser";
+import { func } from "@hapi/joi";
+import google = require("google");
 //import { isNullOrUndefined } from 'util';
 // const DataTable = require("datatables.net")(window, $);
 //const daterangepicker = require("daterangepicker");
@@ -57,6 +59,25 @@ function initForm() {
         }
     )
     $('#search-button').on("click",searchLocation);
+  
+    initMap();
+
+}
+ function initMap()
+{
+
+let options:any = {
+
+    types:['address']
+}
+let searchinput:any = document.getElementById('search-input');
+    let autocomplete:any = new google.maps.places.Autocomplete(searchinput,options );
+    autocomplete.addListener(
+    'place_changed',
+    ()=>{
+           // $('#search-input').val(autocomplete.getPlace());
+    }); 
+
 }
 async function searchLocation()
 {
