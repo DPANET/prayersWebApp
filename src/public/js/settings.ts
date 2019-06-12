@@ -11,6 +11,7 @@ import google = require("google");
 //const daterangepicker = require("daterangepicker");
 // const DataTableResp = require("datatables.net-responsive")(window, $);
 // const DataTableRowGroup = require("datatables.net-rowgroup")(window, $);
+
 export async function buildObject() {
     let noty: Noty;
 
@@ -30,6 +31,10 @@ export async function buildObject() {
 
     }
     );
+}
+async function getAPIKey()
+{
+
 }
 async function loadPrayerLocation() {
     return await $.ajax({
