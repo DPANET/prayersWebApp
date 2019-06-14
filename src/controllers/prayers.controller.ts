@@ -21,8 +21,9 @@ export default class PrayersController implements IController {
     private _prayerManager: prayerlib.IPrayerManager;
     private _validationController: validationController.ValidationMiddleware;
     private _validatePrayerManager: Function;
-    private _validateConfigParam: Function;
-    private _validateConfigBody: Function;
+    private _validateConfigPrayerParam: Function;
+    private _validateConfigPrayerBody: Function;
+    private _validateConfigLocationParam:Function;
     constructor() {
         try {
 
@@ -47,10 +48,12 @@ export default class PrayersController implements IController {
     private initializeValidators() {
         this._validatePrayerManager = this._validationController
             .validationMiddlewareByObject.bind(this, validators.PrayerMangerValidator.createValidator());
-        this._validateConfigParam = this._validationController.validationMiddlewareByRequest
+        this._validateConfigPrayerParam = this._validationController.validationMiddlewareByRequest
             .bind(this, validators.ConfigValidator.createValidator(), validationController.ParameterType.query);
-        this._validateConfigBody = this._validationController.validationMiddlewareByRequest
+        this._validateConfigPrayerBody = this._validationController.validationMiddlewareByRequest
             .bind(this, validators.ConfigValidator.createValidator(), validationController.ParameterType.body);
+        this._validateConfigLocationParam = this._validationController.validationMiddlewareByRequest
+        .bind(this,validators.LocationValidator.createValidator(),validationController.ParameterType.query)
 
     }
     private initializeRoutes() {
@@ -58,11 +61,11 @@ export default class PrayersController implements IController {
         this.router.get(this.path + "/PrayersSettings", this.validatePrayerManagerRequest, this.getPrayersSettings);
         this.router.get(this.path + "/Prayers", this.validatePrayerManagerRequest, this.getPrayers);
         this.router.get(this.path + "/PrayersViewDesktop", this.validatePrayerManagerRequest, this.getPrayerView);
-        this.router.get(this.path + "/PrayersViewMobile", this._validateConfigParam(), this.getPrayersByCalculation);
+        this.router.get(this.path + "/PrayersViewMobile", this._validateConfigPrayerParam(), this.getPrayersByCalculation);
         this.router.get(this.path + "/LoadSettings", this.reloadConfig)
-        this.router.post(this.path + "/PrayersViewMobile/", this._validateConfigBody(), this.updatePrayersByCalculation);
+        this.router.post(this.path + "/PrayersViewMobile/", this._validateConfigPrayerBody(), this.updatePrayersByCalculation);
         this.router.get(this.path + "/PrayersLocation/", this.validatePrayerManagerRequest, this.getPrayerLocation);
-        this.router.get(this.path +"/SearchLocation/",this.searchLocation)
+        this.router.get(this.path +"/SearchLocation/",this._validateConfigLocationParam(),this.searchLocation)
         //  this.router.put(this.path + "/PrayersSettings/:id", this.putPrayersSettings);
     }
     private searchLocation  = async (request:express.Request,response:express.Response,next:express.NextFunction)=>
@@ -71,7 +74,7 @@ export default class PrayersController implements IController {
             let locationSettings:prayerlib.ILocationSettings;
             let address = request.query;
             locationSettings = await prayerlib.LocationBuilder.createLocationBuilder()
-            .setLocationAddress(address.address,"AE")
+            .setLocationAddress(address.address)
             .createLocation();
             response.json(locationSettings);
         }

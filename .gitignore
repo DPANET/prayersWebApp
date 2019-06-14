@@ -2,5 +2,4 @@
 config/default.json
 config/custom-environment-variables.json
 .env
-
 lib/public/js/googleapi.js

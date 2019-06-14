@@ -220,7 +220,7 @@ input[type="button"].button-primary:focus {
 /* Search Box
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
 .location{
-  overflow: hidden;
+  overflow: visible;
 }
 .search-form
 {
@@ -231,7 +231,6 @@ input[type="button"].button-primary:focus {
   justify-content: center;
   align-items: center;
   margin: 0px -15px 10px -15px;
-  
   background: #dcdcdc66;
 }
 .search-form > *
@@ -242,7 +241,7 @@ input[type="button"].button-primary:focus {
 .search-form .search-input
 {
   margin: 0;
-  width:85%;
+  width:80%;
   border-right: none;
   border-radius: 4px 0px 0px 4px;  
 }
@@ -354,6 +353,8 @@ label > .label-body {
   align-items: start;
   grid-auto-rows: auto;
 }
+
+
 .short-input
 {
   width: 100px;

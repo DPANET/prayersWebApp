@@ -1,23 +1,20 @@
 //import $ = require('jquery');
+import dontenv= require('dotenv');
+dontenv.config();
 import * as prayerlib from "../../models/prayers.model";
 import moment from "moment";
 import Noty from "noty";
 import { ILocationSettings } from "../../models/prayers.model";
-import { json } from "body-parser";
-import { func } from "@hapi/joi";
 import google = require("google");
 //import { isNullOrUndefined } from 'util';
 // const DataTable = require("datatables.net")(window, $);
 //const daterangepicker = require("daterangepicker");
 // const DataTableResp = require("datatables.net-responsive")(window, $);
 // const DataTableRowGroup = require("datatables.net-rowgroup")(window, $);
-
 export async function buildObject() {
     let noty: Noty;
-
     await $('document').ready(async () => {
         try {
-
             initForm();
             await loadPrayerPrayerSettings()
             await loadPrayerAdjustments();
@@ -28,13 +25,8 @@ export async function buildObject() {
             noty.setText(err.message, true);
             noty.show();
         }
-
     }
     );
-}
-async function getAPIKey()
-{
-
 }
 async function loadPrayerLocation() {
     return await $.ajax({
@@ -48,7 +40,6 @@ async function loadPrayerLocation() {
 }
 function loadLocationSettings(prayersLocation:prayerlib.ILocationSettings)
 {
-    $("#address").val(prayersLocation.address);
     $("#city").val(`${prayersLocation.city}/ ${prayersLocation.countryCode}`);
     $("#coordinates").val(`(${prayersLocation.latitude},${prayersLocation.longtitude})`);
     $("#time-zone").val(`(${prayersLocation.timeZoneId})`);
@@ -64,19 +55,19 @@ function initForm() {
         }
     )
     $('#search-button').on("click",searchLocation);
-  
-    initMap();
+   // initMap();
 
 }
  function initMap()
 {
+
 
 let options:any = {
 
     types:['address']
 }
 let searchinput:any = document.getElementById('search-input');
-    let autocomplete:any = new google.maps.places.Autocomplete(searchinput,options );
+    let autocomplete:any = new google.maps.places.Autocomplete(searchinput);
     autocomplete.addListener(
     'place_changed',
     ()=>{
