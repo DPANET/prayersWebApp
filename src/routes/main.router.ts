@@ -34,7 +34,7 @@ export class App {
  
   private initializeMiddlewares():void {
     this.app.use(compression());
-    this.app.use('/Places/',proxy({target:`http://localhost:${this._port}/Keys`,changeOrigin:false}));
+    this.app.use('/Places/',proxy({target:`https://maps.googleapis.com/maps/api/js?key=${config.get("GOOGLE_PLACE_KEY")}&libraries=places`,changeOrigin:true}));
     this.app.use(helmet());
     this.app.use(bodyParser.json());
     this.app.use(express.static(path.join(this._mainFolder,this._stataicFolder)));
