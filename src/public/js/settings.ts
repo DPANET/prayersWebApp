@@ -1,6 +1,4 @@
 //import $ = require('jquery');
-import dontenv= require('dotenv');
-dontenv.config();
 import * as prayerlib from "../../models/prayers.model";
 import moment from "moment";
 import Noty from "noty";
