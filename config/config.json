@@ -17,7 +17,7 @@
           },
           {
             "prayerName": "Fajr",
-            "adjustments": 1
+            "adjustments": 2
           },
           {
             "prayerName": "Sunrise",
@@ -52,12 +52,12 @@
     },
     "locationConfig": {
       "location": {
-        "latitude": 24.444103,
-        "longtitude": 54.370867,
-        "city": "Abu Dhabi",
+        "latitude": 25.2048493,
+        "longtitude": 55.2707828,
+        "city": "Dubai",
         "countryCode": "AE",
         "countryName": "United Arab Emirates",
-        "address": "Abu Dhabi - United Arab Emirates"
+        "address": "Dubai - United Arab Emirates"
       },
       "timezone": {
         "timeZoneId": "Asia/Dubai",

@@ -60,7 +60,7 @@
           <form class="location">
             <fieldset>
               <div class="search-form">
-                <input class="search-input" id="search-input" type="search" placeholder="Enter location address or coordinates" />   
+                <input class="search-input" onClick="this.setSelectionRange(0, this.value.length)" autocomplete="nope" id="search-input" type="search" placeholder="Enter city name" />   
                   <button class="search-button" id="search-button" type="button" value="" >
                   <span class="icon"></span>
                   </button>

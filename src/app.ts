@@ -1,5 +1,3 @@
-import dontenv= require('dotenv');
-dontenv.config();
 import  {App} from "./routes/main.router";
 import prayersController from "./controllers/prayers.controller";
 import mainController from "./controllers/main.controller";

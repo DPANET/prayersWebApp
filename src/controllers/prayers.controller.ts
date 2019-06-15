@@ -23,7 +23,8 @@ export default class PrayersController implements IController {
     private _validatePrayerManager: Function;
     private _validateConfigPrayerParam: Function;
     private _validateConfigPrayerBody: Function;
-    private _validateConfigLocationParam:Function;
+    private _validateConfigLocationObject:Function;
+    private _validationConfigPrayerObject:Function;
     constructor() {
         try {
 
@@ -38,7 +39,6 @@ export default class PrayersController implements IController {
 
                 })
                 .catch((err) => { throw err });
-
             this.initializeRoutes();
         }
         catch (err) {
@@ -49,23 +49,25 @@ export default class PrayersController implements IController {
         this._validatePrayerManager = this._validationController
             .validationMiddlewareByObject.bind(this, validators.PrayerMangerValidator.createValidator());
         this._validateConfigPrayerParam = this._validationController.validationMiddlewareByRequest
-            .bind(this, validators.ConfigValidator.createValidator(), validationController.ParameterType.query);
+            .bind(this, validators.PrayerConfigValidator.createValidator(), validationController.ParameterType.query);
         this._validateConfigPrayerBody = this._validationController.validationMiddlewareByRequest
-            .bind(this, validators.ConfigValidator.createValidator(), validationController.ParameterType.body);
-        this._validateConfigLocationParam = this._validationController.validationMiddlewareByRequest
-        .bind(this,validators.LocationValidator.createValidator(),validationController.ParameterType.query)
-
+            .bind(this, validators.PrayerConfigValidator.createValidator(), validationController.ParameterType.body);
+        this._validateConfigLocationObject = this._validationController.validationMiddlewareByObject
+        .bind(this,validators.LocationValidator.createValidator());
+        this._validationConfigPrayerObject = this._validationController.validationMiddlewareByObject
+        .bind(this,validators.PrayerConfigValidator.createValidator());
+      //  this.validateConfigLocationRequest = this._validationController.validationMiddlewareByObject.bind(this,validato)
     }
     private initializeRoutes() {
         this.router.get(this.path + "/PrayersAdjustments", this.validatePrayerManagerRequest, this.getPrayerAdjsutments);
         this.router.get(this.path + "/PrayersSettings", this.validatePrayerManagerRequest, this.getPrayersSettings);
         this.router.get(this.path + "/Prayers", this.validatePrayerManagerRequest, this.getPrayers);
         this.router.get(this.path + "/PrayersViewDesktop", this.validatePrayerManagerRequest, this.getPrayerView);
-        this.router.get(this.path + "/PrayersViewMobile", this._validateConfigPrayerParam(), this.getPrayersByCalculation);
+        this.router.get(this.path + "/PrayersViewMobile", this.validatePrayerConfigRequest,this.validateLocationConfigRequest, this.getPrayersByCalculation);
         this.router.get(this.path + "/LoadSettings", this.reloadConfig)
-        this.router.post(this.path + "/PrayersViewMobile/", this._validateConfigPrayerBody(), this.updatePrayersByCalculation);
+        this.router.post(this.path + "/PrayersViewMobile/",  this.validatePrayerConfigRequest,this.validateLocationConfigRequest, this.updatePrayersByCalculation);
         this.router.get(this.path + "/PrayersLocation/", this.validatePrayerManagerRequest, this.getPrayerLocation);
-        this.router.get(this.path +"/SearchLocation/",this._validateConfigLocationParam(),this.searchLocation)
+        this.router.get(this.path +"/SearchLocation/",this.searchLocation)
         //  this.router.put(this.path + "/PrayersSettings/:id", this.putPrayersSettings);
     }
     private searchLocation  = async (request:express.Request,response:express.Response,next:express.NextFunction)=>
@@ -78,9 +80,11 @@ export default class PrayersController implements IController {
             .createLocation();
             response.json(locationSettings);
         }
-        catch
+        catch(err)
         {
-        
+            debug(err);
+            sentry.captureException(err);
+            next(new HttpException(404, err.message));
         }
     }
     private getPrayerLocation = (request: express.Request, response: express.Response, next: express.NextFunction) => {
@@ -107,6 +111,30 @@ export default class PrayersController implements IController {
 
         }
     }
+    private validatePrayerConfigRequest = async (request:express.Request,response:express.Response,next:express.NextFunction)=>
+    {
+        try {
+            let fn: express.RequestHandler = this._validationConfigPrayerObject(request.query.prayerConfig);
+            fn(request, response, next);
+        }
+        catch (err) {
+            debug(err);
+            sentry.captureException(err);
+            next(new HttpException(404, err.message));
+        }
+    }
+    private validateLocationConfigRequest= async (request:express.Request,response:express.Response,next:express.NextFunction)=>
+    {
+        try {
+            let fn: express.RequestHandler = this._validateConfigLocationObject(request.query.locationConfig);
+            fn(request, response, next);
+        }
+        catch (err) {
+            debug(err);
+            sentry.captureException(err);
+            next(new HttpException(404, err.message));
+        }
+    }
     private validatePrayerManagerRequest = async (request: express.Request, response: express.Response, next: express.NextFunction) => {
         try {
             let fn: express.RequestHandler = this._validatePrayerManager(this._prayerManager);
@@ -124,9 +152,11 @@ export default class PrayersController implements IController {
 
     private updatePrayersByCalculation = async (request: express.Request, response: express.Response, next: express.NextFunction) => {
         try {
-            let prayerConfig: prayerlib.IPrayersConfig = this.buildPrayerConfigObject(request.body);
-            let locationConfig: prayerlib.ILocationConfig = await new prayerlib.Configurator().getLocationConfig();
-            await this._prayerManager.savePrayerConfig(prayerConfig);
+            let prayerConfig: prayerlib.IPrayersConfig = this.buildPrayerConfigObject(request.body.prayerConfig);
+            let locationConfig:prayerlib.ILocationConfig = request.body.locationConfig;
+            this._prayerManager =await this.refreshPrayerManager(prayerConfig,locationConfig) ;
+            await this._prayerManager.savePrayerConfig(this._prayerManager.getPrayerConfig());
+            await this._prayerManager.saveLocationConfig(this._prayerManager.getLocationConfig())
             // prayerConfig = await new prayerlib.Configurator().getPrayerConfig();
             // this._prayerManager = await this.refreshPrayerManager(prayerConfig,locationConfig)
             response.json("completed");
@@ -139,10 +169,12 @@ export default class PrayersController implements IController {
     }
     private getPrayersByCalculation = async (request: express.Request, response: express.Response, next: express.NextFunction) => {
         try {
-            let prayerConfig: prayerlib.IPrayersConfig = this.buildPrayerConfigObject(request.query);
-            debug(prayerConfig);
-            let locationConfig: prayerlib.ILocationConfig = await new prayerlib.Configurator().getLocationConfig();
-            this._prayerManager = await this.refreshPrayerManager(prayerConfig, locationConfig);
+            let config:any = request.query;
+            let prayerConfig: prayerlib.IPrayersConfig = this.buildPrayerConfigObject(config.prayerConfig);
+            let locationConfig:prayerlib.ILocationConfig=config.locationConfig;
+            debug(locationConfig);
+            //let locationConfig: prayerlib.ILocationConfig = await new prayerlib.Configurator().getLocationConfig();
+            this._prayerManager = await this.refreshPrayerManager(prayerConfig,locationConfig);
             debug(this._prayerManager.getPrayerAdjsutments());
             response.json(this.createPrayerViewRow(this.createPrayerView(this._prayerManager.getPrayers())));
         } catch (err) {
@@ -151,8 +183,6 @@ export default class PrayersController implements IController {
             next(new HttpException(404, err.message));
         }
     }
-
-
     private buildPrayerConfigObject(prayerConfigObject: any): prayerlib.IPrayersConfig {
         for (var key in prayerConfigObject) {
             switch (key) {

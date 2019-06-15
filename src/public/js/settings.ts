@@ -42,7 +42,7 @@ function loadLocationSettings(prayersLocation:prayerlib.ILocationSettings)
 {
     $("#city").val(`${prayersLocation.city}/ ${prayersLocation.countryCode}`);
     $("#coordinates").val(`(${prayersLocation.latitude},${prayersLocation.longtitude})`);
-    $("#time-zone").val(`(${prayersLocation.timeZoneId})`);
+    $("#time-zone").val(`(${prayersLocation.timeZoneId})`); 
 }
 function initForm() {
     $("#view-button").on("click", refreshDataTable);
@@ -77,8 +77,8 @@ let searchinput:any = document.getElementById('search-input');
 }
 async function searchLocation()
 {
+    try{
     let searchText:string = $('#search-input').val() as string;
-
     if (!isNullOrUndefined(searchText))
     {
         await $.ajax({
@@ -88,10 +88,15 @@ async function searchLocation()
             type: "GET",
             data:{'address':searchText},
             success: async (prayerLocationSettings:ILocationSettings) => {
-                    loadLocationSettings(prayerLocationSettings);
+                     loadLocationSettings(prayerLocationSettings);
             },
         }).catch((jqXHR: JQueryXHR, textStatus: string, errorThrown: string) => { throw new Error(jqXHR.responseJSON.message) });
     }
+}    catch (err) {
+    let noty: Noty = loadNotification();
+    noty.setText(err.message, true);
+    noty.show();
+}
 }
 async function reloadSettings() {
     await $.ajax({
@@ -102,6 +107,7 @@ async function reloadSettings() {
         success: async () => {
             await loadPrayerPrayerSettings();
             await loadPrayerAdjustments();
+            await loadPrayerLocation();
         },
     }).catch((jqXHR: JQueryXHR, textStatus: string, errorThrown: string) => { throw new Error(jqXHR.responseJSON.message) })
 }
@@ -152,10 +158,44 @@ function refreshPrayerConfigForm(): prayerlib.IPrayersConfig {
     }
     return prayersConfig;
 }
-function validateForm(prayersConfig: prayerlib.IPrayersConfig): boolean {
+function refreshLocationConfig():prayerlib.ILocationConfig{
+    let coordinates:string=$("#coordinates").val() as string
+    let latlngArray:Array<string> = new Array<string>();
+    coordinates=coordinates.replace("(","");
+    coordinates=coordinates.replace(")","");
+    latlngArray= coordinates.split(",");
+    let latlng:prayerlib.ILocationConfig= {
+        location:{
+            latitude:parseFloat(latlngArray[0]),
+            longtitude:parseFloat(latlngArray[1]),
+    
+        },
+        timezone:{
+            timeZoneId:null,
+            timeZoneName:null,
+            rawOffset:null,
+            dstOffset:null
+        }
+    }
+    return latlng;
+}
+function validatePrayerForm(prayersConfig: prayerlib.IPrayersConfig): boolean {
 
-    let validator: prayerlib.IValid<prayerlib.IPrayersConfig> = prayerlib.ConfigValidator.createValidator();
+    let validator: prayerlib.IValid<prayerlib.IPrayersConfig> = prayerlib.PrayerConfigValidator.createValidator();
     let result: boolean = validator.validate(prayersConfig);
+    if (result)
+        return result;
+    else {
+        let err: prayerlib.IValidationError = validator.getValidationError();
+        let message: string[] = err.details.map((detail: any) => `${detail.value.label} with value ${detail.value.value}: ${detail.message}`);
+        let messageShort = message.reduce((prvs, curr, index, array) => prvs.concat('<br>', curr));
+        throw new Error(messageShort);
+    }
+}
+function validateLocationForm(locationConfig:prayerlib.ILocationConfig):boolean
+{
+    let validator: prayerlib.IValid<prayerlib.ILocationSettings > = prayerlib.LocationValidator.createValidator();
+    let result: boolean = validator.validate(locationConfig.location);
     if (result)
         return result;
     else {
@@ -169,8 +209,10 @@ async function refreshDataTable() {
     try {
 
         let prayersConfig: prayerlib.IPrayersConfig = refreshPrayerConfigForm();
-        let result: boolean = validateForm(prayersConfig);
-        if (result) {
+        let locationConfig:prayerlib.ILocationConfig = refreshLocationConfig();
+        let prayerValidationResult: boolean = validatePrayerForm(prayersConfig);
+        let locationValidationResult:boolean = validateLocationForm(locationConfig);
+        if (prayerValidationResult && locationValidationResult) {
             if ($('#prayers-table-mobile').is(':hidden')) {
                 await loadDataTable();
                 $('#prayers-table-mobile').show();
@@ -188,11 +230,15 @@ async function refreshDataTable() {
 async function saveDataTable() {
     try {
         let prayersConfig: prayerlib.IPrayersConfig = refreshPrayerConfigForm();
-        let result: boolean = validateForm(prayersConfig);
-        if (result) {
+        let locationConfig:prayerlib.ILocationConfig = refreshLocationConfig();
+        let prayerValidationResult: boolean = validatePrayerForm(prayersConfig);
+        let locationValidationResult:boolean = validateLocationForm(locationConfig);
+        if  (prayerValidationResult && locationValidationResult) {
           await  $.ajax({
                 url: 'PrayerManager/PrayersViewMobile', type: "POST",
-                data: JSON.stringify(prayersConfig),
+                data:JSON.stringify(
+                { "prayerConfig":refreshPrayerConfigForm(),
+                "locationConfig": refreshLocationConfig()}),// JSON.stringify(prayersConfig),
                 dataType: "json",
                 //crossDomain:true,
                 contentType: "application/json; charset=utf-8",
@@ -210,6 +256,7 @@ async function saveDataTable() {
 }
 async function loadDataTable() {
     $.fn.dataTable.ext.errMode = 'throw';
+    let paramlist:Array<object>= new Array<object>();
     await $('#prayers-table-mobile').DataTable(
         {
             ajax: {
@@ -218,7 +265,9 @@ async function loadDataTable() {
                 dataType: "json",
                 data: (d) => {
                     try {
-                        return refreshPrayerConfigForm();
+                        let config={ "prayerConfig":refreshPrayerConfigForm(),
+                        "locationConfig": refreshLocationConfig()}
+                        return config;
                     }
                     catch (err) {
                         notify("error", err.message);
