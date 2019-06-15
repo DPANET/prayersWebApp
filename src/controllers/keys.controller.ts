@@ -18,8 +18,8 @@ export default class KeyController implements IController {
         this.router.get(this.path+"/Places/", this.placesRouter);
     }
     private placesRouter = (request: express.Request, response: express.Response) => {
-       // response.json(this._googleKey);
-       response.sendFile(`https://maps.googleapis.com/maps/api/js?key=${this._googleKey}&libraries=places`,{index:false,dotfiles:"allow",redirect:true});
+        response.json(this._googleKey);
+       //response.sendFile(`https://maps.googleapis.com/maps/api/js?key=${this._googleKey}&libraries=places`,{index:false,dotfiles:"allow",redirect:true});
 
     }
 }
