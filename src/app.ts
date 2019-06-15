@@ -1,10 +1,9 @@
 import  {App} from "./routes/main.router";
 import prayersController from "./controllers/prayers.controller";
 import mainController from "./controllers/main.controller";
-import keyController from "./controllers/key.controller";
+import keyController from "./controllers/keys.controller";
 
 import * as  events from "./events/events";
-const to = require('await-to-js').default;
 let app:App = new App([new prayersController(),new mainController(),new keyController()]);
 // let eventProvider:events.ConfigEventProvider = new events.ConfigEventProvider("config/config.json");
 // let eventListener:events.ConfigEventListener = new events.ConfigEventListener();

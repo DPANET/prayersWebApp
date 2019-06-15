@@ -17,7 +17,7 @@
           },
           {
             "prayerName": "Fajr",
-            "adjustments": 2
+            "adjustments": 3
           },
           {
             "prayerName": "Sunrise",
@@ -52,18 +52,18 @@
     },
     "locationConfig": {
       "location": {
-        "latitude": 25.2048493,
-        "longtitude": 55.2707828,
-        "city": "Dubai",
-        "countryCode": "AE",
-        "countryName": "United Arab Emirates",
-        "address": "Dubai - United Arab Emirates"
+        "latitude": 21.3890824,
+        "longtitude": 39.8579118,
+        "city": "Mecca",
+        "countryCode": "SA",
+        "countryName": "Saudi Arabia",
+        "address": "Mecca Saudi Arabia"
       },
       "timezone": {
-        "timeZoneId": "Asia/Dubai",
-        "timeZoneName": "Gulf Standard Time",
+        "timeZoneId": "Asia/Riyadh",
+        "timeZoneName": "Arabian Standard Time",
         "dstOffset": 0,
-        "rawOffset": 14400
+        "rawOffset": 10800
       }
     }
   }
