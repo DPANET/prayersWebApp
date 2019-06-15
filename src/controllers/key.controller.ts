@@ -15,7 +15,7 @@ export default class KeyController implements IController {
         this.initializeRoutes();
     }
     private initializeRoutes() {
-        this.router.get(this.path+"/Places", this.placesRouter);
+        this.router.get(this.path+"/Places/", this.placesRouter);
     }
     private placesRouter = (request: express.Request, response: express.Response) => {
         response.json(this._googleKey);

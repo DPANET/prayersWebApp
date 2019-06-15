@@ -5,9 +5,9 @@ import path from "path";
 import compression from "compression";
 import * as bodyParser from 'body-parser';
 import {IController} from "../controllers/controllers.interface";
-import * as prayerController from "../controllers/prayers.controller"
 import * as exceptionMiddleware from "../middlewares/exceptions.middleware";
 import helmet from "helmet";
+import proxy from "http-proxy-middleware";
 export class App {
   public app: express.Application;
   private _port: number;
@@ -18,11 +18,12 @@ export class App {
     this.app = express();
     this._mainFolder = config.get('WEBROOT');
     this._stataicFolder= config.get('STATIC_FILES');
+    this._port = config.get("PORT");
+
     this.connectToTheDatabase();
     this.initializeMiddlewares();
     this.initializeControllers(controllers);
     this.initializeErrorMiddleware()
-    this._port = config.get("PORT");
   }
  
   public listen():void {
@@ -33,6 +34,7 @@ export class App {
  
   private initializeMiddlewares():void {
     this.app.use(compression());
+    this.app.use('/Places/',proxy({target:`http://localhost:${this._port}/Keys`,changeOrigin:true}));
     this.app.use(helmet());
     this.app.use(bodyParser.json());
     this.app.use(express.static(path.join(this._mainFolder,this._stataicFolder)));
