@@ -7,6 +7,7 @@ import * as bodyParser from 'body-parser';
 import {IController} from "../controllers/controllers.interface";
 import * as prayerController from "../controllers/prayers.controller"
 import * as exceptionMiddleware from "../middlewares/exceptions.middleware";
+import helmet from "helmet";
 export class App {
   public app: express.Application;
   private _port: number;
@@ -32,6 +33,7 @@ export class App {
  
   private initializeMiddlewares():void {
     this.app.use(compression());
+    this.app.use(helmet());
     this.app.use(bodyParser.json());
     this.app.use(express.static(path.join(this._mainFolder,this._stataicFolder)));
     this.app.use(morgan('tiny'));
