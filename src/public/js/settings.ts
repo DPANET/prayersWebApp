@@ -287,7 +287,7 @@ async function loadDataTable() {
             },
             rowGroup:
             {
-                dataSrc: 'prayerDate'
+                dataSrc: 'prayersDate'
             },
             columns: [
                 { data: 'prayerName', responsivePriority: 2, className: "th" },

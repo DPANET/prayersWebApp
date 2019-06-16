@@ -1,17 +1,18 @@
 import { PrayersName } from "@dpanet/prayers-lib/lib/entities/prayer";
 export interface IPrayersView {
-    prayerDate: string;
-    fajr: string;
-    sunrise: string;
-    dhuhr: string;
-    asr: string;
-    sunset: string;
-    maghrib: string;
-    isha: string;
-    midnight: string;
+    prayersDate: string;
+    Fajr: string;
+    Sunrise: string;
+    Dhuhr: string;
+    Asr: string;
+    Sunset: string;
+    Maghrib: string;
+    Isha: string;
+    Midnight: string;
+    Imsak?: string;
 }
 export interface IPrayersViewRow {
-    prayerDate: string;
+    prayersDate: string;
     prayerTime: string;
     prayerName: PrayersName;
 }

@@ -13,6 +13,7 @@ import * as validationController from "../middlewares/validations.middleware"
 import * as validators from "../validators/validations";
 import * as retry from "async-retry";
 import { listenerCount } from 'cluster';
+import R from "ramda";
 sentry.init({ dsn: config.get("DSN") });
 export default class PrayersController implements IController {
     path: string;
@@ -275,41 +276,41 @@ export default class PrayersController implements IController {
         let prayerViewRow: Array<IPrayersViewRow> = new Array<IPrayersViewRow>();
         prayersView.forEach((prayerViewObject, index, arr) => {
             prayerViewRow.push(
-                { prayerDate: prayerViewObject.prayerDate, prayerName: prayerlib.PrayersName.FAJR, prayerTime: prayerViewObject.fajr },
-                { prayerDate: prayerViewObject.prayerDate, prayerName: prayerlib.PrayersName.SUNRISE, prayerTime: prayerViewObject.sunrise },
-                { prayerDate: prayerViewObject.prayerDate, prayerName: prayerlib.PrayersName.DHUHR, prayerTime: prayerViewObject.dhuhr },
-                { prayerDate: prayerViewObject.prayerDate, prayerName: prayerlib.PrayersName.ASR, prayerTime: prayerViewObject.asr },
-                { prayerDate: prayerViewObject.prayerDate, prayerName: prayerlib.PrayersName.SUNSET, prayerTime: prayerViewObject.sunset },
-                { prayerDate: prayerViewObject.prayerDate, prayerName: prayerlib.PrayersName.MAGHRIB, prayerTime: prayerViewObject.maghrib },
-                { prayerDate: prayerViewObject.prayerDate, prayerName: prayerlib.PrayersName.ISHA, prayerTime: prayerViewObject.isha },
-                { prayerDate: prayerViewObject.prayerDate, prayerName: prayerlib.PrayersName.MIDNIGHT, prayerTime: prayerViewObject.midnight });
+                { prayersDate: prayerViewObject.prayersDate, prayerName: prayerlib.PrayersName.FAJR, prayerTime: prayerViewObject.Fajr },
+                { prayersDate: prayerViewObject.prayersDate, prayerName: prayerlib.PrayersName.SUNRISE, prayerTime: prayerViewObject.Sunrise },
+                { prayersDate: prayerViewObject.prayersDate, prayerName: prayerlib.PrayersName.DHUHR, prayerTime: prayerViewObject.Dhuhr },
+                { prayersDate: prayerViewObject.prayersDate, prayerName: prayerlib.PrayersName.ASR, prayerTime: prayerViewObject.Asr },
+                { prayersDate: prayerViewObject.prayersDate, prayerName: prayerlib.PrayersName.SUNSET, prayerTime: prayerViewObject.Sunset },
+                { prayersDate: prayerViewObject.prayersDate, prayerName: prayerlib.PrayersName.MAGHRIB, prayerTime: prayerViewObject.Maghrib },
+                { prayersDate: prayerViewObject.prayersDate, prayerName: prayerlib.PrayersName.ISHA, prayerTime: prayerViewObject.Isha },
+                { prayersDate: prayerViewObject.prayersDate, prayerName: prayerlib.PrayersName.MIDNIGHT, prayerTime: prayerViewObject.Midnight });
         });
         return prayerViewRow;
     }
 
     private createPrayerView(prayers: prayerlib.IPrayers[]) {
-        let prayerView: Array<IPrayersView> = new Array<IPrayersView>();
-        let prayerViewObject: IPrayersView;
-        let prayerTimings: Date[] = new Array<Date>();
-        prayers.forEach((curr, index, arr) => {
-            curr.prayerTime.forEach((prayerTiming, i) => {
-                prayerTimings.push(prayerTiming.prayerTime);
-            });
-            prayerViewObject =
-                {
-                    prayerDate: moment(curr.prayersDate).format('YYYY-MM-DD'),
-                    fajr: moment(prayerTimings[0]).format('LT'),
-                    sunrise: moment(prayerTimings[1]).format('LT'),
-                    dhuhr: moment(prayerTimings[2]).format('LT'),
-                    asr: moment(prayerTimings[3]).format('LT'),
-                    sunset: moment(prayerTimings[4]).format('LT'),
-                    maghrib: moment(prayerTimings[5]).format('LT'),
-                    isha: moment(prayerTimings[6]).format('LT'),
-                    midnight: moment(prayerTimings[7]).format('LT')
-                };
-            prayerView.push(prayerViewObject);
-        });
-        return prayerView;
+        let sortObject=(obj:IPrayersView):IPrayersView =>{
+            return  {
+                prayersDate: moment(obj.prayersDate).toDate().toDateString() ,
+                Imsak: moment(obj.Imsak).format('LT'),
+                Fajr: moment(obj.Fajr).format('LT'),
+                Sunrise: moment(obj.Sunrise).format('LT'),
+                Dhuhr: moment(obj.Dhuhr).format('LT'),
+                Asr: moment(obj.Asr).format('LT'),
+                Sunset: moment(obj.Sunset).format('LT'),
+                Maghrib:moment(obj.Maghrib).format('LT'),
+                Isha: moment(obj.Isha).format('LT'),
+                Midnight:moment(obj.Midnight).format('LT'),   
+            }
+        }      
+        let swapPrayers= (x:any)=> R.assoc(x.prayerName,x.prayerTime,x)
+        let removePrayers= (x:any)=> R.omit(['prayerName','prayerTime','undefined'],x)
+        let prayerTime= R.pipe(swapPrayers,removePrayers)
+        let prayerTimes =(x:any)=>R.map(prayerTime,x)
+        let prayersList =(x:any)=> R.append({prayersDate:x.prayersDate},x.prayerTime)
+        let projectPrayers= R.curry(sortObject)
+        let pump =R.pipe(prayersList,prayerTimes,R.mergeAll,projectPrayers)
+        return R.map(pump,prayers);
     }
     private async refreshPrayerManager(prayerConfig: prayerlib.IPrayersConfig, locationConfig: prayerlib.ILocationConfig): Promise<prayerlib.IPrayerManager> {
         let count: number = 0
