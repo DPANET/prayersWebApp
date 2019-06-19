@@ -3,7 +3,9 @@ var browserSync = require('browser-sync').create();
 var sass        = require('gulp-sass');
 var sourcemaps  = require('gulp-sourcemaps');
 var ts = require('gulp-typescript');
-const config = require('config');
+const config = require('nconf');
+config.file('config/default.json');
+
 var port  = config.get('PORT');
 var browserPort = config.get('BROWSER_PORT');
 
