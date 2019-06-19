@@ -1,9 +1,8 @@
-const dotenv = require('dotenv').config();
 const debug = require('debug')('app:router');
 import {IController} from "./controllers.interface";
 import express from 'express';
 import path from 'path';
-import config from "config";
+import config from "nconf";
 export default class MainController implements IController
 
 {

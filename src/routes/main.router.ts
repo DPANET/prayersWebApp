@@ -1,5 +1,5 @@
 import express from "express";
-import config from "config";
+import config from "nconf";
 import morgan from "morgan";
 import path from "path";
 import compression from "compression";

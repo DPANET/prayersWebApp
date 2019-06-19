@@ -1,6 +1,5 @@
-const dotenv = require('dotenv').config();
 const debug = require('debug')('app:router');
-import config = require('config');
+import config = require('nconf');
 import * as prayerlib from "@dpanet/prayers-lib";
 import { IController } from "./controllers.interface";
 import { IPrayersView, IPrayersViewRow } from "./views.interface";

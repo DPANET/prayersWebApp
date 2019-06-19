@@ -1,6 +1,6 @@
-const dotenv = require('dotenv').config();
+import config= require('nconf');
 const debug = require('debug')('app:router');
-import config= require('config');
+
 import * as express from 'express';
 import * as exceptionHandler from '../exceptions/exception.handler';
 
