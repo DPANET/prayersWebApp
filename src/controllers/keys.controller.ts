@@ -6,6 +6,8 @@ import config from "nconf";
 import request from "request";
 import { HttpException } from "../exceptions/exception.handler";
 import { NextFunction } from "connect";
+import * as sentry from "@sentry/node";
+sentry.init({ dsn: config.get("DSN") });
 
 export default class KeyController implements IController {
     path: string;
@@ -30,9 +32,9 @@ export default class KeyController implements IController {
         }
         catch (err) {
             debug(err);
+            sentry.captureException(err);
+
             next(new HttpException(404, err.message));
-
-
         }
     }
 }
