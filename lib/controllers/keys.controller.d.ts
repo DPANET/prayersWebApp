@@ -6,5 +6,5 @@ export default class KeyController implements IController {
     private _googleKey;
     constructor();
     private initializeRoutes;
-    private placesRouter;
+    private mainPageRoute;
 }

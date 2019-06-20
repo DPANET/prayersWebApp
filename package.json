@@ -35,8 +35,6 @@
     "compression": "^1.7.4",
     "debug": "^4.1.1",
     "express": "^4.17.1",
-    "helmet": "^3.18.0",
-    "http-proxy-middleware": "^0.19.1",
     "moment": "^2.24.0",
     "morgan": "^1.9.1",
     "nconf": "^0.10.0",

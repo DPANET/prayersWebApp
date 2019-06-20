@@ -3,23 +3,37 @@ import { IController } from "./controllers.interface";
 import express from 'express';
 import path from 'path';
 import config from "nconf";
+import request from "request";
+import { HttpException } from "../exceptions/exception.handler";
+import { NextFunction } from "connect";
+
 export default class KeyController implements IController {
     path: string;
     router: express.Router;
     private _googleKey: string;
     constructor() {
-        this.path = "/Keys";
+        this.path = "";
         this.router = express.Router();
+        //  this._filePath = config.get("MAIN_FILE_PATH");
+        //  this._fileName = config.get("MAIN_FILE_NAME");
         this._googleKey = config.get("GOOGLE_PLACE_KEY");
         this.initializeRoutes();
+
     }
     private initializeRoutes() {
-        this.router.get(this.path+"/Places/", this.placesRouter);
+        this.router.get(this.path + "/Places", this.mainPageRoute);
     }
-    private placesRouter = (request: express.Request, response: express.Response) => {
-        response.json("test");
-       //response.sendFile(`https://maps.googleapis.com/maps/api/js?key=${this._googleKey}&libraries=places`,{index:false,dotfiles:"allow",redirect:true});
+    private mainPageRoute = (req: express.Request, res: express.Response, next: NextFunction) => {
+        try {
+            let url: string = `https://maps.googleapis.com/maps/api/js?key=${this._googleKey}&libraries=places`;
+            request.get(url).pipe(res);
+        }
+        catch (err) {
+            debug(err);
+            next(new HttpException(404, err.message));
 
+
+        }
     }
 }
 
