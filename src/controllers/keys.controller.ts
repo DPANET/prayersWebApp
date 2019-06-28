@@ -14,7 +14,7 @@ export default class KeyController implements IController {
     router: express.Router;
     private _googleKey: string;
     constructor() {
-        this.path = "";
+        this.path = "/api/app/com.prayerssapp";
         this.router = express.Router();
         //  this._filePath = config.get("MAIN_FILE_PATH");
         //  this._fileName = config.get("MAIN_FILE_NAME");

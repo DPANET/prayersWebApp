@@ -28,7 +28,7 @@ export default class PrayersController implements IController {
     constructor() {
         try {
 
-            this.path = "/PrayerManager";
+            this.path = "/api/app/com.prayerssapp/PrayerManager";
             this.router = express.Router();
             this._validationController = new validationController.ValidationMiddleware();
 

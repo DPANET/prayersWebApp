@@ -9,6 +9,7 @@ import google = require("google");
 //const daterangepicker = require("daterangepicker");
 // const DataTableResp = require("datatables.net-responsive")(window, $);
 // const DataTableRowGroup = require("datatables.net-rowgroup")(window, $);
+var mainURL=`${location.origin}/api/app/com.prayerssapp` ;
 export async function buildObject() {
     let noty: Noty;
     await $('document').ready(async () => {
@@ -28,7 +29,7 @@ export async function buildObject() {
 }
 async function loadPrayerLocation() {
     return await $.ajax({
-        url: "PrayerManager/PrayersLocation",
+        url: `${mainURL}/PrayerManager/PrayersLocation`,
         // error: genericErrorHandler,
         dataType: "json",
         success: (prayersLocation: prayerlib.ILocationSettings) => {
@@ -80,7 +81,7 @@ async function searchLocation()
     if (!isNullOrUndefined(searchText))
     {
         await $.ajax({
-            url: "PrayerManager/SearchLocation",
+            url: `${mainURL}/PrayerManager/SearchLocation`,
             // error: genericErrorHandler,
             dataType: "JSON",
             type: "GET",
@@ -98,7 +99,7 @@ async function searchLocation()
 }
 async function reloadSettings() {
     await $.ajax({
-        url: "PrayerManager/LoadSettings",
+        url: `${mainURL}/PrayerManager/LoadSettings`,
         // error: genericErrorHandler,
         dataType: "json",
         type: "GET",
@@ -233,7 +234,7 @@ async function saveDataTable() {
         let locationValidationResult:boolean = validateLocationForm(locationConfig);
         if  (prayerValidationResult && locationValidationResult) {
           await  $.ajax({
-                url: 'PrayerManager/PrayersViewMobile', type: "POST",
+                url: `${mainURL}/PrayerManager/PrayersViewMobile`, type: "POST",
                 data:JSON.stringify(
                 { "prayerConfig":refreshPrayerConfigForm(),
                 "locationConfig": refreshLocationConfig()}),// JSON.stringify(prayersConfig),
@@ -258,7 +259,7 @@ async function loadDataTable() {
     await $('#prayers-table-mobile').DataTable(
         {
             ajax: {
-                url: 'PrayerManager/PrayersViewMobile',
+                url: `${mainURL}/PrayerManager/PrayersViewMobile`,
                 type: 'GET',
                 dataType: "json",
                 data: (d) => {
@@ -311,7 +312,7 @@ async function genericErrorHandler(jqXHR: JQueryXHR, textStatus: string, errorTh
 }
 async function loadPrayerPrayerSettings(): Promise<JQuery.jqXHR<any>> {
     return await $.ajax({
-        url: "PrayerManager/PrayersSettings",
+        url: `${mainURL}/PrayerManager/PrayersSettings`,
         // error: genericErrorHandler,
         dataType: "json",
         success: (prayerSettings: prayerlib.IPrayersSettings) => {
@@ -326,7 +327,7 @@ async function loadPrayerPrayerSettings(): Promise<JQuery.jqXHR<any>> {
 }
 async function loadPrayerAdjustments() {
     return await $.ajax({
-        url: "PrayerManager/PrayersAdjustments/",
+        url: `${mainURL}/PrayerManager/PrayersAdjustments/`,
         dataType: "json",
         // error: genericErrorHandler,
         success: (prayerAdjustment: prayerlib.IPrayerAdjustments[]) => {
