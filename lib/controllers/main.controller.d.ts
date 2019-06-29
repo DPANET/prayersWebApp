@@ -5,6 +5,7 @@ export default class MainController implements IController {
     router: express.Router;
     private _filePath;
     private _fileName;
+    private _rootPath;
     constructor();
     private initializeRoutes;
     private mainPageRoute;

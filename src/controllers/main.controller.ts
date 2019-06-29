@@ -11,12 +11,14 @@ export default class MainController implements IController
     router: express.Router;
     private _filePath:string;
     private _fileName:string;
+    private _rootPath:string;
     constructor()
     {
-        this.path = "/";
+        this.path = config.get("MAIN_FILE_URL");
         this.router= express.Router();
         this._filePath = config.get("MAIN_FILE_PATH");
         this._fileName = config.get("MAIN_FILE_NAME");
+        this._rootPath = config.get("WEBROOT");
 
         this.initializeRoutes();
         
@@ -26,7 +28,8 @@ export default class MainController implements IController
       }
     private mainPageRoute=  (request: express.Request, response: express.Response)=>
     {
-        response.sendFile(path.join(__dirname,this._filePath),{index:false,dotfiles:"allow",redirect:true});
+        let filePath:string = path.join(__dirname,this._filePath);
+        response.sendFile(filePath,{index:false,dotfiles:"allow",redirect:true});
     }
 
 }

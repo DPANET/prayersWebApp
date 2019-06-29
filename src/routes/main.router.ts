@@ -41,7 +41,8 @@ export class App {
     // followRedirects:true}));
   //  this.app.use(helmet());
     this.app.use(bodyParser.json());
-    this.app.use(express.static(path.join(this._mainFolder,this._stataicFolder)))
+    let folderPath:string = path.join(this._mainFolder,this._stataicFolder);
+    this.app.use(config.get('MAIN_FILE_URL'),express.static( folderPath));
     this.app.use(morgan('tiny'));
 }
  
