@@ -155,8 +155,8 @@ export default class PrayersController implements IController {
             let prayerConfig: prayerlib.IPrayersConfig = this.buildPrayerConfigObject(request.body.prayerConfig);
             let locationConfig:prayerlib.ILocationConfig = request.body.locationConfig;
             this._prayerManager =await this.refreshPrayerManager(prayerConfig,locationConfig) ;
-            await this._prayerManager.savePrayerConfig(this._prayerManager.getPrayerConfig());
-            await this._prayerManager.saveLocationConfig(this._prayerManager.getLocationConfig())
+            await this._prayerManager.updatePrayerConfig(this._prayerManager.getPrayerConfig(),{deviceID:request.body.deviceID});
+            await this._prayerManager.updateLocationConfig(this._prayerManager.getLocationConfig(),{deviceID:request.body.deviceID})
             // prayerConfig = await new prayerlib.Configurator().getPrayerConfig();
             // this._prayerManager = await this.refreshPrayerManager(prayerConfig,locationConfig)
             response.json("completed");
@@ -333,8 +333,9 @@ export default class PrayersController implements IController {
     }
     private async initializePrayerManger(): Promise<void> {
         try {
-            let locationConfig: prayerlib.ILocationConfig = await new prayerlib.Configurator().getLocationConfig();
-            let prayerConfig: prayerlib.IPrayersConfig = await new prayerlib.Configurator().getPrayerConfig();
+            let configProvider: prayerlib.IConfigProvider = prayerlib.ConfigProviderFactory.createConfigProviderFactory(prayerlib.ConfigProviderName.SERVER);
+            let locationConfig: prayerlib.ILocationConfig = await configProvider.getLocationConfig();
+            let prayerConfig: prayerlib.IPrayersConfig = await configProvider.getPrayerConfig();
             this._prayerManager = await this.refreshPrayerManager(prayerConfig, locationConfig);
         }
         catch (err) {
