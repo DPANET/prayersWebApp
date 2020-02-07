@@ -1,5 +1,6 @@
 import * as validators from  "@dpanet/prayers-lib/lib/validators/interface.validators";
 import {IPrayerManager} from "@dpanet/prayers-lib/lib/managers/interface.manager";
+import {IUser} from "../users/users.interface"
 //import * as prayer from "@dpanet/prayers-lib/lib/entities/prayer";
 import Joi = require('@hapi/joi');
 export class PrayerMangerValidator extends validators.Validator<IPrayerManager>
@@ -25,6 +26,31 @@ export class PrayerMangerValidator extends validators.Validator<IPrayerManager>
     }
     public static createValidator(): validators.IValid<IPrayerManager> {
         return new PrayerMangerValidator();
+    }
+}
+
+export class UserValidator extends validators.Validator<IUser>
+{
+
+    private _userSchema: object;
+    private constructor() 
+    {
+       super("UserValidator");
+       this.setSchema();
+
+    }
+    private setSchema(): void {
+
+        this._userSchema = Joi.object({
+            username: Joi.string().alphanum().min(3).max(16).required(),
+            password: Joi.string().regex(/^[a-zA-Z0-9]{3,30}$/).min(6).required()
+        }).with('username', 'password');
+    }
+    public validate(validateObject: IUser): boolean {
+        return  super.genericValidator( Joi.validate(validateObject, this._userSchema, { abortEarly: false, allowUnknown: true }));
+    }
+    public static createValidator(): validators.IValid<IUser> {
+        return new UserValidator();
     }
 }
 export * from  "@dpanet/prayers-lib/lib/validators/interface.validators";

@@ -17,7 +17,7 @@
         },
         {
             "type": "node",
-            "request": "attach",
+            "request": "launch",
             "name": "Debug Program",
             "sourceMaps": true,
             "cwd": "${workspaceFolder}",
@@ -25,10 +25,11 @@
             "outFiles": [
                 "${workspaceFolder}/lib/**/*.js"
             ],
+            "runtimeExecutable": "npm",
+            "runtimeArgs": ["run", "start"],            
             "localRoot": "${workspaceFolder}",
             "remoteRoot": "${workspaceFolder}",
             "smartStep": true,
-
             "trace": true
         }
     ]

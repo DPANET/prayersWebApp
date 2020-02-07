@@ -3,27 +3,24 @@ export  class HttpException extends Error {
     message: string;
     constructor(status: number, message: string) {
       super(message);
-      this.status = status;
-      this.message = message;
+
     }
 }
 
 
 export class UserWithThatEmailAlreadyExistsException extends HttpException
 {    
-  constructor(status: number, message: string) {
-    super(status, message);
-    this.status = status;
-    this.message = message;
+  constructor( email: string) {
+    super(404, `user with email ${email} not found`);
+
   }
 }
 
 export class  WrongCredentialsException extends HttpException{
 
-  constructor(status: number, message: string) {
-    super(status, message);
-    this.status = status;
-    this.message = message;
+  constructor() {
+    super(404, `Wrong Password provided`);
+
   }
 }
 

@@ -7,14 +7,26 @@ import mainController from "./controllers/main.controller";
 import keyController from "./controllers/keys.controller";
 
 import * as  events from "./events/events";
-let app:App = new App([new prayersController(),new mainController(),new keyController()]);
+import { configModel } from '@dpanet/prayers-lib';
+let app:App;
+try{
+
+app= new App([new mainController(),new keyController()]);
 // let eventProvider:events.ConfigEventProvider = new events.ConfigEventProvider("config/config.json");
 // let eventListener:events.ConfigEventListener = new events.ConfigEventListener();
 // eventProvider.registerListener(eventListener);
 setTimeout(() => {
     app.listen();
 }, 5000);
-
+}
+catch(err)
+{
+    console.log(err)
+}
+finally
+{
+    
+}
 
 // setTimeout(()=>{doSomething()}, 5000);
 // async function  doSomething()

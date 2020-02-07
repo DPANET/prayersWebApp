@@ -10,7 +10,7 @@
     "html:copy": "copyfiles -u 1 src/**.html lib",
     "css:copy": "copyfiles -u 1 src/css/**.css lib/",
     "images:copy": "copyfiles -u 1 src/images/**/* lib/",
-    "start:server": "node --inspect lib/app.js",
+    "start:server": "node --inspect-brk=9229 lib/app.js",
     "run:parallel": "npm-run-all -p start:server parallel",
     "wait": "wait-on http://localhost:7000/",
     "parallel": "npm-run-all bundlejs",
