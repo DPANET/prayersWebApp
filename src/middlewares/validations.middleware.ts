@@ -1,10 +1,10 @@
-import config= require('nconf');
-const debug = require('debug')('app:router');
+import config from 'nconf';
+const debug =require('debug')('app:router');
 
 import * as express from 'express';
-import * as exceptionHandler from '../exceptions/exception.handler';
+import * as exceptionHandler from '../exceptions/exception.handler.js';
 
-import * as validators from '../validators/validations';
+import * as validators from '../validators/validations.js';
 import * as sentry from "@sentry/node";
 sentry.init({ dsn: config.get("DSN") });
 export const enum ParameterType {

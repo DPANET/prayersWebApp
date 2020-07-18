@@ -1,0 +1,8 @@
+{
+  "imports": {
+    "@dpanet/prayers-lib/lib/entities/prayer": "./@dpanet/prayers-lib/lib/entities/prayer.js",
+    "es-module-shims": "./es-module-shims.js",
+    "googleapi": "./googleapi.js",
+    "moment": "./moment.js"
+  }
+}

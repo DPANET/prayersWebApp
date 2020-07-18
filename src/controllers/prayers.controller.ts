@@ -1,15 +1,16 @@
-const debug = require('debug')('app:router');
-import config = require('nconf');
+import Debug from 'debug';
+const debug= Debug("app:router");
+import config from 'nconf';
 import * as prayerlib from "@dpanet/prayers-lib";
-import { IController } from "./controllers.interface";
-import { IPrayersView, IPrayersViewRow } from "./views.interface";
+import { IController } from "./controllers.interface.js";
+import { IPrayersView, IPrayersViewRow } from "./views.interface.js";
 import express from 'express';
 import moment from "moment";
 //import { NextFunction, NextHandleFunction } from "connect";
-import { HttpException } from "../exceptions/exception.handler";
-import * as sentry from "@sentry/node";
-import * as validationController from "../middlewares/validations.middleware"
-import * as validators from "../validators/validations";
+import { HttpException } from "../exceptions/exception.handler.js";
+import  sentry from "@sentry/node";
+import * as validationController from "../middlewares/validations.middleware.js"
+import * as validators from "../validators/validations.js";
 import * as retry from "async-retry";
 import { listenerCount } from 'cluster';
 import R from "ramda";

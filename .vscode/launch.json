@@ -5,6 +5,23 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "type": "node",
+            "request": "launch",
+            "name": "Debug Program",
+            "sourceMaps": true,
+            "cwd": "${workspaceFolder}",
+            "port": 9119,
+            "outFiles": [
+                "${workspaceFolder}/lib/**/*.js"
+            ],
+            "runtimeExecutable": "npm",
+            "runtimeArgs": ["run", "start:debug"],            
+            "localRoot": "${workspaceFolder}",
+            "remoteRoot": "${workspaceFolder}",
+            "smartStep": true,
+            "trace": true
+        },
+        {
             "type": "chrome",
             "request": "attach",
             "name": "Attach Chrome",
@@ -14,23 +31,6 @@
             "smartStep":true,
             "port": 9222,
             "skipFiles": ["${workspaceFolder}/node_modules/**/*.js"]
-        },
-        {
-            "type": "node",
-            "request": "launch",
-            "name": "Debug Program",
-            "sourceMaps": true,
-            "cwd": "${workspaceFolder}",
-            "port": 9229,
-            "outFiles": [
-                "${workspaceFolder}/lib/**/*.js"
-            ],
-            "runtimeExecutable": "npm",
-            "runtimeArgs": ["run", "start"],            
-            "localRoot": "${workspaceFolder}",
-            "remoteRoot": "${workspaceFolder}",
-            "smartStep": true,
-            "trace": true
         }
     ]
 }

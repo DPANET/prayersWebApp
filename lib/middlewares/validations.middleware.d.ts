@@ -1,5 +1,5 @@
 import * as express from 'express';
-import * as validators from '../validators/validations';
+import * as validators from '../validators/validations.js';
 export declare const enum ParameterType {
     query = 0,
     body = 1

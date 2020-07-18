@@ -1,12 +1,12 @@
 import  bcrypt from 'bcrypt';
 import  express from 'express';
-import {UserWithThatEmailAlreadyExistsException,WrongCredentialsException} from '../exceptions/exception.handler';
-import {IController} from '../controllers/controllers.interface';
-import {ValidationMiddleware} from '../middlewares/validations.middleware';
-import * as validationController from "../middlewares/validations.middleware"
-import * as validators from "../validators/validations";
-import {userModel} from '../users/users.model';
-import {IUser} from "../users/users.interface"
+import {UserWithThatEmailAlreadyExistsException,WrongCredentialsException} from '../exceptions/exception.handler.js';
+import {IController} from '../controllers/controllers.interface.js';
+import {ValidationMiddleware} from '../middlewares/validations.middleware.js';
+import * as validationController from "../middlewares/validations.middleware.js"
+import * as validators from "../validators/validations.js";
+import {userModel} from '../users/users.model.js';
+import {IUser} from "../users/users.interface.js"
 import * as sentry from "@sentry/node";
 export class AuthenticationController implements IController {
 

@@ -1,0 +1,1 @@
+{"version":3,"file":"googleapi.js","sources":["../../node_modules/googleapi/index.js"],"sourcesContent":["/**\n * GoogleAPI \n *\n * Under construction\n */\n\nmodule.exports = function(){\n  console.log('module under construction');\n};\n"],"names":[],"mappings":"AAAA;AACA;AACA;AACA;AACA;AACA;aACc,GAAG,UAAU;AAC3B,EAAE,OAAO,CAAC,GAAG,CAAC,2BAA2B,CAAC,CAAC;AAC3C;;;;"}

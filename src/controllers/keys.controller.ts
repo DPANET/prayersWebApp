@@ -1,12 +1,13 @@
-const debug = require('debug')('app:router');
-import { IController } from "./controllers.interface";
+import Debug from 'debug';
+const debug= Debug("app:router");
+import { IController } from "./controllers.interface.js";
 import express from 'express';
 import path from 'path';
 import config from "nconf";
 import request from "request";
-import { HttpException } from "../exceptions/exception.handler";
+import { HttpException } from "../exceptions/exception.handler.js";
 import { NextFunction } from "connect";
-import * as sentry from "@sentry/node";
+import  sentry from "@sentry/node";
 sentry.init({ dsn: config.get("DSN") });
 
 export default class KeyController implements IController {

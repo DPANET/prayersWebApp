@@ -1,5 +1,5 @@
 import express from "express";
-import { IController } from "../controllers/controllers.interface";
+import { IController } from "../controllers/controllers.interface.js";
 export declare class App {
     app: express.Application;
     private _port;

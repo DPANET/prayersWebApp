@@ -1,9 +1,9 @@
 //import $ = require('jquery');
-import * as prayerlib from "../../models/prayers.model";
+import * as prayerlib from "../../models/prayers.model.js";
 import moment from "moment";
 import Noty from "noty";
-import { ILocationSettings } from "../../models/prayers.model";
-import google = require("google");
+import { ILocationSettings } from "../../models/prayers.model.js";
+import google from "@google/maps";
 //import { isNullOrUndefined } from 'util';
 // const DataTable = require("datatables.net")(window, $);
 //const daterangepicker = require("daterangepicker");
@@ -66,6 +66,7 @@ let options:any = {
     types:['address']
 }
 let searchinput:any = document.getElementById('search-input');
+
     let autocomplete:any = new google.maps.places.Autocomplete(searchinput);
     autocomplete.addListener(
     'place_changed',

@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
-import * as exceptionHandler from '../exceptions/exception.handler';
+import * as exceptionHandler from '../exceptions/exception.handler.js';
 
 
 export class ExceptionMiddleware

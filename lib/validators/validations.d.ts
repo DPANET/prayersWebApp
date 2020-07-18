@@ -1,6 +1,6 @@
-import * as validators from "@dpanet/prayers-lib/lib/validators/interface.validators";
-import { IPrayerManager } from "@dpanet/prayers-lib/lib/managers/interface.manager";
-import { IUser } from "../users/users.interface";
+import * as validators from "@dpanet/prayers-lib/lib/validators/interface.validators.js";
+import { IPrayerManager } from "@dpanet/prayers-lib/lib/managers/interface.manager.js";
+import { IUser } from "../users/users.interface.js";
 export declare class PrayerMangerValidator extends validators.Validator<IPrayerManager> {
     private _prayerManagerSchema;
     private _adjustmentsSchema;

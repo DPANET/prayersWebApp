@@ -1,4 +1,4 @@
-import { IController } from "./controllers.interface";
+import { IController } from "./controllers.interface.js";
 import express from 'express';
 export default class PrayersController implements IController {
     path: string;

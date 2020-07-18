@@ -1,13 +1,12 @@
-import nconf = require('nconf');
+import nconf from 'nconf';
 nconf.file('config/default.json');
 process.env.DEBUG= nconf.get("DEBUG");
-import  {App} from "./routes/main.router";
 import prayersController from "./controllers/prayers.controller";
-import mainController from "./controllers/main.controller";
-import keyController from "./controllers/keys.controller";
+import keyController from "./controllers/keys.controller.js";
+import mainController from "./controllers/main.controller.js";
+import  {App} from "./routes/main.router.js";
 
-import * as  events from "./events/events";
-import { configModel } from '@dpanet/prayers-lib';
+
 let app:App;
 try{
 

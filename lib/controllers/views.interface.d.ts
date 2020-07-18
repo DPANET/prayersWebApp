@@ -1,4 +1,4 @@
-import { PrayersName } from "@dpanet/prayers-lib/lib/entities/prayer";
+import { PrayersName } from "@dpanet/prayers-lib/lib/entities/prayer.js";
 export interface IPrayersView {
     prayersDate: string;
     Fajr: string;

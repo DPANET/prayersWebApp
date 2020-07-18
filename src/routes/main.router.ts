@@ -3,9 +3,9 @@ import config from "nconf";
 import morgan from "morgan";
 import path from "path";
 import compression from "compression";
-import * as bodyParser from 'body-parser';
-import {IController} from "../controllers/controllers.interface";
-import * as exceptionMiddleware from "../middlewares/exceptions.middleware";
+import bodyParser from 'body-parser';
+import {IController} from "../controllers/controllers.interface.js";
+import * as exceptionMiddleware from "../middlewares/exceptions.middleware.js";
 //import helmet from "helmet";
 //import proxy from "http-proxy-middleware";
 export class App {
@@ -40,10 +40,25 @@ export class App {
     // ignorePath:true,
     // followRedirects:true}));
   //  this.app.use(helmet());
-    this.app.use(bodyParser.json());
+  let options = {
+    dotfiles: 'ignore',
+    etag: false,
+    extensions: ['js', 'json'],
+    index: false,
+    maxAge: '1d',
+    redirect: false,
+    setHeaders: function (res, path, stat) {
+      res.set('x-timestamp', Date.now())
+    }
+  }
     let folderPath:string = path.join(this._mainFolder,this._stataicFolder);
+    
     this.app.use(config.get('MAIN_FILE_URL'),express.static( folderPath));
+    this.app.use(express.static("build/web_modules"));
+    //this.app.use()
     this.app.use(morgan('tiny'));
+    this.app.use(bodyParser.json());
+
 }
  
   private initializeControllers(controllers: IController[]):void {

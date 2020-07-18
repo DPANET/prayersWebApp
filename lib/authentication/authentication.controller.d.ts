@@ -1,4 +1,4 @@
-import { IController } from '../controllers/controllers.interface';
+import { IController } from '../controllers/controllers.interface.js';
 export declare class AuthenticationController implements IController {
     path: string;
     router: import("express-serve-static-core").Router;

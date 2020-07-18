@@ -1,12 +1,19 @@
-const debug = require('debug')('app:router');
-import {IController} from "./controllers.interface";
+import Debug from 'debug';
+const debug= Debug("app:router");
+import {IController} from "./controllers.interface.js";
 import express from 'express';
 import path from 'path';
 import config from "nconf";
+import { fileURLToPath } from 'url';
+import {_dirname} from '../util/expose.js';
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+//const __dirname = path.dirname(fileURLToPath(import.meta.url));
 export default class MainController implements IController
 
 {
 
+    
     path: string;
     router: express.Router;
     private _filePath:string;
