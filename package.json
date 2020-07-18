@@ -83,7 +83,7 @@
     "gulp-sass": "^4.0.2",
     "gulp-sourcemaps": "^2.6.5",
     "gulp-typescript": "^5.0.1",
-    "jquery": "^3.4.1",
+    "jquery": "^3.5.0",
     "parcel-bundler": "^1.12.4",
     "snowpack": "^2.6.4",
     "tinyify": "^2.5.2",
