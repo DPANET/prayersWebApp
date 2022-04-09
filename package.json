@@ -42,7 +42,7 @@
     "express": "^4.17.1",
     "googleapi": "^1.0.2",
     "install": "^0.13.0",
-    "moment": "^2.24.0",
+    "moment": "^2.29.2",
     "mongoose": "^5.8.11",
     "morgan": "^1.9.1",
     "nconf": "^0.10.0",
