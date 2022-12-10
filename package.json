@@ -39,7 +39,7 @@
     "compression": "^1.7.4",
     "debug": "^4.1.1",
     "es-module-shims": "^0.4.7",
-    "express": "^4.17.1",
+    "express": "^4.17.3",
     "googleapi": "^1.0.2",
     "install": "^0.13.0",
     "moment": "^2.24.0",
